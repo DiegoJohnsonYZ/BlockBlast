@@ -1,10 +1,13 @@
-class Fruit {
-    constructor(name, radius, type) {
-      this.name = name
-      this.radius = radius
-      this.type = type
+
+
+class Piece {
+    constructor(color, shape){
+        this.color = color
+        this.shape = shape
     }
-  }
+}
+
+
 
 export class MainScene extends Phaser.Scene{
     constructor()
@@ -25,124 +28,159 @@ export class MainScene extends Phaser.Scene{
         })
     }
 
-    addFruit(x, y, fruit) {
-
-        var fruitObject = this.matter.add
-        .image(x, y, fruit.name)
-        .setName(fruit.name)
-        .setDisplaySize(fruit.radius * 2, fruit.radius * 2)
-        .setFriction(0.005)
-        .setBounce(0.2)
-        .setDepth(-1)
-        
-        if(fruit.type === "c"){        
-            fruitObject.setCircle(fruit.radius)
+    CreatePiece(piece, x, y, size){
+        const container = this.add.container(x,y)
+        for(let i = 0; i < 5; i++){
+            for(let j = 0; j < 5; j++){
+                console.log(piece.shape.type)
+                if(piece.shape.charAt((5*i)+j) == 1){
+                    var s1 = this.add.image((size*j)-200,(size*i)-200 , "square")
+                    s1.setTint(piece.color)
+                    s1.setInteractive()
+                    this.input.setDraggable(s1)
+                    container.add(s1)
+                }
+            }
         }
+        return container
+    }
 
-        return fruitObject
-      }
+    CanPutPiece(piece, x,y, boardMatrix){
+        for(let i = 0; i < 5; i++){
+            for(let j = 0; j < 5; j++){
+                if(piece.shape.charAt((5*i)+j) == 1){
+                    if(i+y > boardMatrix.lenght || j + x >boardMatrix[0].lenght|| i+y<0||j+x<0){
+                        return false
+                    }
+                    if(piece.shape.charAt((5*i)+j) == boardMatrix[j+x][i+y]){
+                        return false
+                    }
+                
+                }
+                
+                
+            }
+        }
+        return true
+    }
+
+    DrawPiece(piece,x,y,board){
+        console.log("drawing")
+        var list = new Array()
+        for(let i = 0; i < 5; i++){
+            for(let j = 0; j < 5; j++){
+                if(piece.shape.charAt((5*i)+j) == 1){
+                    board[j+x][i+y].setTint(899499)
+                    list.push(board[j+x][i+y])
+                    console.log("h")
+                }
+                
+                
+            }
+        }
+        return list
+
+    }
+    DeletePiece(pieces){
+        pieces.forEach((element)=> element.setTint(0xffffff))
+    }
+
+    
     
 
     preload(){
-       this.load.image("pato","src/images/pato.png")
-       this.load.image("fruit1","src/images/fruit1.png")
-       this.load.image("fruit2","src/images/fruit2.png")
-       this.load.image("fruit3","src/images/fruit3.png")
-       this.load.image("fruit4","src/images/fruit4.png")
-       this.load.image("fruit5","src/images/fruit5.png")
-       this.load.image("fruit6","src/images/fruit6.png")
-       this.load.image("fruit7","src/images/fruit7.png")
-       this.load.image("fruit8","src/images/fruit8.png")
-       this.load.image("fruit9","src/images/fruit9.png")
-       this.load.image("platform","src/images/platform.png")
+       this.load.image("square","src/images/BBSquare.png")
        
     }
 
-    UpdatePointer(pointerImage, newFruit){
-        pointerImage.setDisplaySize(newFruit.radius*2, newFruit.radius*2)
-        pointerImage.setTexture(newFruit.name)
-
-    }
+   
 
     create(){
-        const fruits =  [ new Fruit("fruit1", 20, "s"), 
-                        new Fruit("fruit2", 40, "s"),
-                        new Fruit("fruit3", 60, "c"),
-                        new Fruit("fruit4", 80, "c"),
-                        new Fruit("fruit5", 90, "c"),
-                        new Fruit("fruit6", 100, "s"),
-                        new Fruit("fruit7", 130, "c"),
-                        new Fruit("fruit8", 160, "c"),
-                        new Fruit("fruit9", 200, "c")] 
+        this.pointerX = 0
+        this.pointerY = 0
 
-        var pointerImage = this.add.image(170, 200, "pato")
-        pointerImage.setOrigin(0.5,0.5)
+        this.lastPointerX = 0
+        this.lastPointerY = 0
 
-        this.matter.add.image(100, 950, 'platform', null, { isStatic: true }).setName('wall').rotation += 1.57
-        this.matter.add.image(400, 950, 'platform', null, { isStatic: true }).setName('wall')
-        this.matter.add.image(700, 950, 'platform', null, { isStatic: true }).setName('wall').rotation += 1.57      
-        var self = this
+        this.piecesList = []
 
-        var limiteIzquierdo = 170
-        var limiteDerecho = 600
-        var pointerX = 0
-        var nextFruitIndex = 0
+        this.counter = 0
+        this.piece = new Piece(0xffff00, "0010000100001000010000100")
+        var boardSize = 8
+        var squareSize = 100
+        this.offset = 50
+        this.board = []
 
-        this.UpdatePointer(pointerImage, fruits[nextFruitIndex])
-
-        this.input.on('pointermove', function (pointer) {
-            // Obtiene la posición del mouse en el eje X
-            pointerX = pointer.x
-            pointerImage.x = Phaser.Math.Clamp(pointer.x, limiteIzquierdo, limiteDerecho)
-        },this);
-        this.input.on('pointerdown', function (pointer, event) {
-            if (pointer.leftButtonDown()) {
-                this.addFruit(pointerX, -100, fruits[nextFruitIndex])
-                nextFruitIndex = Math.floor(Math.random() * 3)
-                this.UpdatePointer(pointerImage, fruits[nextFruitIndex])
+        for(let i = 0; i < boardSize; i++){
+            this.board[i] = []
+            for(let j = 0; j < boardSize; j++){
+                this.board[i][j] = this.add.image((i*squareSize)+this.offset, (j*squareSize)+this.offset, "square")
             }
-        }, this);
-        this.matter.world.on(
-            "collisionactive",
-            function(event){
-                for (var i = 0; i < event.pairs.length; i++) {
-                    var bodyA = event.pairs[i].bodyA;
-                    var bodyB = event.pairs[i].bodyB;
-                    if (bodyA.gameObject != null && bodyB.gameObject != null) {
-                        if (bodyA.gameObject.name != 'wall' && bodyB.gameObject.name != 'wall') {
-                            if (bodyA.gameObject.name == bodyB.gameObject.name){
-                                const fruitIndex = fruits.findIndex(
-                                    (fruit) => fruit.name === bodyA.gameObject.name
-                                )
-                                console.log(fruitIndex)
-                                bodyA.gameObject.destroy()
-                                bodyB.gameObject.destroy()
-                                
-                                const newFruit = fruits[fruitIndex + 1]
+        }
+
+        this.boardMatrix = []
+        for(let i = 0; i < boardSize; i++){
+            this.boardMatrix[i] = []
+            for(let j = 0; j < boardSize; j++){
+                this.boardMatrix[i][j] = 0
+            }
+        }
+        
+        
+
             
-                                self.addFruit(bodyA.position.x, bodyA.position.y, newFruit)
-                            }
-                        }
-                    }
-                }
+        
+       
 
-                /*
-                if(bodyA.gameObject.name === bodyB.gameObject.name){
-                    const fruitIndex = fruits.findIndex(
-                        (fruit) => fruit.name === bodyA.gameObject.name
-                    )
-                    console.log(fruitIndex)
-                    bodyA.gameObject.destroy()
-                    bodyB.gameObject.destroy()
-                    
-                    const newFruit = fruits[fruitIndex + 1]
+        
 
-                    self.addFruit(bodyA.position.x, bodyA.position.y, newFruit)
-                }      
-                */    
-            } 
-          )
+        //const container = this.CreatePiece(this.piece, 200,200,100)
+       
+
+        
+        this.input.on('dragstart', function (pointer, gameObject) {
+
+            //  This will bring the selected gameObject to the top of the list
+            //this.children.bringToTop(gameObject);
+
+        }, this);
+        this.input.on('drag', (pointer, gameObject, dragX, dragY) =>
+        {
+            console.log("drag")
+            console.log(gameObject.parentContainer)
+            gameObject.parentContainer.x = this.input.mousePointer.x
+            console.log(dragX)
+            
+            gameObject.parentContainer.y = this.input.mousePointer.y-200
+            console.log(dragY)
+
+        });
+        
+        this.input.on('dragend', function (pointer, gameObject) {
+
+            //  This will bring the selected gameObject to the top of the list
+            //this.children.bringToTop(gameObject);
+
+        }, this);
+               
+           
+        }
+      
+
+    update(time, deltaTime){
+        
+        this.pointerX = Phaser.Math.Clamp((Phaser.Math.FloorTo(this.input.mousePointer.x/100)),0,8)
+        this.pointerY = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.input.mousePointer.y/100))),0,8)
+        if(this.lastPointerX != this.pointerX || this.lastPointerY != this.pointerY){
+            this.lastPointerX = this.pointerX
+            this.lastPointerY = this.pointerY
+            console.log("change")
+            //if(this.piecesList.length > 0)this.DeletePiece(this.piecesList)
+            if(this.CanPutPiece(this.piece,this.pointerX, this.pointerY,this.boardMatrix))
+                //this.piecesList = this.DrawPiece(this.piece, 0,0,this.board)
 
         }
-      }
+
+    }
+}
     
