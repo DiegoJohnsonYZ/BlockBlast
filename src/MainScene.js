@@ -113,6 +113,8 @@ export class MainScene extends Phaser.Scene{
             
             
         }
+        this.colorsToRestore= []
+        this.piecesToClear = []
         
         
     }
@@ -134,7 +136,7 @@ export class MainScene extends Phaser.Scene{
                 
                 for(let j = 0; j < this.boardSize; j++){
                     this.piecesToClear[iterator] = this.board[j][i]
-                    //this.colorsToRestore[iterator] = this.board[j][i].getColor()
+                    this.colorsToRestore[iterator] = this.board[j][i].tintTopLeft
                     iterator += 1
                     this.board[j][i].setTint(this.piece.color)
                     
@@ -146,7 +148,7 @@ export class MainScene extends Phaser.Scene{
                 
                 for(let j = 0; j < this.boardSize; j++){
                     this.piecesToClear[iterator] = this.board[i][j]
-                    //this.colorsToRestore[iterator] = this.board[i][j].getColor()
+                    this.colorsToRestore[iterator] = this.board[i][j].tintTopLeft
                     iterator += 1
                     this.board[i][j].setTint(this.piece.color)
                    
@@ -173,6 +175,21 @@ export class MainScene extends Phaser.Scene{
                 
             }
         }
+    }
+
+    RestoreColors(){
+        
+        for(let i = 0; i < this.colorsToRestore.length; i++){
+
+
+            this.piecesToClear[i].setTint(this.colorsToRestore[i])
+
+
+            
+            
+        }
+        if(this.piecesToDelete.length > 0)this.DeletePiece(this.piecesToDelete)
+        
     }
 
     CreateOptions(){
@@ -379,8 +396,11 @@ export class MainScene extends Phaser.Scene{
 
             this.lineCounterXadd = [0,0,0,0,0,0,0,0]
             this.lineCounterYadd = [0,0,0,0,0,0,0,0]
-            if(this.piecesToDelete.length > 0)this.DeletePiece(this.piecesToDelete)
+            this.RestoreColors()
+            
+            
             if(this.canCheck){
+                
                 if(this.CanPutPiece(this.piece,this.pointerX, this.pointerY,this.boardMatrix)){
                     this.piecesToDelete = this.DrawPiece(this.piece, this.pointerX,this.pointerY,this.board)
                 }
