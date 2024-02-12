@@ -77,6 +77,7 @@ export class MainScene extends Phaser.Scene{
                     this.boardMatrix[j+x][i+y] = 1
                     this.lineCounterX[i+y] += 1
                     this.lineCounterY[j+x] += 1
+                    this.scorePoints += 1
                 }
                 
                 
@@ -108,6 +109,7 @@ export class MainScene extends Phaser.Scene{
             this.boardMatrix[filas][columnas] = 0
             this.lineCounterX[columnas]-=1
             this.lineCounterY[filas]-=1
+            this.scorePoints+=1
 
 
             
@@ -115,16 +117,12 @@ export class MainScene extends Phaser.Scene{
         }
         this.colorsToRestore= []
         this.piecesToClear = []
+        this.scoreText.setText(this.scorePoints)
         
         
     }
 
     ShowBreakingLines(){
-        console.log("comparison")
-        console.log(this.lineCounterXadd)
-        console.log(this.lineCounterYadd)
-        console.log(this.lineCounterX)
-        console.log(this.lineCounterY)
         this.piecesToClear = []
         this.colorsToRestore = []
         var iterator = 0
@@ -223,6 +221,7 @@ export class MainScene extends Phaser.Scene{
    
 
     create(){
+        
         this.pointerX = 0
         this.pointerY = 0
 
@@ -266,6 +265,10 @@ export class MainScene extends Phaser.Scene{
                 this.boardMatrix[i][j] = 0
             }
         }
+        //SCORES
+        this.scorePoints = 0
+
+        this.scoreText = this.add.text(0, 900,"Score: ", {fontSize:  50})
 
         //CREATE PIECES AND COLORS
         this.piecesList = ["0010000100001000010000100", //Linea vertical
@@ -310,7 +313,8 @@ export class MainScene extends Phaser.Scene{
         //SETTING BOARD
         this.InsertPiece(this.GeneratePiece(),0,0)
         this.InsertPiece(this.GeneratePiece(),3,3)
-            
+        this.scorePoints = 0
+        this.scoreText.setText(this.scorePoints)
        
 
         //CREATE OPTIONS
