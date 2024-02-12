@@ -57,11 +57,14 @@ export class MainScene extends Phaser.Scene{
                 if(piece.shape.charAt((5*i)+j) == 1){
                     this.board[j+x][i+y].setTint(899499)
                     list.push(this.board[j+x][i+y])
+                    this.lineCounterXadd[i+y] += 1
+                    this.lineCounterYadd[j+x] += 1
                 }
                 
                 
             }
         }
+        this.ShowBreakingLines()
         return list
 
     }
@@ -97,7 +100,7 @@ export class MainScene extends Phaser.Scene{
 
     CanBreakLine(){
         
-        //HORIZONTAL
+        
         for(let i = 0; i < this.boardSize; i++){
             
             if(this.lineCounterX[i]== this.boardSize){
@@ -124,6 +127,32 @@ export class MainScene extends Phaser.Scene{
         }
         console.log(this.lineCounterX)
         console.log(this.lineCounterY)
+        
+    }
+
+    ShowBreakingLines(){
+        
+        
+        for(let i = 0; i < this.boardSize; i++){
+            
+            if(this.lineCounterXadd[i]== this.boardSize){
+                
+                for(let j = 0; j < this.boardSize; j++){
+                    this.board[j][i].setTint(this.piece.color)
+                    
+                    
+                }
+            }
+            if(this.lineCounterYadd[i]== this.boardSize){
+                
+                for(let j = 0; j < this.boardSize; j++){
+                    this.board[i][j].setTint(this.piece.color)
+                   
+                    
+                }
+            }
+            
+        }
         
     }
 
@@ -296,7 +325,7 @@ export class MainScene extends Phaser.Scene{
             this.ChangePointer()
             pointerContainer.visible = true
             this.canCheck = true
-
+            
         }, this);
         this.input.on('drag', (pointer, gameObject, dragX, dragY) =>
         {
@@ -342,6 +371,9 @@ export class MainScene extends Phaser.Scene{
         if(this.lastPointerX != this.pointerX || this.lastPointerY != this.pointerY){
             this.lastPointerX = this.pointerX
             this.lastPointerY = this.pointerY
+
+            this.lineCounterXadd = [0,0,0,0,0,0,0,0]
+            this.lineCounterYadd = [0,0,0,0,0,0,0,0]
             if(this.piecesToDelete.length > 0)this.DeletePiece(this.piecesToDelete)
             if(this.canCheck){
                 if(this.CanPutPiece(this.piece,this.pointerX, this.pointerY,this.boardMatrix)){
