@@ -82,7 +82,7 @@ export class MainScene extends Phaser.Scene{
                 
             }
         }
-        this.CanBreakLine()
+        this.BreakLine()
     }
     GetRandomInt(max) {
 
@@ -98,54 +98,56 @@ export class MainScene extends Phaser.Scene{
         pieces.forEach((element)=> element.setTint(0xffffff))
     }
 
-    CanBreakLine(){
+    BreakLine(){
         
         
-        for(let i = 0; i < this.boardSize; i++){
+        for(let i = 0; i < this.piecesToClear.length; i++){
+            var filas =this.piecesToClear[i].name.charAt(0)
+            var columnas = this.piecesToClear[i].name.charAt(1)
+            this.piecesToClear[i].setTint(0xffffff)
+            this.boardMatrix[filas][columnas] = 0
+            this.lineCounterX[columnas]-=1
+            this.lineCounterY[filas]-=1
+
+
             
-            if(this.lineCounterX[i]== this.boardSize){
-                
-                for(let j = 0; j < this.boardSize; j++){
-                    this.board[j][i].setTint(0xffffff)
-                    this.boardMatrix[j][i] = 0
-                    this.lineCounterX[i]=0
-                    this.lineCounterY[j]-=1
-                    
-                }
-            }
-            if(this.lineCounterY[i]== this.boardSize){
-                
-                for(let j = 0; j < this.boardSize; j++){
-                    this.board[i][j].setTint(0xffffff)
-                    this.boardMatrix[i][j] = 0
-                    this.lineCounterY[i]=0
-                    this.lineCounterX[j]-=1
-                    
-                }
-            }
             
         }
-        console.log(this.lineCounterX)
-        console.log(this.lineCounterY)
+        
         
     }
 
     ShowBreakingLines(){
+        console.log("comparison")
+        console.log(this.lineCounterXadd)
+        console.log(this.lineCounterYadd)
+        console.log(this.lineCounterX)
+        console.log(this.lineCounterY)
+        this.piecesToClear = []
+        this.colorsToRestore = []
+        var iterator = 0
         
-        
+
         for(let i = 0; i < this.boardSize; i++){
             
-            if(this.lineCounterXadd[i]== this.boardSize){
+            if(this.lineCounterXadd[i]+this.lineCounterX[i]== this.boardSize){
                 
                 for(let j = 0; j < this.boardSize; j++){
+                    this.piecesToClear[iterator] = this.board[j][i]
+                    //this.colorsToRestore[iterator] = this.board[j][i].getColor()
+                    iterator += 1
                     this.board[j][i].setTint(this.piece.color)
                     
+
                     
                 }
             }
-            if(this.lineCounterYadd[i]== this.boardSize){
+            if(this.lineCounterYadd[i]+this.lineCounterY[i]== this.boardSize){
                 
                 for(let j = 0; j < this.boardSize; j++){
+                    this.piecesToClear[iterator] = this.board[i][j]
+                    //this.colorsToRestore[iterator] = this.board[i][j].getColor()
+                    iterator += 1
                     this.board[i][j].setTint(this.piece.color)
                    
                     
@@ -226,6 +228,8 @@ export class MainScene extends Phaser.Scene{
         this.lineCounterY = [0,0,0,0,0,0,0,0]
         this.lineCounterXadd = [0,0,0,0,0,0,0,0]
         this.lineCounterYadd = [0,0,0,0,0,0,0,0]
+        this.piecesToClear = []
+        this.colorsToRestore = []
         //CREATE BOARD
         this.board = []
 
@@ -234,6 +238,7 @@ export class MainScene extends Phaser.Scene{
             this.board[i] = []
             for(let j = 0; j < this.boardSize; j++){
                 this.board[i][j] = this.add.image((i*squareSize)+this.offset, (j*squareSize)+this.offset, "square")
+                this.board[i][j].name = i.toString()+j.toString()
             }
         }
 
