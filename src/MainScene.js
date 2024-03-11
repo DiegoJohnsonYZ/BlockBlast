@@ -1,5 +1,7 @@
 
 
+
+
 class Piece {
     constructor(color, shape){
         this.color = color
@@ -7,7 +9,36 @@ class Piece {
     }
 }
 
-
+class Queue {
+    constructor() {
+      this.queue = [];
+    }
+  
+    enqueue(element) {
+      this.queue.push(element);
+      return this.queue;
+    }
+  
+    dequeue() {
+      return this.queue.shift();
+    }
+  
+    peek() {
+      return this.queue[0];
+    }
+  
+    size() {
+      return this.queue.length;
+    }
+  
+    isEmpty() {
+      return this.queue.length === 0;
+    }
+  
+    print() {
+      return this.queue;
+    }
+  }
 
 export class MainScene extends Phaser.Scene{
     
@@ -33,12 +64,12 @@ export class MainScene extends Phaser.Scene{
     CanPutPiece(piece, x,y){
         for(let i = 0; i < 5; i++){
             for(let j = 0; j < 5; j++){
-                if(piece.shape.charAt((5*i)+j) == 1){
+                if(piece.charAt((5*i)+j) == 1){
                     if(i+y > this.boardMatrix.length-1 || j + x >this.boardMatrix[0].length-1|| i+y<0||j+x<0){
                         
                         return false
                     }
-                    else if(piece.shape.charAt((5*i)+j) == this.boardMatrix[j+x][i+y]){
+                    else if(piece.charAt((5*i)+j) == this.boardMatrix[j+x][i+y]){
                         return false
                     }
                 
@@ -83,6 +114,7 @@ export class MainScene extends Phaser.Scene{
                 
             }
         }
+
         this.BreakLine()
     }
     GetRandomInt(max) {
@@ -107,8 +139,8 @@ export class MainScene extends Phaser.Scene{
             var columnas = this.piecesToClear[i].name.charAt(1)
             this.piecesToClear[i].setTint(0xffffff)
             this.boardMatrix[filas][columnas] = 0
-            this.lineCounterX[columnas]-=1
-            this.lineCounterY[filas]-=1
+            this.lineCounterX[columnas]=Phaser.Math.Clamp(this.lineCounterX[columnas]-1,0,8)
+            this.lineCounterY[filas]=Phaser.Math.Clamp(this.lineCounterY[filas]-1,0,8)
             this.scorePoints+=1
 
 
@@ -189,18 +221,80 @@ export class MainScene extends Phaser.Scene{
         if(this.piecesToDelete.length > 0)this.DeletePiece(this.piecesToDelete)
         
     }
+    CountPieceValue(piece){
+        var counterPiece = 0
+        for(let i = 0; i < 25; i++){
+            if(piece.charAt(i) == 1)counterPiece+=1
+        }
+        return counterPiece
+    }
+
+    RecommendOptions(){
+        var aux = 0
+        var queue = new Queue()
+        var maxValue = -1
+        var maxPieceSize = 0
+        var pieceSize = 0
+        for(let i = -2; i < this.boardSize-2; i++){
+            for(let j = -2; j < this.boardSize-2; j++){
+                //console.log(j)
+                if(this.boardMatrix[j+2][i+2] ==0){
+                    this.ShuffleArray(this.piecesList)
+                    for(let k = 0; k < this.piecesList.length; k++){
+                        
+                        aux = this.CheckValue(this.piecesList[k],j,i)
+                        pieceSize = this.CountPieceValue(this.piecesList[k])
+                        if(aux>maxValue || pieceSize > maxPieceSize){
+                            
+                            maxPieceSize = pieceSize
+                            queue.enqueue(this.piecesList[k])
+                            if(queue.size()>3){
+                                maxValue +=1
+                                queue.dequeue()
+                                console.log(maxValue)
+                                if(maxValue==2) {
+                                    console.log(maxValue)
+                                    return queue
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+
+            }
+        }
+        return queue
+    }
+
+    ShuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
 
     CreateOptions(){
+        this.optionsBools[0] = true
+        this.optionsBools[1] = true
+        this.optionsBools[2] = true
+        
+        //var queue = this.RecommendOptions()
+        var listPieces = this.GetBestPieces()
+
         var pieceOption = this.GeneratePiece()
+        pieceOption.shape = listPieces[0]
         this.option1 = this.CreatePiece(pieceOption, 950,200,100,0.5)
+        
         this.option1.name = "0"
         this.optionsPieces[0] = pieceOption
         pieceOption = this.GeneratePiece()
-        this.option1.piece = this.GeneratePiece()
+        pieceOption.shape = listPieces[1]
         this.option2 = this.CreatePiece(pieceOption, 950,500,100,0.5)
         this.option2.name = "1"
         this.optionsPieces[1]=pieceOption
         pieceOption = this.GeneratePiece()
+        pieceOption.shape = listPieces[2]
         this.option3 = this.CreatePiece(pieceOption, 950,800,100,0.5)
         this.option3.name = "2"
         this.optionsPieces[2]=pieceOption
@@ -211,6 +305,227 @@ export class MainScene extends Phaser.Scene{
         this.option2.destroy()
         this.option3.destroy()
     }
+    
+    CheckGameOver(){
+        console.log(this.optionsBools)
+        for(let i = -4; i < this.boardSize+2; i++){
+            for(let j = -4; j < this.boardSize+2; j++){
+                for(let k = 0; k < 3; k++){
+                    if(this.optionsBools[k]){
+                        if(this.CanPutPiece(this.optionsPieces[k].shape,i,j))return false
+                    }                   
+                }
+            }
+        }
+        return true
+    }
+    
+    ObtainPositions(board){
+        var positionArray = []
+        for(let i = 0; i < board.length; i++){
+            var lineCounter = 0
+            for(let j = board.length-1; j>=0;j--){
+                if(j!= 0){
+                    if(board[j-1][i] == 1 && board[j][i]==0){
+                        positionArray.push((i*board.length)+j)
+                        console.log((i*board.length)+j)
+                    }
+                }
+                
+                if(board[j][i]==1 ) lineCounter+=1
+                if(j==0){
+                    if(lineCounter>=3&&board[j][i]!=1){
+                        positionArray.push(i*board.length)
+                    }
+                }
+
+            }
+
+        }
+        return positionArray
+    }
+    
+    //TestPiece(board, piece, x ,y)
+    CheckPiece(board, piece, x, y){
+        var auxX = 0
+        var startChecking = false
+        //console.log("checking piece " + piece)
+        for(let i = 0; i < 5; i++){
+            for(let j = 0; j < 5; j++){
+
+                if(piece.charAt((5*i)+j) == 1){
+                    if(x >= 0 && x<=7 && y >= 0 && y<=7 ){
+                        //console.log("starts at " + i.toString() + " " + j.toString())
+                        if(!startChecking)auxX = x-j
+                        startChecking = true
+                        //console.log("board " + x.toString() + " " + y.toString())
+                        if(board[x][y] !=0 ){
+                            //console.log("not fit")
+                            return false
+                        }
+                    }
+                    else{
+                        //console.log("more than limits")
+                        return false
+    
+                    } 
+                }
+                if(startChecking)x+=1
+            }
+            if(startChecking){
+                y+=1
+                x=auxX
+            }
+        }
+        return true
+    }
+
+    InsertPieceBoard(board,linecounterX, linecounterY, piece,x,y){
+        var auxX = 0
+        var startChecking = false
+        var deleteX = false
+        var deleteY = false
+        var score = 0
+        //console.log("checking piece " + piece)
+        for(let i = 0; i < 5; i++){
+            for(let j = 0; j < 5; j++){
+
+                if(piece.charAt((5*i)+j) == 1){
+                    score+=1
+                    deleteX = false
+                    deleteY = false
+                    if(!startChecking)auxX = x-j
+                    startChecking = true
+                    board[x][y] = 1
+                    linecounterX[x]+=1
+                    linecounterY[y]+=1
+                    if(linecounterX[x]>7)deleteX=true
+                    if(linecounterY[y]>7)deleteY=true
+                    for(let k = 0; k<this.boardSize;k++){
+                        if(deleteY){
+                            score+=1
+                            board[x][k] = 0
+                            linecounterY[k] = Phaser.Math.Clamp(linecounterY[k]-1,0,7)
+                        }
+                        if(deleteX){
+                            score+=1
+                            board[k][y] = 0
+                            linecounterX[k] = Phaser.Math.Clamp(linecounterX[k]-1,0,7)
+                        }
+                    }
+                }
+                if(startChecking)x+=1
+            }
+            if(startChecking){
+                y+=1
+                x=auxX
+            }
+
+        }
+        return score
+
+    }
+    
+
+    GetBestPieces(){
+        //lista de piezas
+        var trueList = []
+        var listPieces = []
+        var actualScore = 0
+        var numDif = 20
+
+        //copiar el tablero
+        var newBoard = []
+        for (var i = 0; i < this.boardSize; i++)newBoard[i] = this.boardMatrix[i].slice()
+        //Copiar counters
+        var newLineCounterY = this.lineCounterX.slice()
+        var newLineCounterX = this.lineCounterY.slice()
+        console.log(newLineCounterX)
+        console.log(newLineCounterY)
+        console.log(newBoard)
+
+        for(let it = 0; it < 10; it++){
+            //ciclo para buscar las 3 piezas
+            var scoreAcum = 0
+            for(let i = 0; i < 3; i++){
+                
+                //Obtener las posiciones y randomizarlas
+                this.positions = this.ObtainPositions(newBoard)
+                this.ShuffleArray(this.positions)
+                var iterator = 0
+                var y = ~~(this.positions[i]/this.boardSize)
+                
+                var x = this.positions[i]%this.boardSize
+                console.log("coordenadas " + x.toString() + " y " + y.toString() )
+                this.ShuffleArray(this.piecesList)
+                //Revisar si las pieza entran
+                for(let j = 0; j<this.piecesList.length; j++){
+                    if(this.CheckPiece(newBoard,this.piecesList[j],x,y)){
+                        var score = this.InsertPieceBoard(newBoard,newLineCounterX,newLineCounterY,this.piecesList[j],x,y)
+                        console.log(newLineCounterX)
+                        console.log(newLineCounterY)
+                        console.log(newBoard)
+                        listPieces.push(this.piecesList[j])
+                        scoreAcum+= score
+                        console.log("sum " + scoreAcum.toString())
+                        break
+                    }
+                    
+                }
+
+
+                
+            }
+            while(listPieces.length<3){
+                this.ShuffleArray(this.piecesList)
+                listPieces.push(this.piecesList[0])
+            }
+            if(scoreAcum > actualScore){
+                trueList = listPieces
+                actualScore= scoreAcum
+            }
+        }
+        
+        
+
+        return listPieces
+    }
+
+
+    CheckValue(piece, x,y){
+            this.lineCounterXadd = [0,0,0,0,0,0,0,0]
+            this.lineCounterYadd = [0,0,0,0,0,0,0,0]
+            
+            var counterPoints = 0
+            for(let i = 0; i < 5; i++){
+                for(let j = 0; j < 5; j++){
+                    if(piece.charAt((5*i)+j) == 1){
+                        if(i+y > this.boardMatrix.length-1 || j + x >this.boardMatrix[0].length-1|| i+y<0||j+x<0){
+                            
+                            return -1
+                        }
+                        else if(piece.charAt((5*i)+j) == this.boardMatrix[j+x][i+y]){
+                            return -1
+                        }
+                        else{
+                            this.lineCounterXadd[i+y] += 1
+                            this.lineCounterYadd[j+x] += 1
+                        }
+
+
+                    
+                    }
+                    
+                    
+                }
+            }
+            for(let i = 0; i < this.boardSize; i++){
+                if(this.lineCounterX[i]+this.lineCounterXadd[i]>7)counterPoints+=1
+                if(this.lineCounterY[i]+this.lineCounterYadd[i]>7)counterPoints+=1
+            }
+
+            return this.counter
+        }
     
 
     preload(){
@@ -237,6 +552,13 @@ export class MainScene extends Phaser.Scene{
         this.offset = 50
         this.canCheck = false
         this.refillCounter = 0
+
+        //POSITIONS
+        this.positions = []
+        for(let i =0; i < this.boardSize*this.boardSize;i++){
+            this.positions.push(i)
+            
+        }
 
         //CREATE LINECOUNTERS
 
@@ -269,6 +591,7 @@ export class MainScene extends Phaser.Scene{
         this.scorePoints = 0
 
         this.scoreText = this.add.text(0, 900,"Score: ", {fontSize:  50})
+        this.gameover = this.add.text(500, 900,"", {fontSize:  50})
 
         //CREATE PIECES AND COLORS
         this.piecesList = ["0010000100001000010000100", //Linea vertical
@@ -300,9 +623,20 @@ export class MainScene extends Phaser.Scene{
                             "0000000110011000000000000", //SI
                             "0000000010001100010000000", //Z
                             "0000001100001100000000000", //ZI
+                            "0000001000011000000000000", //l
+                            "0000000100011000000000000", //l arriba
+                            "0000001100001000000000000", //l izq
+                            "0000001100010000000000000", //l der
+                            "0000001000001000000000000", //dos diagonal
+                            "0000000100010000000000000", //dos diagonal inv
+                            "0000001000010000111000000", //L grande
+                            "0000000010000100111000000", //L grande arriba
+                            "0000001110000100001000000", //L grande izq
+                            "0000001110010000100000000", //L grande der
 
 
                             ]
+        this.ShuffleArray(this.piecesList)
 
         this.colorsList = [0xff0000,0x00ff00,0x0000ff]
 
@@ -316,8 +650,11 @@ export class MainScene extends Phaser.Scene{
         this.scorePoints = 0
         this.scoreText.setText(this.scorePoints)
        
+        this.GetBestPieces()
 
         //CREATE OPTIONS
+        this.optionsBools = []
+        
         this.optionsPieces = []
         this.CreateOptions()
         //this.option3.visible = false
@@ -337,7 +674,16 @@ export class MainScene extends Phaser.Scene{
         pointerContainer.visible = false
 
 
-        
+        //CREATE COUNTERS
+        this.xCounters = []
+        for(let i = 0; i < this.boardSize; i++){
+            this.xCounters[i] = this.add.text((i*100)+30, 800,"i", {fontSize:  50})
+        }
+        this.yCounters = []
+        for(let i = 0; i < this.boardSize; i++){
+            this.yCounters[i] = this.add.text(800, (i*100)+30,"i", {fontSize:  50})
+        }
+
         
 
         //const container = this.CreatePiece(this.piece, 200,200,100)
@@ -348,6 +694,7 @@ export class MainScene extends Phaser.Scene{
             console.log(gameObject.parentContainer.name)
             gameObject.parentContainer.visible = false
             this.piece = this.optionsPieces[parseInt(gameObject.parentContainer.name)]
+            this.optionsBools[parseInt(gameObject.parentContainer.name)]= false
             this.ChangePointer()
             pointerContainer.visible = true
             this.canCheck = true
@@ -368,10 +715,13 @@ export class MainScene extends Phaser.Scene{
             pointerContainer.x = -800
             
             pointerContainer.y =  -800
-            if(this.CanPutPiece(this.piece,this.pointerX, this.pointerY,this.boardMatrix)){
+            if(this.CanPutPiece(this.piece.shape,this.pointerX, this.pointerY,this.boardMatrix)){
                 this.piecesToDelete = []
                 this.InsertPiece(this.piece,this.pointerX, this.pointerY)
+                
                 this.refillCounter +=1
+                
+                if(this.CheckGameOver() && this.refillCounter <3)this.gameover.setText("GAME OVER")
                 if(this.refillCounter>2){
                     this.RemoveOptions()
                     this.CreateOptions()
@@ -381,13 +731,14 @@ export class MainScene extends Phaser.Scene{
             }
             else{
                 gameObject.parentContainer.visible = true
+                this.optionsBools[parseInt(gameObject.parentContainer.name)]= true
             }
-            
             
         }, this);
                
            
-        }
+    }
+    
       
 
     update(time, deltaTime){
@@ -405,12 +756,16 @@ export class MainScene extends Phaser.Scene{
             
             if(this.canCheck){
                 
-                if(this.CanPutPiece(this.piece,this.pointerX, this.pointerY,this.boardMatrix)){
+                if(this.CanPutPiece(this.piece.shape,this.pointerX, this.pointerY,this.boardMatrix)){
                     this.piecesToDelete = this.DrawPiece(this.piece, this.pointerX,this.pointerY,this.board)
                 }
             }
                 
 
+        }
+        for(let i = 0; i < this.boardSize; i++){
+            this.yCounters[i].setText(this.lineCounterX[i])
+            this.xCounters[i].setText(this.lineCounterY[i])
         }
 
     }
