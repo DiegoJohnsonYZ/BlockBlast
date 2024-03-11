@@ -432,7 +432,7 @@ export class MainScene extends Phaser.Scene{
         var trueList = []
         var listPieces = []
         var actualScore = 0
-        var numDif = 20
+        var numDif = 50
 
         
 
