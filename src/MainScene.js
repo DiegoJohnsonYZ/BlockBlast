@@ -391,7 +391,7 @@ export class MainScene extends Phaser.Scene{
             for(let j = 0; j < 5; j++){
 
                 if(piece.charAt((5*i)+j) == 1){
-                    score+=1
+                    score+=2
                     deleteX = false
                     deleteY = false
                     if(!startChecking)auxX = x-j
@@ -434,18 +434,20 @@ export class MainScene extends Phaser.Scene{
         var actualScore = 0
         var numDif = 20
 
-        //copiar el tablero
-        var newBoard = []
-        for (var i = 0; i < this.boardSize; i++)newBoard[i] = this.boardMatrix[i].slice()
-        //Copiar counters
-        var newLineCounterY = this.lineCounterX.slice()
-        var newLineCounterX = this.lineCounterY.slice()
-        console.log(newLineCounterX)
-        console.log(newLineCounterY)
-        console.log(newBoard)
+        
 
         for(let it = 0; it < 10; it++){
             //ciclo para buscar las 3 piezas
+            //copiar el tablero
+            var newBoard = []
+            for (var i = 0; i < this.boardSize; i++)newBoard[i] = this.boardMatrix[i].slice()
+            //Copiar counters
+            var newLineCounterY = this.lineCounterX.slice()
+            var newLineCounterX = this.lineCounterY.slice()
+            console.log(newLineCounterX)
+            console.log(newLineCounterY)
+            console.log(newBoard)
+
             var scoreAcum = 0
             for(let i = 0; i < 3; i++){
                 
@@ -649,8 +651,6 @@ export class MainScene extends Phaser.Scene{
         this.InsertPiece(this.GeneratePiece(),3,3)
         this.scorePoints = 0
         this.scoreText.setText(this.scorePoints)
-       
-        this.GetBestPieces()
 
         //CREATE OPTIONS
         this.optionsBools = []
