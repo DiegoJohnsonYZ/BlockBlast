@@ -391,7 +391,7 @@ export class MainScene extends Phaser.Scene{
             for(let j = 0; j < 5; j++){
 
                 if(piece.charAt((5*i)+j) == 1){
-                    score+=2
+                    score+=3
                     deleteX = false
                     deleteY = false
                     if(!startChecking)auxX = x-j
@@ -436,8 +436,10 @@ export class MainScene extends Phaser.Scene{
 
         
 
-        for(let it = 0; it < 10; it++){
+        for(let it = 0; it < numDif; it++){
+            listPieces = []
             //ciclo para buscar las 3 piezas
+            console.log("Test =========================================")
             //copiar el tablero
             var newBoard = []
             for (var i = 0; i < this.boardSize; i++)newBoard[i] = this.boardMatrix[i].slice()
@@ -449,6 +451,7 @@ export class MainScene extends Phaser.Scene{
             console.log(newBoard)
 
             var scoreAcum = 0
+            
             for(let i = 0; i < 3; i++){
                 
                 //Obtener las posiciones y randomizarlas
@@ -469,7 +472,8 @@ export class MainScene extends Phaser.Scene{
                         console.log(newBoard)
                         listPieces.push(this.piecesList[j])
                         scoreAcum+= score
-                        console.log("sum " + scoreAcum.toString())
+                        console.log("selected piece is " + this.piecesList[j])
+                        console.log("sum " + scoreAcum.toString() + " mas " + score.toString())
                         break
                     }
                     
@@ -484,13 +488,13 @@ export class MainScene extends Phaser.Scene{
             }
             if(scoreAcum > actualScore){
                 trueList = listPieces
-                actualScore= scoreAcum
+                actualScore = scoreAcum
             }
         }
         
         
 
-        return listPieces
+        return trueList
     }
 
 
