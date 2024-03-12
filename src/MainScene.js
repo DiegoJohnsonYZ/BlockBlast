@@ -149,7 +149,7 @@ export class MainScene extends Phaser.Scene{
         }
         this.colorsToRestore= []
         this.piecesToClear = []
-        this.scoreText.setText(this.scorePoints)
+        this.scoreText.setText("SCORE: " + this.scorePoints.toString().padStart(8, '0') )
         
         
     }
@@ -284,18 +284,18 @@ export class MainScene extends Phaser.Scene{
 
         var pieceOption = this.GeneratePiece()
         pieceOption.shape = listPieces[0]
-        this.option1 = this.CreatePiece(pieceOption, 950,200,100,0.5)
+        this.option1 = this.CreatePiece(pieceOption, 1000,300,100,0.3)
         
         this.option1.name = "0"
         this.optionsPieces[0] = pieceOption
         pieceOption = this.GeneratePiece()
         pieceOption.shape = listPieces[1]
-        this.option2 = this.CreatePiece(pieceOption, 950,500,100,0.5)
+        this.option2 = this.CreatePiece(pieceOption, 1000,450,100,0.3)
         this.option2.name = "1"
         this.optionsPieces[1]=pieceOption
         pieceOption = this.GeneratePiece()
         pieceOption.shape = listPieces[2]
-        this.option3 = this.CreatePiece(pieceOption, 950,800,100,0.5)
+        this.option3 = this.CreatePiece(pieceOption, 1000,600,100,0.3)
         this.option3.name = "2"
         this.optionsPieces[2]=pieceOption
     }
@@ -555,7 +555,8 @@ export class MainScene extends Phaser.Scene{
         
         this.boardSize = 8
         var squareSize = 100
-        this.offset = 50
+        this.offsetX = 150
+        this.offsetY = 100
         this.canCheck = false
         this.refillCounter = 0
 
@@ -581,7 +582,7 @@ export class MainScene extends Phaser.Scene{
         for(let i = 0; i < this.boardSize; i++){
             this.board[i] = []
             for(let j = 0; j < this.boardSize; j++){
-                this.board[i][j] = this.add.image((i*squareSize)+this.offset, (j*squareSize)+this.offset, "square")
+                this.board[i][j] = this.add.image((i*squareSize)+this.offsetX, (j*squareSize)+this.offsetY, "square")
                 this.board[i][j].name = i.toString()+j.toString()
             }
         }
@@ -596,8 +597,8 @@ export class MainScene extends Phaser.Scene{
         //SCORES
         this.scorePoints = 0
 
-        this.scoreText = this.add.text(0, 900,"Score: ", {fontSize:  50})
-        this.gameover = this.add.text(500, 900,"", {fontSize:  50})
+        this.scoreText = this.add.text(150, 900,"SCORE: ", {fontSize:  80})
+        this.gameover = this.add.text(250, 400,"", {fontSize:  100})
 
         //CREATE PIECES AND COLORS
         this.piecesList = ["0010000100001000010000100", //Linea vertical
@@ -654,7 +655,7 @@ export class MainScene extends Phaser.Scene{
         this.InsertPiece(this.GeneratePiece(),0,0)
         this.InsertPiece(this.GeneratePiece(),3,3)
         this.scorePoints = 0
-        this.scoreText.setText(this.scorePoints)
+        this.scoreText.setText("SCORE: " + this.scorePoints.toString().padStart(8, '0') )
 
         //CREATE OPTIONS
         this.optionsBools = []
@@ -682,10 +683,12 @@ export class MainScene extends Phaser.Scene{
         this.xCounters = []
         for(let i = 0; i < this.boardSize; i++){
             this.xCounters[i] = this.add.text((i*100)+30, 800,"i", {fontSize:  50})
+            this.xCounters[i].visible = false
         }
         this.yCounters = []
         for(let i = 0; i < this.boardSize; i++){
             this.yCounters[i] = this.add.text(800, (i*100)+30,"i", {fontSize:  50})
+            this.yCounters[i].visible = false
         }
 
         
@@ -747,8 +750,8 @@ export class MainScene extends Phaser.Scene{
 
     update(time, deltaTime){
         
-        this.pointerX = Phaser.Math.Clamp((Phaser.Math.FloorTo(this.input.mousePointer.x/100)),0,10)-2
-        this.pointerY = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.input.mousePointer.y/100))),0,10)-4
+        this.pointerX = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.input.mousePointer.x-this.offsetX+50)/100)),0,10)-2
+        this.pointerY = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.input.mousePointer.y- this.offsetY+50)/100)),0,10)-4
         if(this.lastPointerX != this.pointerX || this.lastPointerY != this.pointerY){
             this.lastPointerX = this.pointerX
             this.lastPointerY = this.pointerY
