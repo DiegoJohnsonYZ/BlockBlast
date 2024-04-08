@@ -18,12 +18,19 @@ export class MainScene extends Phaser.Scene{
         for(let i = 0; i < 5; i++){
             for(let j = 0; j < 5; j++){
                 if(piece.shape.charAt((5*i)+j) == 1){
-                    var s1 = this.add.image((size*j)-(size*2),(size*i)-(size*2) , "square")
-                    s1.setTexture("piece",piece.color)
-                    s1.setInteractive()
+                    var s1 = this.add.image((size*j)-(size*2),(size*i)-(size*2) , "piece",piece.color)
+                    //s1.setInteractive()
                     s1.setScale(sizeM)
-                    this.input.setDraggable(s1)
+                    //this.input.setDraggable(s1)
                     container.add(s1)
+                }
+                if(i==2&&j==2){
+                    var s2 = this.add.image((size*j)-(size*2),(size*i)-(size*2) , "piece",piece.color)
+                    s2.setAlpha(0.000001)
+                    s2.setScale(1.7)
+                    s2.setInteractive()
+                    this.input.setDraggable(s2)
+                    container.add(s2)
                 }
             }
         }
@@ -344,14 +351,14 @@ export class MainScene extends Phaser.Scene{
         pieceOption = this.GeneratePiece()
         pieceOption.shape = listPieces[1]
         this.SetPiecePosition(pieceOption.shape)
-        this.option2 = this.CreatePiece(pieceOption, 1000-this.posOptionX,550-this.posOptionY,100,0.25)
+        this.option2 = this.CreatePiece(pieceOption, 1000-this.posOptionX,570-this.posOptionY,100,0.25)
         this.option2.name = "1"
         this.optionsPieces[1]=pieceOption
 
         pieceOption = this.GeneratePiece()
         pieceOption.shape = listPieces[2]
         this.SetPiecePosition(pieceOption.shape)
-        this.option3 = this.CreatePiece(pieceOption, 1000-this.posOptionX,700-this.posOptionY,100,0.25)
+        this.option3 = this.CreatePiece(pieceOption, 1000-this.posOptionX,720-this.posOptionY,100,0.25)
         this.option3.name = "2"
         this.optionsPieces[2]=pieceOption
     }
@@ -650,7 +657,7 @@ export class MainScene extends Phaser.Scene{
         //PREVIEW
         this.add.image(this.offsetPictures+491,this.offsetPictures,"preview_space","blockblast_backgroud_previewspace_a.png")
         this.add.image(this.offsetPictures+436,this.offsetPictures,"preview_space","blockblast_backgroud_previewspace_b.png")
-        this.add.image(this.offsetPictures+380,this.offsetPictures,"preview_space","blockblast_backgroud_previewspace_c.png")
+        this.add.image(this.offsetPictures+382,this.offsetPictures,"preview_space","blockblast_backgroud_previewspace_c.png")
 
         this.add.image(this.offsetPictures-50,this.offsetPictures-12,"b_box")
         this.add.image(this.offsetPictures-50,this.offsetPictures-12,"b_chess")
@@ -720,7 +727,7 @@ export class MainScene extends Phaser.Scene{
                             "0000000000011100100000000", //L abajo
                             "0000000100001000110000000", //LI
                             "0000001000011100000000000", //LI arriba
-                            "0000000110001000010000000", //LI izq
+                            "0000001100010000100000000", //LI izq
                             "0000000000011100001000000", //LI abajo
                             "0000000100001100001000000", //S
                             "0000000110011000000000000", //SI
