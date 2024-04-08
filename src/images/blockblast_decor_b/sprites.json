@@ -1,0 +1,35 @@
+{
+"frames": {
+	"blockblast_decor_b_a.png": {
+		"frame": {"x":183, "y":0, "w":153, "h":285},
+		"spriteSourceSize": {"x":0,"y":0,"w":153,"h":285},
+		"sourceSize": {"w":153,"h":285}
+	},
+	"blockblast_decor_b_b.png": {
+		"frame": {"x":0, "y":0, "w":182, "h":181},
+		"spriteSourceSize": {"x":0,"y":0,"w":182,"h":181},
+		"sourceSize": {"w":182,"h":181}
+	},
+	"blockblast_decor_b_c.png": {
+		"frame": {"x":0, "y":182, "w":118, "h":117},
+		"spriteSourceSize": {"x":0,"y":0,"w":118,"h":117},
+		"sourceSize": {"w":118,"h":117}
+	},
+	"blockblast_decor_b_d.png": {
+		"frame": {"x":337, "y":0, "w":108, "h":173},
+		"spriteSourceSize": {"x":0,"y":0,"w":108,"h":173},
+		"sourceSize": {"w":108,"h":173}
+	},
+	"blockblast_decor_b_e.png": {
+		"frame": {"x":0, "y":300, "w":31, "h":85},
+		"spriteSourceSize": {"x":0,"y":0,"w":31,"h":85},
+		"sourceSize": {"w":31,"h":85}
+	}
+
+},
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 446, "h": 386},
+	"scale": "1"
+}
+}

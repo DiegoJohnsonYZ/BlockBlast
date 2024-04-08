@@ -19,7 +19,7 @@ export class MainScene extends Phaser.Scene{
             for(let j = 0; j < 5; j++){
                 if(piece.shape.charAt((5*i)+j) == 1){
                     var s1 = this.add.image((size*j)-(size*2),(size*i)-(size*2) , "square")
-                    s1.setTexture(piece.color)
+                    s1.setTexture("piece",piece.color)
                     s1.setInteractive()
                     s1.setScale(sizeM)
                     this.input.setDraggable(s1)
@@ -73,7 +73,7 @@ export class MainScene extends Phaser.Scene{
         for(let i = 0; i < 5; i++){
             for(let j = 0; j < 5; j++){
                 if(piece.shape.charAt((5*i)+j) == 1){
-                    this.board[j+x][i+y].setTexture(piece.color).setTint(0xffffff).visible = true
+                    this.board[j+x][i+y].setTexture("piece",piece.color).setTint(0xffffff).visible = true
                     this.boardMatrix[j+x][i+y] = 1
                     this.lineCounterX[i+y] += 1
                     this.lineCounterY[j+x] += 1
@@ -98,7 +98,7 @@ export class MainScene extends Phaser.Scene{
 
     DeletePiece(pieces){
         pieces.forEach((element)=> element.setTint(0xffffff))
-        pieces.forEach((element)=> element.setTexture("piece_f"))
+        pieces.forEach((element)=> element.setTexture("piece","blockblast_piece_f.png"))
     }
 
     BreakLine(){
@@ -108,7 +108,7 @@ export class MainScene extends Phaser.Scene{
             var filas =this.piecesToClear[i].name.charAt(0)
             var columnas = this.piecesToClear[i].name.charAt(1)
             this.piecesToClear[i].setTint(0xffffff)
-            this.piecesToClear[i].setTexture("piece_f")
+            this.piecesToClear[i].setTexture("piece","blockblast_piece_f.png")
             this.boardMatrix[filas][columnas] = 0
             this.lineCounterX[columnas]=Phaser.Math.Clamp(this.lineCounterX[columnas]-1,0,8)
             this.lineCounterY[filas]=Phaser.Math.Clamp(this.lineCounterY[filas]-1,0,8)
@@ -139,7 +139,7 @@ export class MainScene extends Phaser.Scene{
                     this.piecesToClear[iterator] = this.board[j][i]
                     this.colorsToRestore[iterator] = this.board[j][i].texture.key
                     iterator += 1
-                    this.board[j][i].setTexture(this.piece.color)
+                    this.board[j][i].setTexture("piece",this.piece.color)
                     
 
                     
@@ -151,7 +151,7 @@ export class MainScene extends Phaser.Scene{
                     this.piecesToClear[iterator] = this.board[i][j]
                     this.colorsToRestore[iterator] = this.board[i][j].texture.key
                     iterator += 1
-                    this.board[i][j].setTexture(this.piece.color)
+                    this.board[i][j].setTexture("piece",this.piece.color)
                    
                     
                 }
@@ -166,7 +166,7 @@ export class MainScene extends Phaser.Scene{
             for(let j = 0; j < 5; j++){
                 if(this.piece.shape.charAt((5*i)+j) == 1){
                     this.pointer[j][i].alpha = 1
-                    this.pointer[j][i].setTexture(this.piece.color)
+                    this.pointer[j][i].setTexture("piece", this.piece.color)
 
                 }
                 else{
@@ -183,7 +183,7 @@ export class MainScene extends Phaser.Scene{
         for(let i = 0; i < this.colorsToRestore.length; i++){
 
 
-            this.piecesToClear[i].setTexture(this.colorsToRestore[i])
+            this.piecesToClear[i].setTexture("piece",this.colorsToRestore[i])
 
 
             
@@ -488,7 +488,7 @@ export class MainScene extends Phaser.Scene{
         var trueList = []
         var listPieces = []
         var actualScore = 0
-        var numDif = 50
+        var numDif = 100
 
         
 
@@ -597,28 +597,15 @@ export class MainScene extends Phaser.Scene{
        this.load.image("b_chess", "src/images/blockblast_backgroud_chess.png")
        this.load.image("b_box", "src/images/blockblast_backgroud_box.png")
        //TABLE DECOR
-       this.load.image("table_decor_a", "src/images/blockblast_backgroud_table_decor/blockblast_backgroud_table_decor_a.png")
-       this.load.image("table_decor_b", "src/images/blockblast_backgroud_table_decor/blockblast_backgroud_table_decor_b.png") 
-       this.load.image("table_decor_c", "src/images/blockblast_backgroud_table_decor/blockblast_backgroud_table_decor_c.png") 
+       this.load.atlas("table_decor", "src/images/blockblast_backgroud_table_decor/sprites.png", "src/images/blockblast_backgroud_table_decor/sprites.json") 
        //PREVIEW SPACE
-       this.load.image("preview_a", "src/images/blockblast_backgroud_previewspace/blockblast_backgroud_previewspace_a.png")
-       this.load.image("preview_b", "src/images/blockblast_backgroud_previewspace/blockblast_backgroud_previewspace_b.png")
-       this.load.image("preview_c", "src/images/blockblast_backgroud_previewspace/blockblast_backgroud_previewspace_c.png")
+       this.load.atlas("preview_space", "src/images/blockblast_backgroud_previewspace/sprites.png", "src/images/blockblast_backgroud_previewspace/sprites.json") 
 
        //DECOR B
-       this.load.image("decor_b_a", "src/images/blockblast_decor_b/blockblast_decor_b_a.png")
-       this.load.image("decor_b_b", "src/images/blockblast_decor_b/blockblast_decor_b_b.png")
-       this.load.image("decor_b_c", "src/images/blockblast_decor_b/blockblast_decor_b_c.png")
-       this.load.image("decor_b_d", "src/images/blockblast_decor_b/blockblast_decor_b_d.png")
-       this.load.image("decor_b_e", "src/images/blockblast_decor_b/blockblast_decor_b_e.png")
+       this.load.atlas("decor_b", "src/images/blockblast_decor_b/sprites.png", "src/images/blockblast_decor_b/sprites.json") 
 
        //PIECES
-       this.load.image("piece_a", "src/images/blockblast_piece/blockblast_piece_a.png")
-       this.load.image("piece_b", "src/images/blockblast_piece/blockblast_piece_b.png")
-       this.load.image("piece_c", "src/images/blockblast_piece/blockblast_piece_c.png")
-       this.load.image("piece_d", "src/images/blockblast_piece/blockblast_piece_d.png")
-       this.load.image("piece_e", "src/images/blockblast_piece/blockblast_piece_e.png")
-       this.load.image("piece_f", "src/images/blockblast_piece/blockblast_piece_f.png")
+       this.load.atlas("piece", "src/images/blockblast_piece/sprites.png", "src/images/blockblast_piece/sprites.json") 
     }
 
    
@@ -650,21 +637,20 @@ export class MainScene extends Phaser.Scene{
         this.add.image(this.offsetPictures,this.offsetPictures-1,"table_shadow")
 
         //TABLE DECOR
-        this.add.image(this.offsetPictures-11,this.offsetPictures-507,"table_decor_a")
-        this.add.image(this.offsetPictures-11,this.offsetPictures+437,"table_decor_b")
-        this.add.image(this.offsetPictures-11,this.offsetPictures-440,"table_decor_c")
+        this.add.image(this.offsetPictures-11,this.offsetPictures-507,"table_decor","blockblast_backgroud_table_decor_a.png")
+        this.add.image(this.offsetPictures-11,this.offsetPictures+437,"table_decor","blockblast_backgroud_table_decor_b.png")
+        this.add.image(this.offsetPictures-11,this.offsetPictures-440,"table_decor","blockblast_backgroud_table_decor_c.png")
         
         //DECOR
-        this.add.image(this.offsetPictures-463,this.offsetPictures+397,"decor_b_a")
-        this.add.image(this.offsetPictures-560,this.offsetPictures+10,"decor_b_b")
-        this.add.image(this.offsetPictures-563,this.offsetPictures-140,"decor_b_c")
-        this.add.image(this.offsetPictures-520,this.offsetPictures-490,"decor_b_d")
-        this.add.image(this.offsetPictures-545,this.offsetPictures+185,"decor_b_e")
-
+        this.add.image(this.offsetPictures-463,this.offsetPictures+397,"decor_b", "blockblast_decor_b_a.png")
+        this.add.image(this.offsetPictures-560,this.offsetPictures+10,"decor_b", "blockblast_decor_b_b.png")
+        this.add.image(this.offsetPictures-563,this.offsetPictures-140,"decor_b", "blockblast_decor_b_c.png")
+        this.add.image(this.offsetPictures-520,this.offsetPictures-490,"decor_b", "blockblast_decor_b_d.png")
+        this.add.image(this.offsetPictures-545,this.offsetPictures+185,"decor_b", "blockblast_decor_b_e.png")
         //PREVIEW
-        this.add.image(this.offsetPictures+491,this.offsetPictures,"preview_a")
-        this.add.image(this.offsetPictures+436,this.offsetPictures,"preview_b")
-        this.add.image(this.offsetPictures+380,this.offsetPictures,"preview_c")
+        this.add.image(this.offsetPictures+491,this.offsetPictures,"preview_space","blockblast_backgroud_previewspace_a.png")
+        this.add.image(this.offsetPictures+436,this.offsetPictures,"preview_space","blockblast_backgroud_previewspace_b.png")
+        this.add.image(this.offsetPictures+380,this.offsetPictures,"preview_space","blockblast_backgroud_previewspace_c.png")
 
         this.add.image(this.offsetPictures-50,this.offsetPictures-12,"b_box")
         this.add.image(this.offsetPictures-50,this.offsetPictures-12,"b_chess")
@@ -691,7 +677,7 @@ export class MainScene extends Phaser.Scene{
         for(let i = 0; i < this.boardSize; i++){
             this.board[i] = []
             for(let j = 0; j < this.boardSize; j++){
-                this.board[i][j] = this.add.image((i*this.squareSize)+this.offsetX, (j*this.squareSize)+this.offsetY, "piece_f")
+                this.board[i][j] = this.add.image((i*this.squareSize)+this.offsetX, (j*this.squareSize)+this.offsetY,"piece", "blockblast_piece_f.png")
                 //this.board[i][j].visible = false
                 this.board[i][j].name = i.toString()+j.toString()
             }
@@ -755,7 +741,7 @@ export class MainScene extends Phaser.Scene{
                             ]
         this.ShuffleArray(this.piecesList)
 
-        this.colorsList = ["piece_a","piece_b","piece_c","piece_d","piece_e"]
+        this.colorsList = ["blockblast_piece_a.png","blockblast_piece_b.png","blockblast_piece_c.png","blockblast_piece_d.png","blockblast_piece_e.png"]
 
         this.piece = this.GeneratePiece()
         this.piece.shape = this.piecesList[this.piecesList.length-3]

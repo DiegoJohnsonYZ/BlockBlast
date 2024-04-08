@@ -1,0 +1,25 @@
+{
+"frames": {
+	"blockblast_backgroud_table_decor_a.png": {
+		"frame": {"x":0, "y":0, "w":1057, "h":67},
+		"spriteSourceSize": {"x":0,"y":0,"w":1057,"h":67},
+		"sourceSize": {"w":1057,"h":67}
+	},
+	"blockblast_backgroud_table_decor_b.png": {
+		"frame": {"x":0, "y":68, "w":1014, "h":161},
+		"spriteSourceSize": {"x":0,"y":0,"w":1014,"h":161},
+		"sourceSize": {"w":1014,"h":161}
+	},
+	"blockblast_backgroud_table_decor_c.png": {
+		"frame": {"x":0, "y":230, "w":974, "h":103},
+		"spriteSourceSize": {"x":0,"y":0,"w":974,"h":103},
+		"sourceSize": {"w":974,"h":103}
+	}
+
+},
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 1058, "h": 334},
+	"scale": "1"
+}
+}
