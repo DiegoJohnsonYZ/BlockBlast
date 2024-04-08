@@ -814,9 +814,9 @@ export class MainScene extends Phaser.Scene{
         }, this);
         this.input.on('drag', (pointer, gameObject, dragX, dragY) =>
         {
-            pointerContainer.x = this.input.mousePointer.x-2*this.squareSize
+            pointerContainer.x = this.pX-2*this.squareSize
             
-            pointerContainer.y = this.input.mousePointer.y-4*this.squareSize
+            pointerContainer.y = this.pY-4*this.squareSize
 
         });
 
