@@ -289,10 +289,10 @@ export class MainScene extends Phaser.Scene{
         console.log(this.CountPieceX(piece))
         switch (this.CountPieceX(piece)) {
             case 1:
-                this.posOptionX = 15
+                this.posOptionX = 23
                 break
             case 2:
-                this.posOptionX = 8
+                this.posOptionX = 12
                 break
             case 3:
                 this.posOptionX = 25
@@ -719,9 +719,9 @@ export class MainScene extends Phaser.Scene{
                             "0000000000001000000000000", //Cuadrado 1x1
                             "0000000100011100000000000", //T invertida
                             "0000000000011100010000000", //T 
-                            "0000000100001100010000000", //T der
+                            "0000001000011000100000000", //T der
                             "0000000100011000010000000", //T izq
-                            "0000000100001000011000000", //L
+                            "0000001000010000110000000", //L
                             "0000000010011100000000000", //L arriba
                             "0000001100001000010000000", //L izq
                             "0000000000011100100000000", //L abajo
@@ -729,7 +729,7 @@ export class MainScene extends Phaser.Scene{
                             "0000001000011100000000000", //LI arriba
                             "0000001100010000100000000", //LI izq
                             "0000000000011100001000000", //LI abajo
-                            "0000000100001100001000000", //S
+                            "0000001000011000010000000", //S
                             "0000000110011000000000000", //SI
                             "0000000010001100010000000", //Z
                             "0000001100001100000000000", //ZI
@@ -821,9 +821,9 @@ export class MainScene extends Phaser.Scene{
         }, this);
         this.input.on('drag', (pointer, gameObject, dragX, dragY) =>
         {
-            pointerContainer.x = this.pX-2*this.squareSize
+            pointerContainer.x = this.pX-2*this.squareSize 
             
-            pointerContainer.y = this.pY-4*this.squareSize
+            pointerContainer.y = this.pY-2*this.squareSize
 
         });
 
@@ -863,7 +863,7 @@ export class MainScene extends Phaser.Scene{
     update(time, deltaTime){
         
         this.pointerX = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.pX-this.offsetX+50)/this.squareSize)),0,10)-2
-        this.pointerY = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.pY- this.offsetY+50)/this.squareSize)),0,10)-4
+        this.pointerY = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.pY- this.offsetY+50)/this.squareSize)),0,10)-2
 
         if(this.lastPointerX != this.pointerX || this.lastPointerY != this.pointerY){
             this.lastPointerX = this.pointerX
