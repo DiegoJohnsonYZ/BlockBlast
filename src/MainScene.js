@@ -761,7 +761,8 @@ export class MainScene extends Phaser.Scene{
         //this.option3.visible = false
 
         //CREATE POINTER
-
+        this.pX = 0
+        this.pY = 0
         this.pointer = []
         const pointerContainer = this.add.container(-800,-800)
 
@@ -791,7 +792,15 @@ export class MainScene extends Phaser.Scene{
 
         //const container = this.CreatePiece(this.piece, 200,200,100)
        
-
+        this.input.on('pointermove', function (pointer) {
+                if (pointer.pointerType === 'touch') {
+                    this.pX = pointer.touches[0].worldX
+                    this.pY = pointer.touches[0].worldY
+                } else {
+                    this.pX = pointer.worldX
+                    this.pY = pointer.worldY
+                }
+            }, this);
         
         this.input.on('dragstart', function (pointer, gameObject) {
             console.log(gameObject.parentContainer.name)
@@ -846,8 +855,9 @@ export class MainScene extends Phaser.Scene{
 
     update(time, deltaTime){
         
-        this.pointerX = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.input.mousePointer.x-this.offsetX+50)/this.squareSize)),0,10)-2
-        this.pointerY = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.input.mousePointer.y- this.offsetY+50)/this.squareSize)),0,10)-4
+        this.pointerX = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.pX-this.offsetX+50)/this.squareSize)),0,10)-2
+        this.pointerY = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.pY- this.offsetY+50)/this.squareSize)),0,10)-4
+
         if(this.lastPointerX != this.pointerX || this.lastPointerY != this.pointerY){
             this.lastPointerX = this.pointerX
             this.lastPointerY = this.pointerY
