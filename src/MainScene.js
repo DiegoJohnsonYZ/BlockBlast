@@ -815,6 +815,9 @@ export class MainScene extends Phaser.Scene{
             this.piece = this.optionsPieces[parseInt(gameObject.parentContainer.name)]
             this.optionsBools[parseInt(gameObject.parentContainer.name)]= false
             this.ChangePointer()
+            pointerContainer.x = this.pX-2*this.squareSize 
+            
+            pointerContainer.y = this.pY-2*this.squareSize
             pointerContainer.visible = true
             this.canCheck = true
             
