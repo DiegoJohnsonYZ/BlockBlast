@@ -1,0 +1,40 @@
+{
+"frames": {
+	"Botón_Continuar_Clicked.png": {
+		"frame": {"x":0, "y":312, "w":393, "h":77},
+		"spriteSourceSize": {"x":0,"y":0,"w":393,"h":77},
+		"sourceSize": {"w":393,"h":77}
+	},
+	"Botón_Continuar_NonClicked.png": {
+		"frame": {"x":0, "y":78, "w":393, "h":77},
+		"spriteSourceSize": {"x":0,"y":0,"w":393,"h":77},
+		"sourceSize": {"w":393,"h":77}
+	},
+	"Botón_Salir_Clicked.png": {
+		"frame": {"x":0, "y":156, "w":393, "h":77},
+		"spriteSourceSize": {"x":0,"y":0,"w":393,"h":77},
+		"sourceSize": {"w":393,"h":77}
+	},
+	"Botón_Salir_NonClicked.png": {
+		"frame": {"x":0, "y":390, "w":393, "h":77},
+		"spriteSourceSize": {"x":0,"y":0,"w":393,"h":77},
+		"sourceSize": {"w":393,"h":77}
+	},
+	"Botón_opciones_Clicked.png": {
+		"frame": {"x":0, "y":234, "w":393, "h":77},
+		"spriteSourceSize": {"x":0,"y":0,"w":393,"h":77},
+		"sourceSize": {"w":393,"h":77}
+	},
+	"Botón_opciones_NonClicked.png": {
+		"frame": {"x":0, "y":0, "w":393, "h":77},
+		"spriteSourceSize": {"x":0,"y":0,"w":393,"h":77},
+		"sourceSize": {"w":393,"h":77}
+	}
+
+},
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 394, "h": 468},
+	"scale": "1"
+}
+}

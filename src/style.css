@@ -1,0 +1,64 @@
+.bungee-regular {
+    font-family: "Bungee", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+body {
+    margin: 0;
+    background: #000;
+    overflow: hidden;
+}
+.version-div{
+    position:absolute;
+    bottom:5px;
+    right:25%;
+}
+.version-div h1 {
+    color: #000000;
+}
+
+.main-game-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2.9rem;
+    padding: 0px 0 50px 0;
+}
+
+.game-layout {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 40px;
+    padding: 0 21px;
+}
+
+@media (min-width: 992px) {
+    .game-layout {
+        flex-direction: row;
+    }
+}
+
+.gaming-section {
+    flex-basis: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.game-canvas {
+    all: unset;
+    max-width: 100%;
+    height: auto;
+    overflow: hidden;
+    border: 3px solid #FD3;
+    border-radius: 50px;
+}
+
+@media (min-width: 768px) {
+    .game-canvas {
+        height: 800px;
+    }
+}

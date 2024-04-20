@@ -41,7 +41,7 @@ module.exports = {
       }), // config webpack to handle renderer swapping in our app
       new CopyWebpackPlugin({
          patterns: [
-            { from: './src', to: './src' }
+            { from: './src/images', to: './src/images' }
          ],
        }),
       new HtmlWebpackPlugin({

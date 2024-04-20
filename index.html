@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="application-name" content="BlockBlast">
-        <meta name="apple-mobile-web-app-capable" content="yes"/>
-        <meta name="screen-orientation" content="landscape"/>
-        <title> BlockBlast Prototype </title>
-        <style> body {margin: 0; background: #000; overflow:hidden}</style>
-        <script src = "https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
-        <script src="./src/index.js" type="module"></script>
-    </head>
-    <body>
-    </body>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="application-name" content="BlockBlast">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="screen-orientation" content="landscape"/>
+    <title> BlockBlast Prototype </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./src/style.css">
+  </head>
+  <body>
+    <div id="phaser-div"></div>
+    <script defer>
+        document.addEventListener("DOMContentLoaded", function () {
+            window.BlockBlast.run();
+        });
+    </script>
+  </body>
 </html>

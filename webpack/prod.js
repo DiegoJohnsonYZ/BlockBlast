@@ -26,7 +26,7 @@ module.exports = merge(base, { // Merging this config with base.js        // con
    plugins: [
       new CopyPlugin({ 
          patterns: [
-            { from: './src', to: './src' }, // Configure        // the path from where webpack will copy your assets from and the         // path where it will put it when the build is done, change it            // according to your app organization   
+            { from: './src/images', to: './src/images' }, // Configure        // the path from where webpack will copy your assets from and the         // path where it will put it when the build is done, change it            // according to your app organization   
          ],
       }),
    ],
