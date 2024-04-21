@@ -42,144 +42,43 @@ export class MainScene extends Phaser.Scene{
         super({key: 'MainScene'})
         this.ready = false;
     }
+    //MENUS 
+    OpenSettings(){
+        if(!this.isPaused){
+            this.isPaused = true
+            this.panel.showOptions();
+        }
+    }
+
     PauseGame(){
-        this.panel.showPause();
+        if(!this.isPaused){
+            this.isPaused = true
+            this.panel.showPause();
+        }
+        else{
+            this.isPaused = false
+            this.panel.hidePause()
+        }
+        
+    }
+    RestartGame(){
+        this.audioManager.stopMusic()
+        this.isPaused = false
+        this.scene.restart([this.data, false])
     }
 
     BackMenu(){
-        //CODIGO PARA HACER QUE REGRESE A LA ESCENA MENU
+        this.scene.start('MenuScene', this.data);
     }
 
+    //UTILITIES
     ObtainInt(letter){
         return  letter.charCodeAt(0)-97
-    }
-
-    CreatePiece(piece, x, y, size, sizeM){
-        size = size*sizeM
-        const container = this.add.container(x,y)
-        for(let i = 0; i < 5; i++){
-            for(let j = 0; j < 5; j++){
-                if(piece.shape.charAt((5*i)+j) != 0){
-                    var s1 = this.add.image((size*j)-(size*2),(size*i)-(size*2) , "piece", this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))])
-                    //s1.setInteractive()
-                    s1.setScale(sizeM)
-                    //this.input.setDraggable(s1)
-                    container.add(s1)
-                }
-                if(i==2&&j==2){
-                    var s2 = this.add.image((size*j)-(size*2),(size*i)-(size*2) , "piece",this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))])
-                    s2.setAlpha(0.000001)
-                    s2.setScale(1.7)
-                    s2.setInteractive()
-                    this.input.setDraggable(s2)
-                    container.add(s2)
-                }
-            }
-        }
-        return container
-    }
-
-    CanPutPiece(piece, x,y){
-        for(let i = 0; i < 5; i++){
-            for(let j = 0; j < 5; j++){
-                if(piece.charAt((5*i)+j) != 0){
-                    if(i+y > this.boardMatrix.length-1 || j + x >this.boardMatrix[0].length-1|| i+y<0||j+x<0){
-                        
-                        return false
-                    }
-                    else if(this.boardMatrix[j+x][i+y] != 0){
-                        return false
-                    }
-                
-                }
-                
-                
-            }
-        }
-        return true
-    }
-
-    DrawPiece(piece,x,y){
-        var list = new Array()
-        for(let i = 0; i < 5; i++){
-            for(let j = 0; j < 5; j++){
-                if(piece.shape.charAt((5*i)+j) != 0){
-                    this.board[j+x][i+y].setTint(899499)
-                    list.push(this.board[j+x][i+y])
-                    this.lineCounterXadd[i+y] += 1
-                    this.lineCounterYadd[j+x] += 1
-                }
-                
-                
-            }
-        }
-        this.ShowBreakingLines()
-        return list
-
-    }
-
-    InsertPiece(piece,x,y){
-        for(let i = 0; i < 5; i++){
-            for(let j = 0; j < 5; j++){
-                if(piece.shape.charAt((5*i)+j) != 0){
-                    this.board[j+x][i+y].setTexture("piece",this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))]).setTint(0xffffff).visible = true
-                    this.SetName(this.board[j+x][i+y],this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))])
-                    this.boardMatrix[j+x][i+y] = 1
-                    this.lineCounterX[i+y] += 1
-                    this.lineCounterY[j+x] += 1
-                    this.scorePoints += 1
-                }
-                
-                
-            }
-        }
-        this.currentTime += (this.secondsToAdd*2)
-        this.BreakLine()
     }
     GetRandomInt(max) {
 
         return Math.floor(Math.random() * max);
     }
-    GeneratePiece(){
-        var pShape = this.piecesList[this.GetRandomInt(this.piecesList.length)]
-
-        var pTexture = this.GetRandomInt(this.colorsList.length-1)+1
-        var chr = String.fromCharCode(97 + pTexture)
-        var newPShape = ""
-        for(let i = 0; i < 25;i++){
-            if(pShape.charAt(i)==="1"){
-                newPShape+=chr
-            }else{
-                newPShape+="0"
-            }
-        }
-        return new Piece(this.colorsList[pTexture],newPShape)
-    }
-    RegeneratePiece(pShape){
-        
-        var pTexture = this.GetRandomInt(this.colorsList.length-1)+1
-        var chr = String.fromCharCode(97 + pTexture)
-        var newPShape = ""
-        for(let i = 0; i < 25;i++){
-            if(pShape.charAt(i)==="1"){
-                newPShape+=chr
-            }else{
-                newPShape+="0"
-            }
-        }
-        console.log("the texture number is " + pTexture)
-        console.log("the texture is " + this.colorsList[pTexture])
-        console.log("the previous shape is " + pShape)
-        console.log("the shape is " + newPShape)
-        return new Piece(this.colorsList[pTexture],newPShape)
-    }
-
-
-    DeletePiece(pieces){
-        pieces.forEach((element)=> element.setTint(0xffffff))
-        pieces.forEach((element)=> element.setTexture("piece",this.colorsList[0]))
-    }
-
     SetName(object, newName){
         var tempName = object.name
         var fila = tempName.charAt(0)
@@ -190,101 +89,6 @@ export class MainScene extends Phaser.Scene{
 
     GetTexture(object){
         return object.name.substring(2)
-    }
-
-    BreakLine(){
-        
-        
-        for(let i = 0; i < this.piecesToClear.length; i++){
-            var filas =this.piecesToClear[i].name.charAt(0)
-            var columnas = this.piecesToClear[i].name.charAt(1)
-            this.piecesToClear[i].setTint(0xffffff)
-            this.piecesToClear[i].setTexture("piece",this.colorsList[0])
-            this.SetName(this.piecesToClear[i],this.colorsList[0])
-            
-            this.boardMatrix[filas][columnas] = 0
-            this.lineCounterX[columnas]=Phaser.Math.Clamp(this.lineCounterX[columnas]-1,0,8)
-            this.lineCounterY[filas]=Phaser.Math.Clamp(this.lineCounterY[filas]-1,0,8)
-            this.scorePoints+=1
-
-
-            
-            
-        }
-        this.colorsToRestore= []
-        this.piecesToClear = []
-        this.scoreText.setText("SCORE: " + this.scorePoints.toString().padStart(8, '0') )
-        
-        
-    }
-
-    ShowBreakingLines(){
-        this.piecesToClear = []
-        this.colorsToRestore = []
-        var iterator = 0
-        
-        this.secondsToAdd = 0
-        for(let i = 0; i < this.boardSize; i++){
-            
-            if(this.lineCounterXadd[i]+this.lineCounterX[i]== this.boardSize){
-                this.secondsToAdd+=1
-                for(let j = 0; j < this.boardSize; j++){
-                    this.piecesToClear[iterator] = this.board[j][i]
-                    this.colorsToRestore[iterator] = this.GetTexture(this.board[j][i])
-                    iterator += 1
-                    this.board[j][i].setTexture("piece",this.piece.color)
-
-                    
-
-                    
-                }
-            }
-            if(this.lineCounterYadd[i]+this.lineCounterY[i]== this.boardSize){
-                this.secondsToAdd+=1
-                for(let j = 0; j < this.boardSize; j++){
-                    this.piecesToClear[iterator] = this.board[i][j]
-                    this.colorsToRestore[iterator] = this.GetTexture(this.board[j][i])
-                    iterator += 1
-                    this.board[i][j].setTexture("piece",this.piece.color)
-                   
-                    
-                }
-            }
-            
-        }
-        
-    }
-
-    ChangePointer(){
-        for(let i = 0; i < 5; i++){
-            for(let j = 0; j < 5; j++){
-                if(this.piece.shape.charAt((5*i)+j) != 0){
-                    this.pointer[j][i].alpha = 1
-                    this.pointer[j][i].setTexture("piece", this.colorsList[this.ObtainInt(this.piece.shape.charAt((5*i)+j))])
-
-                }
-                else{
-                    this.pointer[j][i].alpha = 0
-                }
-                
-                
-            }
-        }
-    }
-
-    RestoreColors(){
-        
-        for(let i = 0; i < this.colorsToRestore.length; i++){
-
-            console.log(this.colorsToRestore[i])
-            this.piecesToClear[i].setTexture("piece",this.colorsToRestore[i])
-
-
-            
-            
-        }
-        if(this.piecesToDelete.length > 0)this.DeletePiece(this.piecesToDelete)
-        
     }
     CountPieceValue(piece){
         var counterPiece = 0
@@ -299,7 +103,7 @@ export class MainScene extends Phaser.Scene{
         var startCount = false
         for(let i = 0; i < 5; i++){
             for(let j = 0; j < 5; j++){
-                if(piece.charAt((j*5)+i) >= 1){
+                if(piece.charAt((j*5)+i) != 0){
                     counterPiece+=1
                     break
                 }
@@ -316,7 +120,7 @@ export class MainScene extends Phaser.Scene{
         var startCount = false
         for(let i = 0; i < 5; i++){
             for(let j = 0; j < 5; j++){
-                if(piece.charAt((i*5)+j) >= 1){
+                if(piece.charAt((i*5)+j) != 0){
                     counterPiece+=1
                     break
                 }
@@ -380,35 +184,439 @@ export class MainScene extends Phaser.Scene{
        
     }
 
+
+
+
+
+
+    //PIECE GENERATORS
+    CreatePiece(piece, x, y, size, sizeM){
+        size = size*sizeM
+        const container = this.add.container(x,y)
+        for(let i = 0; i < 5; i++){
+            for(let j = 0; j < 5; j++){
+                if(piece.shape.charAt((5*i)+j) != 0){
+                    if(this.ObtainInt(piece.shape.charAt((5*i)+j))<-10){
+                        var s1 = this.add.image((size*j)-(size*2),(size*i)-(size*2) , "powerUps", this.powerUpsList[piece.shape.charAt((5*i)+j)-1])
+                        //s1.setInteractive()
+                        s1.setScale(sizeM)
+                        //this.input.setDraggable(s1)
+                        container.add(s1)
+                    }
+                    else{
+                        var s1 = this.add.image((size*j)-(size*2),(size*i)-(size*2) , "piece", this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))])
+                        //s1.setInteractive()
+                        s1.setScale(sizeM)
+                        //this.input.setDraggable(s1)
+                        container.add(s1)
+                    }
+                    
+                }
+                if(i==2&&j==2){
+                    var s2 = this.add.image((size*j)-(size*2),(size*i)-(size*2) , "piece",this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))])
+                    s2.setAlpha(0.000001)
+                    s2.setScale(1.7)
+                    s2.setInteractive()
+                    this.input.setDraggable(s2)
+                    container.add(s2)
+                }
+            }
+        }
+        return container
+    }
+    ChangePointer(){
+        for(let i = 0; i < 5; i++){
+            for(let j = 0; j < 5; j++){
+                if(this.piece.shape.charAt((5*i)+j) != 0){
+                    if(this.ObtainInt(this.piece.shape.charAt((5*i)+j))<-10){
+                        
+                        this.pointer[j][i].setTexture("powerUps", this.powerUpsList[this.piece.shape.charAt((5*i)+j)-1])
+                    }
+                    else{
+                        this.pointer[j][i].setTexture("piece", this.colorsList[this.ObtainInt(this.piece.shape.charAt((5*i)+j))])
+                    }
+                    this.pointer[j][i].alpha = 1
+                    
+
+                }
+                else{
+                    this.pointer[j][i].alpha = 0
+                }
+                
+                
+            }
+        }
+    }
+    GeneratePiece(){
+        var pShape = this.piecesList[this.GetRandomInt(this.piecesList.length)]
+
+        var pTexture = this.GetRandomInt(this.colorsList.length-1)+1
+        var chr = String.fromCharCode(97 + pTexture)
+        var newPShape = ""
+        for(let i = 0; i < 25;i++){
+            if(pShape.charAt(i)==="1"){
+                newPShape+=chr
+            }else{
+                newPShape+="0"
+            }
+        }
+        return new Piece(this.colorsList[pTexture],newPShape)
+    }
+    RegeneratePiece(pShape, canPowerUp){
+        
+        var pTexture = this.GetRandomInt(this.colorsList.length-1)+1
+        var chr = String.fromCharCode(97 + pTexture)
+        var newPShape = ""
+        for(let i = 0; i < 25;i++){
+            if(pShape.charAt(i)==="1"){
+                newPShape+=chr
+            }else{
+                newPShape+="0"
+            }
+        }
+        if(canPowerUp)newPShape = this.convertirPowerUp(newPShape)
+        console.log("the texture number is " + pTexture)
+        console.log("the texture is " + this.colorsList[pTexture])
+        console.log("the previous shape is " + pShape)
+        console.log("the shape is " + newPShape)
+        return new Piece(this.colorsList[pTexture],newPShape)
+    }
+
+    convertirPowerUp(string) {
+        // Convertimos el string en un array para poder modificarlo
+        let array = string.split('');
+    
+        // Buscamos todas las posiciones donde hay '1'
+        let posiciones_1 = [];
+        for (let i = 0; i < array.length; i++) {
+            if (array[i] != '0') {
+                posiciones_1.push(i);
+            }
+        }
+    
+        // Si no hay '1', retornamos el string original
+        if (posiciones_1.length === 0) {
+            return string;
+        }
+    
+        // Seleccionamos aleatoriamente una posición para reemplazar con 'C'
+        let posicion_aleatoria = posiciones_1[Math.floor(Math.random() * posiciones_1.length)];
+    
+        // Reemplazamos  en la posición aleatoria el powerUp
+        
+        var pp = this.GetRandomInt(3)+1
+        console.log("TRY"+pp)
+        array[posicion_aleatoria] = pp;
+    
+        // Unimos el array de nuevo en un string y lo retornamos
+        return array.join('');
+    }
+
+
+
+
+
+    //PIECES MANAGEMENT IN GAME
+    CanPutPiece(piece, x,y){
+        for(let i = 0; i < 5; i++){
+            for(let j = 0; j < 5; j++){
+                if(piece.charAt((5*i)+j) != 0){
+                    if(i+y > this.boardMatrix.length-1 || j + x >this.boardMatrix[0].length-1|| i+y<0||j+x<0){
+                        
+                        return false
+                    }
+                    else if(this.boardMatrix[j+x][i+y] != 0){
+                        return false
+                    }
+                
+                }
+                
+                
+            }
+        }
+        return true
+    }
+
+    DrawPiece(piece,x,y){
+        var list = new Array()
+        for(let i = 0; i < 5; i++){
+            for(let j = 0; j < 5; j++){
+                if(piece.shape.charAt((5*i)+j) != 0){
+                    this.board[j+x][i+y].setTint(899499)
+                    list.push(this.board[j+x][i+y])
+                    this.lineCounterXadd[i+y] += 1
+                    this.lineCounterYadd[j+x] += 1
+                }
+                
+                
+            }
+        }
+        this.ShowBreakingLines()
+        return list
+
+    }
+
+    InsertPiece(piece,x,y){
+        for(let i = 0; i < 5; i++){
+            for(let j = 0; j < 5; j++){
+                if(piece.shape.charAt((5*i)+j) != 0){
+                    if(this.ObtainInt(piece.shape.charAt((5*i)+j))<-10){
+                        this.board[j+x][i+y].setTexture("powerUps", this.powerUpsList[piece.shape.charAt((5*i)+j)-1]).setTint(0xffffff).visible = true
+                        this.SetName(this.board[j+x][i+y],this.powerUpsList[piece.shape.charAt((5*i)+j)-1])
+                    }
+                    else{
+                        this.board[j+x][i+y].setTexture("piece",this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))]).setTint(0xffffff).visible = true
+                        this.SetName(this.board[j+x][i+y],this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))])
+                    }
+                    
+                    this.boardMatrix[j+x][i+y] = 1
+                    this.lineCounterX[i+y] += 1
+                    this.lineCounterY[j+x] += 1
+                    this.scorePoints += 1
+                }
+                
+                
+            }
+        }
+        console.log("CHECK=========================================")
+        this.BreakLine()
+        for(let i = 0; i < 8; i++){
+            var line = "CHECK"
+            for(let j = 0; j < 8; j++){
+                //console.log(this.board[j][i].name.length)
+                if(this.board[j][i].name.length < 3 || this.board[j][i].name.length > 27)line+="0|"
+                else line+= this.board[j][i].name.charAt(19) +"|"
+
+            }
+            console.log(line)
+        }
+        //this.currentTime += (this.secondsToAdd*2)
+        
+    }
+ 
+    DeletePiece(pieces){
+        pieces.forEach((element)=> element.setTint(0xffffff))
+        pieces.forEach((element)=> element.setTexture("piece",this.colorsList[0]))
+    }
+
+    BreakLine(){
+        
+        
+        for(let i = 0; i < this.piecesToClear.length; i++){
+
+            var filas =this.piecesToClear[i].name.charAt(0)
+            var columnas = this.piecesToClear[i].name.charAt(1)
+            if(this.GetTexture(this.board[filas][columnas])=='powerup_convertidor.png'){
+                //POWERUP CONVERTIDOR
+                this.ConverterPowerUp()
+
+            }
+            this.piecesToClear[i].setTint(0xffffff)
+            this.piecesToClear[i].setTexture("piece",this.colorsList[0])
+            this.SetName(this.piecesToClear[i],this.colorsList[0])
+            //console.log("CHECK" + this.piecesToClear[i].name)
+            this.boardMatrix[filas][columnas] = 0
+            this.lineCounterX[columnas]=Phaser.Math.Clamp(this.lineCounterX[columnas]-1,0,8)
+            this.lineCounterY[filas]=Phaser.Math.Clamp(this.lineCounterY[filas]-1,0,8)
+            this.scorePoints+=1
+
+
+            
+            
+        }
+        this.colorsToRestore= []
+        this.piecesToClear = []
+        this.scoreText.setText(this.scorePoints.toString().padStart(5, '0') )
+        
+        
+    }
+
+    ShowBreakingLines(){
+        this.piecesToClear = []
+        this.colorsToRestore = []
+        
+        this.secondsToAdd = 0
+        for(let i = 0; i < this.boardSize; i++){
+            
+            if(this.lineCounterXadd[i]+this.lineCounterX[i]== this.boardSize){
+                
+                for(let j = 0; j < this.boardSize; j++){
+                    if(this.GetTexture(this.board[j][i])=='powerup_bomba.png'){
+                        this.BombBreakingLines(j,i)
+                        console.log("BOOM")
+                    }
+                    this.piecesToClear.push(this.board[j][i])
+                    this.colorsToRestore.push(this.GetTexture(this.board[j][i]))
+                    this.board[j][i].setTexture("piece",this.piece.color)
+
+                    
+
+                    
+                }
+            }
+            if(this.lineCounterYadd[i]+this.lineCounterY[i]== this.boardSize){
+                
+                for(let j = 0; j < this.boardSize; j++){
+                    if(this.GetTexture(this.board[i][j])=='powerup_bomba.png'){
+                        this.BombBreakingLines(i,j)
+                        console.log("BOOM")
+                    }
+                    this.piecesToClear.push(this.board[i][j])
+                    this.colorsToRestore.push(this.GetTexture(this.board[i][j]))
+                    this.board[i][j].setTexture("piece",this.piece.color)
+                   
+                    
+                }
+            }
+            
+        }
+        
+    }
+
+    RestoreColors(){
+        
+        for(let i = 0; i < this.colorsToRestore.length; i++){
+
+            console.log(this.colorsToRestore[i])
+            if(this.colorsToRestore[i][0]=='p') this.piecesToClear[i].setTexture("powerUps",this.colorsToRestore[i])
+            else this.piecesToClear[i].setTexture("piece",this.colorsToRestore[i])
+
+
+            
+            
+        }
+        if(this.piecesToDelete.length > 0)this.DeletePiece(this.piecesToDelete)
+        
+    }
+
+    //POWERUPS
+
+    ConverterPowerUp(){
+        //limpiamos la cola
+        this.queuePieces = new Queue()
+        //calculamos cuantas piezas necesitamos
+        var remainingPieces = 0
+        for(let k = 0; k < 3; k++){
+            if(this.optionsBools[k]){
+                remainingPieces++
+            }                   
+        }
+        console.log("CONV"+remainingPieces)
+        this.RemoveOptions()
+        //SI YA NO QUEDAN PIEZAS
+        if(remainingPieces === 0){
+            console.log("CONV"+ " ENTRO AL CONVERTER")
+            remainingPieces = 3
+            //aniadimos piezas de 1
+            for(let k = 0; k < remainingPieces; k++){
+                this.queuePieces.enqueue("0000000000001000000000000")
+            
+            }
+            
+            this.CreateOptions()
+            this.refillCounter = -1
+        }else{
+            //SI QUEDAN
+            if(this.optionsBools[0]){
+                //creamos pieza
+                var pieceOption = this.RegeneratePiece("0000000000001000000000000", false)
+                this.SetPiecePosition(pieceOption.shape)
+                this.option1 = this.CreatePiece(pieceOption, 1000-this.posOptionX,400-this.posOptionY,100,0.25)
+                this.option1.name = "0"
+                this.optionsPieces[0] = pieceOption
+            }
+            if(this.optionsBools[1]){
+                //creamos pieza
+                var pieceOption = this.RegeneratePiece("0000000000001000000000000", false)
+                this.SetPiecePosition(pieceOption.shape)
+                this.option2 = this.CreatePiece(pieceOption, 1000-this.posOptionX,570-this.posOptionY,100,0.25)
+                this.option2.name = "0"
+                this.optionsPieces[1] = pieceOption
+            }
+            if(this.optionsBools[2]){
+                //creamos pieza
+                var pieceOption = this.RegeneratePiece("0000000000001000000000000", false)
+                this.SetPiecePosition(pieceOption.shape)
+                this.option3 = this.CreatePiece(pieceOption, 1000-this.posOptionX,720-this.posOptionY,100,0.25)
+                this.option3.name = "0"
+                this.optionsPieces[2] = pieceOption
+            }
+            
+            
+        }
+        
+        
+        
+    }
+   
+    BombBreakingLines(fila,columna){
+        for (let i = -1; i <= 1; i++) {
+            for (let j = -1; j <= 1; j++) {
+                // Calculamos las nuevas coordenadas
+                const nuevaFila = fila + i;
+                const nuevaColumna = columna + j;
+    
+                // Verificamos si las nuevas coordenadas están dentro de los límites de la matriz
+                if (nuevaFila >= 0 && nuevaFila < 8 && nuevaColumna >= 0 && nuevaColumna < 8) {
+                    // Agregamos las coordenadas válidas a la lista de variables circundantes
+                    //variablesCircundantes.push([nuevaFila, nuevaColumna]);
+                    if(this.GetTexture(this.board[nuevaFila][nuevaColumna])!=this.colorsList[0]){
+                        this.piecesToClear.push(this.board[nuevaFila][nuevaColumna])
+                        this.colorsToRestore.push(this.GetTexture(this.board[nuevaFila][nuevaColumna]))
+                        this.board[nuevaFila][nuevaColumna].setTexture("piece",this.piece.color)
+                    }
+                }
+            }
+        }
+    }
+
+    
+
+    
+
+    
+    
+
     CreateOptions(){
         this.optionsBools[0] = true
         this.optionsBools[1] = true
         this.optionsBools[2] = true
 
-        this.posOptionX = 1000
+        this.posOptionX = 700
         this.posOptionY = 400
         console.log(this.posOptionX )
         
         if(this.queuePieces.isEmpty)this.queuePieces = this.GetBestPieces()
         console.log(this.queuePieces.length)
+        this.probArray = [false,false,false]
+        console.log(this.probArray)
+        var probPowerUp = this.GetRandomInt(10)
+        if(probPowerUp <6){
+            this.probArray = [true,false,false]
+        } 
+        this.ShuffleArray(this.probArray)
         
-        var pieceOption = this.RegeneratePiece(this.queuePieces.dequeue())
+        
+        console.log(this.probArray)
+        var pieceOption = this.RegeneratePiece(this.queuePieces.dequeue(), this.probArray[0])
         this.SetPiecePosition(pieceOption.shape)
         this.option1 = this.CreatePiece(pieceOption, 1000-this.posOptionX,400-this.posOptionY,100,0.25)
         this.option1.name = "0"
         this.optionsPieces[0] = pieceOption
 
-        pieceOption = this.RegeneratePiece(this.queuePieces.dequeue())
+        pieceOption = this.RegeneratePiece(this.queuePieces.dequeue(), this.probArray[1])
         this.SetPiecePosition(pieceOption.shape)
         this.option2 = this.CreatePiece(pieceOption, 1000-this.posOptionX,570-this.posOptionY,100,0.25)
         this.option2.name = "1"
         this.optionsPieces[1]=pieceOption
 
-        pieceOption = this.RegeneratePiece(this.queuePieces.dequeue())
+        pieceOption = this.RegeneratePiece(this.queuePieces.dequeue(), this.probArray[2])
         this.SetPiecePosition(pieceOption.shape)
         this.option3 = this.CreatePiece(pieceOption, 1000-this.posOptionX,720-this.posOptionY,100,0.25)
         this.option3.name = "2"
         this.optionsPieces[2]=pieceOption
+
+        this.currentTime = 15
     }
 
     RemoveOptions(){
@@ -658,21 +866,28 @@ export class MainScene extends Phaser.Scene{
     }
     UpdateTimer() {
         // Reducir el tiempo restante
-        this.currentTime--;
+        if(!this.isPaused)this.currentTime--;
         console.log("update timer" + this.currentTime)
         // Actualizar el texto del temporizador en la pantalla
         if (this.currentTime > 0) this.timerText.text = this.FormatTime(this.currentTime)
     
         // Verificar si el tiempo ha llegado a cero
-        if (this.currentTime === 0) {
+        if (this.currentTime === 0 && !this.isPaused) {
             // Aquí puedes agregar cualquier acción que desees cuando el temporizador llegue a cero
             this.time.removeEvent(this.UpdateTimer)
             this.timerText.text = this.FormatTime(this.currentTime)
             console.log("¡Tiempo agotado!")
-            this.gameover.setText("GAME OVER")
+            this.MakeGameOver()
+            
         }
     }
+    
+    MakeGameOver(){
+        this.isPaused = true
+        this.finishTime = this.time.now * 0.001
+        this.panel.showScore(this.scorePoints,this.scorePoints)
         
+    }
 
     preload(){
        this.load.image("square","src/images/BBSquare.png")
@@ -690,6 +905,8 @@ export class MainScene extends Phaser.Scene{
 
        //PIECES
        this.load.atlas("piece", "src/images/blockblast_piece/sprites.png", "src/images/blockblast_piece/sprites.json") 
+       //POWER UPS
+       this.load.atlas("powerUps", "src/images/BlockBlastPowerUps/sprites.png", "src/images/BlockBlastPowerUps/sprites.json")
     }
 
    
@@ -701,6 +918,7 @@ export class MainScene extends Phaser.Scene{
         this.uiScene.setCurrentScene(this);
         
         this.dim = this.game.config.width;
+        this.startTime = this.time.now * 0.001
 
         //INSTANCES
         this.panel = this.uiScene.panel;
@@ -729,11 +947,14 @@ export class MainScene extends Phaser.Scene{
         this.canCheck = false
         this.refillCounter = 0
         this.secondsToAdd = 0
+        this.isPaused = false
 
         //THE FIRST ELEMENT MUST BE THE EMPTY SPACE
         this.colorsList = ["blockblast_piece_woodpiece.png","blockblast_piece_a.png","blockblast_piece_b.png","blockblast_piece_c.png","blockblast_piece_d.png","blockblast_piece_e.png"
         ,"blockblast_piece_f.png","blockblast_piece_g.png","blockblast_piece_h.png","blockblast_piece_i.png","blockblast_piece_j.png"
         ,"blockblast_piece_k.png","blockblast_piece_m.png","blockblast_piece_n.png","blockblast_piece_l.png"]
+        //POWERUPS
+        this.powerUpsList =["powerup_bomba.png","powerup_convertidor.png","powerup_girador.png"]
         //PICTURES
         this.offsetPictures = 540
 
@@ -783,7 +1004,7 @@ export class MainScene extends Phaser.Scene{
             for(let j = 0; j < this.boardSize; j++){
                 this.board[i][j] = this.add.image((i*this.squareSize)+this.offsetX, (j*this.squareSize)+this.offsetY,"piece", this.colorsList[0])
                 //this.board[i][j].visible = false
-                this.board[i][j].name = i.toString()+j.toString()
+                this.board[i][j].name = i.toString()+j.toString()+this.colorsList[0]
             }
         }
 
@@ -797,14 +1018,21 @@ export class MainScene extends Phaser.Scene{
         //SCORES
         this.scorePoints = 0
         this.gameoverBool = false
-
-        this.scoreText = this.add.text(230, 980,"SCORE: ", {fontSize:  70, fontWeight: "bold"})
-        this.gameover = this.add.text(250, 400,"", {fontSize:  100})
+        var scoreContainer = this.add.image(320, 1000, 'menuUI', 'Score.png')
+        this.scoreText = this.add.text(400, 997,"SCORE: ", { 
+            fontFamily: 'Bungee', fontSize: '34px',  color: '#f4f4f4', align: 'center' }).setOrigin(0.5)
+        this.scoreText.setStroke('#553b37', 8);
 
         //TIMER
-        this.currentTime = 40
-        this.timerText = this.add.text(890, 850,this.FormatTime(this.currentTime), {fontSize:  70, fontWeight: "bold"})
+        this.currentTime = 15
+        var timerContainer = this.add.image(980, 210, 'menuUI', 'Cronometro_fondo.png')
+        
+        this.timerText = this.add.text(980,210,this.FormatTime(this.currentTime), { 
+            fontFamily: 'Bungee', fontSize: '34px',  color: '#f4f4f4', align: 'center' }).setOrigin(0.5)
+        this.timerText.setStroke('#553b37', 8);
         this.time.addEvent({ delay: 1000, callback: this.UpdateTimer, callbackScope: this, loop: true })
+
+        
 
         //CREATE PIECES AND COLORS
         this.piecesList = ["0010000100001000010000100", //Linea vertical
@@ -860,7 +1088,7 @@ export class MainScene extends Phaser.Scene{
         this.InsertPiece(this.GeneratePiece(),0,0)
         this.InsertPiece(this.GeneratePiece(),3,3)
         this.scorePoints = 0
-        this.scoreText.setText("SCORE: " + this.scorePoints.toString().padStart(8, '0') )
+        this.scoreText.setText(this.scorePoints.toString().padStart(5, '0') )
 
         //CREATE OPTIONS
         this.optionsBools = []
@@ -897,11 +1125,19 @@ export class MainScene extends Phaser.Scene{
             this.yCounters[i].visible = false
         }
         //CREATE BUTTONS
-        this.pauseButton = this.add.image(90, 80, 'menuUI', 'Pausa_NonClicked.png').setInteractive();
-        this.pauseButton.setScale(.7);
+        this.pauseButton = this.add.image(1010, 73, 'menuUI', 'Pausa_NonClicked.png').setInteractive();
+        this.pauseButton.setScale(.8);
         this.pauseButton.on('pointerdown', () => 
             {
                 this.PauseGame();
+                //this.uiScene.audioManager.playButtonClick.play();
+            });
+
+        this.settingsButton = this.add.image(910, 73, 'menuUI', 'Ajustes_NonClicked.png').setInteractive();
+        this.settingsButton.setScale(.8);
+        this.settingsButton.on('pointerdown', () => 
+            {
+                this.OpenSettings();
                 //this.uiScene.audioManager.playButtonClick.play();
             });
         
@@ -959,7 +1195,7 @@ export class MainScene extends Phaser.Scene{
                 
                 this.refillCounter +=1
                 
-                if(this.CheckGameOver() && this.refillCounter <3)this.gameover.setText("GAME OVER")
+                if(this.CheckGameOver() && this.refillCounter <3)this.MakeGameOver()
                 if(this.refillCounter>2){
                     this.RemoveOptions()
                     this.CreateOptions()
@@ -979,8 +1215,8 @@ export class MainScene extends Phaser.Scene{
     
       
 
-    update(){
-        
+    update(time, deltaTime){
+        console.log("CONV REFILL COUNTER "+ this.refillCounter)
         this.pointerX = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.pX-this.offsetX+50)/this.squareSize)),0,10)-2
         this.pointerY = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.pY- this.offsetY+50)/this.squareSize)),0,10)-2
         

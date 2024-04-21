@@ -30,26 +30,27 @@ export class Panel
     createPausePanel(dim){
         //let pauseTitleContainer = this.scene.add.image(dim/2, 250, 'panelUI', 'cartel.png').setScale(.75);
 
-        let pauseTitle = this.scene.add.text(dim/2, 240, 'PAUSA', { 
-            font: '700 40px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
-        pauseTitle.setStroke('#11102B', 10).setShadow(0, 3, '#534A82', 2, true, false);
-
+        let pauseTitle = this.scene.add.text(dim/2, 318, 'PAUSA', { 
+            fontFamily: 'Bungee', fontSize: '34px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
+        pauseTitle.setStroke('#503530', 10);
         let closeImage = this.scene.add.image(dim - 150, 240, 'pantalla_opciones_UI', 'Button2_NonClicked.png').setInteractive().setDisplaySize(80,80);
         closeImage.on('pointerdown', () => { this.scene.audioManager.resumeMusic(); this.scene.currentScene.PauseGame(); });
+        
+        let optionsButton = this.scene.add.image(dim/2, dim/2-80, 'pantalla_pausa_UI', 'Botón_opciones_NonClicked.png').setInteractive().setDisplaySize(400,75);
+        optionsButton.on('pointerdown', () => { this.hidePause(); this.showOptions(); 
+            //this.scene.audioManager.buttonClick.play();
+        });
 
-        let continueButton = this.scene.add.image(dim/2, dim/2-125, 'pantalla_pausa_UI', 'Botón_Continuar_NonClicked.png').setInteractive().setDisplaySize(560,120);
+        let continueButton = this.scene.add.image(dim/2, dim/2+25, 'pantalla_pausa_UI', 'Botón_Continuar_NonClicked.png').setInteractive().setDisplaySize(400,75);
         continueButton.on('pointerdown', () => { 
             this.scene.audioManager.resumeMusic(); 
             this.scene.currentScene.PauseGame(); 
             //this.scene.audioManager.buttonClick.play();
         });
 
-        let optionsButton = this.scene.add.image(dim/2, dim/2+15, 'pantalla_pausa_UI', 'Botón_opciones_NonClicked.png').setInteractive().setDisplaySize(560,120);
-        optionsButton.on('pointerdown', () => { this.hidePause(); this.showOptions(); 
-            //this.scene.audioManager.buttonClick.play();
-        });
+        
 
-        let exitButton = this.scene.add.image(dim/2, dim/2+155, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setInteractive().setDisplaySize(560,120);
+        let exitButton = this.scene.add.image(dim/2, dim/2+130, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setInteractive().setDisplaySize(400,75);
         exitButton.on('pointerdown', () => { this.hidePause(); 
             //this.scene.audioManager.exitButtonClick.play(); 
             this.scene.currentScene.BackMenu(); });
@@ -281,41 +282,45 @@ export class Panel
 
     createScorePanel(dim){
         //let scoreTitle = this.scene.add.image(dim/2, 250, 'scorePanelUI', 'cartel_fin.png').setDisplaySize(560,130);
-        this.panel.setTexture("panel_dark")
+        
 
         //this.crown = this.scene.add.image(dim/2, dim/2-130, 'scorePanelUI', 'corona.png').setScale(.75);
 
-        let scoreImage = this.scene.add.image(dim/2, dim/2-70, 'pantalla_fin_UI', 'Contador_puntaje.png').setScale(.75);
+        let scoreTitle = this.scene.add.text(dim/2, 318, 'FIN DE PARTIDA', { 
+            fontFamily: 'Bungee', fontSize: '34px',  color: '#f4f4f4', align: 'center' }).setOrigin(0.5);
+        scoreTitle.setStroke('#553b37', 8);
 
-        this.scoreText = this.scene.add.text(dim/2, dim/2-60, '10000000', { font: '800 45px Bungee', color: '#FFB600' });
-        this.scoreText.setStroke('#2D1935', 5).setOrigin(.5).setShadow(2, 2, '#000000', 2, true, false);
+        let scoreImage = this.scene.add.image(dim/2, dim/2-70, 'pantalla_fin_UI', 'Contador_puntaje.png').setScale(1);
 
-        let timeLabel = this.scene.add.text(dim/2-185, dim/2+25, 'Tiempo:', { font: '800 35px Bungee', color: '#FCF4D9' });
-        timeLabel.setStroke('#2D1935', 5).setShadow(2, 2, '#000000', 2, true, false);
+        this.scoreText = this.scene.add.text(dim/2, dim/2-60, '10000000', { font: '800 30px Bungee', color: '#f0dfa7' });
+        this.scoreText.setStroke('#3f2e29', 10).setOrigin(.5);
 
-        this.timeText = this.scene.add.text(dim/2+190, dim/2+70, '00:08:25', { font: '800 35px Bungee', color: '#FFB600' });
-        this.timeText.setStroke('#2D1935', 5).setOrigin(1).setShadow(2, 2, '#000000', 2, true, false);
+        let timeLabel = this.scene.add.text(dim/2-165, dim/2+30, 'TIEMPO:', { font: '800 30px Bungee', color: '#f4f4f4' });
+        timeLabel.setStroke('#553b37', 8);
+
+        this.timeText = this.scene.add.text(dim/2+170, dim/2+70, '00:08:25', { font: '800 30px Bungee', color: '#f0dfa7' });
+        this.timeText.setStroke('#553b37', 8).setOrigin(1);
         
-        let recordLabel = this.scene.add.text(dim/2-185, dim/2+75, 'Record:', { font: '800 35px Bungee', color: '#FCF4D9' });
-        recordLabel.setStroke('#2D1935', 5).setShadow(2, 2, '#000000', 2, true, false);
+        let recordLabel = this.scene.add.text(dim/2-165, dim/2+95, 'RECORD:', { font: '800 30px Bungee', color: '#f4f4f4' });
+        recordLabel.setStroke('#553b37', 8);
 
-        this.recordText = this.scene.add.text(dim/2+190, dim/2+120, '10000000', { font: '800 35px Bungee', color: '#FFB600' });
-        this.recordText.setStroke('#2D1935', 5).setOrigin(1).setShadow(2, 2, '#000000', 2, true, false);
+        this.recordText = this.scene.add.text(dim/2+170, dim/2+130, '10000000', { font: '800 30px Bungee', color: '#f0dfa7' });
+        this.recordText.setStroke('#553b37', 8).setOrigin(1);
 
-        let restartButton = this.scene.add.image(dim/2-150, dim/2+300, 'pantalla_fin_UI', 'Botón_Reiniciar_NonClicked.png').setInteractive();
-        restartButton.setScale(.75);
+        let restartButton = this.scene.add.image(dim/2-150, dim/2+260, 'pantalla_fin_UI', 'Botón_Reiniciar_NonClicked.png').setInteractive();
+        //restartButton.setScale(.75);
         restartButton.on('pointerdown', () => { this.hideScore(); 
             //this.scene.audioManager.playButtonClick.play(); 
-            this.scene.currentScene.restartGame(); });
+            this.scene.currentScene.RestartGame(); });
 
-        let menuButton = this.scene.add.image(dim/2+190, dim/2+300, 'pantalla_fin_UI', 'Botón_Salir_NonClicked.png').setInteractive();
-        menuButton.setDisplaySize(270,130);
+        let menuButton = this.scene.add.image(dim/2+170, dim/2+260, 'pantalla_fin_UI', 'Botón_Salir_NonClicked.png').setInteractive();
+        //menuButton.setDisplaySize(270,130);
         menuButton.on('pointerdown', () => { this.hideScore(); 
             //this.scene.audioManager.exitButtonClick.play(); 
-            this.scene.currentScene.backMenu();});
+            this.scene.currentScene.BackMenu();});
 
         this.scoreContainer = this.scene.add.container(0, 0, 
-            [scoreImage, this.scoreText, timeLabel, this.timeText, recordLabel, this.recordText, restartButton, menuButton]);
+            [scoreTitle,scoreImage, this.scoreText, timeLabel, this.timeText, recordLabel, this.recordText, restartButton, menuButton]);
         this.scoreContainer.setVisible(false).setDepth(10.1);
     }
 
@@ -456,6 +461,7 @@ export class Panel
     }
 
     showScore(score, newHighScore){
+        this.panel.setTexture("panel_dark")
         this.scoreText.setText(score);
         this.recordText.setText(newHighScore);
         let gameplayTime = this.scene.currentScene.finishTime - this.scene.currentScene.startTime;
