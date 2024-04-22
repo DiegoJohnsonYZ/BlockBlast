@@ -416,19 +416,40 @@ export class MainScene extends Phaser.Scene{
             this.SetName(this.piecesToClear[i],this.colorsList[0])
             //console.log("CHECK" + this.piecesToClear[i].name)
             this.boardMatrix[filas][columnas] = 0
-            this.lineCounterX[columnas]=Phaser.Math.Clamp(this.lineCounterX[columnas]-1,0,8)
-            this.lineCounterY[filas]=Phaser.Math.Clamp(this.lineCounterY[filas]-1,0,8)
+            //this.lineCounterX[columnas]=Phaser.Math.Clamp(this.lineCounterX[columnas]-1,0,8)
+            //this.lineCounterY[filas]=Phaser.Math.Clamp(this.lineCounterY[filas]-1,0,8)
             this.scorePoints+=1
 
 
             
             
         }
+        this.RecountLineCounters()
         this.colorsToRestore= []
         this.piecesToClear = []
         this.scoreText.setText(this.scorePoints.toString().padStart(5, '0') )
         
         
+    }
+
+    RecountLineCounters(){
+        for(let i = 0; i < 8; i++){
+            var counterX = 0
+            var counterY = 0
+            for(let j = 0; j < 8; j++){
+                //count X
+                if(this.boardMatrix[j][i]==1){
+                    counterX++
+                }
+                //count Y
+                if(this.boardMatrix[i][j]==1){
+                    counterY++
+                }
+
+            }
+            this.linecounterX[i]=counterX
+            this.linecounterY[i]=counterY
+        }
     }
 
     ShowBreakingLines(){
@@ -616,7 +637,7 @@ export class MainScene extends Phaser.Scene{
         this.option3.name = "2"
         this.optionsPieces[2]=pieceOption
 
-        this.currentTime = 15
+        this.currentTime = this.maxTimePerTurn
     }
 
     RemoveOptions(){
@@ -1024,7 +1045,8 @@ export class MainScene extends Phaser.Scene{
         this.scoreText.setStroke('#553b37', 8);
 
         //TIMER
-        this.currentTime = 15
+        this.maxTimePerTurn = 150
+        this.currentTime = this.maxTimePerTurn
         var timerContainer = this.add.image(980, 210, 'menuUI', 'Cronometro_fondo.png')
         
         this.timerText = this.add.text(980,210,this.FormatTime(this.currentTime), { 
@@ -1116,13 +1138,15 @@ export class MainScene extends Phaser.Scene{
         //CREATE COUNTERS
         this.xCounters = []
         for(let i = 0; i < this.boardSize; i++){
-            this.xCounters[i] = this.add.text((i*100)+30, 800,"i", {fontSize:  50})
-            this.xCounters[i].visible = false
+            this.xCounters[i] = this.add.text((i*93)+150, 900,"i", { 
+                fontFamily: 'Bungee', fontSize: '34px',  color: '#f4f4f4', align: 'center' })
+            this.xCounters[i].visible = true
         }
         this.yCounters = []
         for(let i = 0; i < this.boardSize; i++){
-            this.yCounters[i] = this.add.text(800, (i*100)+30,"i", {fontSize:  50})
-            this.yCounters[i].visible = false
+            this.yCounters[i] = this.add.text(880, (i*93 )+170,"i",  { 
+                fontFamily: 'Bungee', fontSize: '34px',  color: '#f4f4f4', align: 'center' })
+            this.yCounters[i].visible = true
         }
         //CREATE BUTTONS
         this.pauseButton = this.add.image(1010, 73, 'menuUI', 'Pausa_NonClicked.png').setInteractive();
