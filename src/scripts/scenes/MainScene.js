@@ -424,7 +424,7 @@ export class MainScene extends Phaser.Scene{
             
             
         }
-        this.RecountLineCounters()
+        if(this.piecesToClear.length>0)this.RecountLineCounters()
         this.colorsToRestore= []
         this.piecesToClear = []
         this.scoreText.setText(this.scorePoints.toString().padStart(5, '0') )
