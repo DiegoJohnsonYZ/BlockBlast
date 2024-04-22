@@ -424,7 +424,7 @@ export class MainScene extends Phaser.Scene{
             
             
         }
-        if(this.piecesToClear.length>0)this.RecountLineCounters()
+        this.RecountLineCounters()
         this.colorsToRestore= []
         this.piecesToClear = []
         this.scoreText.setText(this.scorePoints.toString().padStart(5, '0') )
@@ -447,8 +447,8 @@ export class MainScene extends Phaser.Scene{
                 }
 
             }
-            this.linecounterX[i]=counterX
-            this.linecounterY[i]=counterY
+            this.lineCounterX[i]=counterX
+            this.lineCounterY[i]=counterY
         }
     }
 
@@ -538,9 +538,10 @@ export class MainScene extends Phaser.Scene{
             this.refillCounter = -1
         }else{
             //SI QUEDAN
+            var pieceOption = this.RegeneratePiece("0000000000001000000000000", false)
             if(this.optionsBools[0]){
                 //creamos pieza
-                var pieceOption = this.RegeneratePiece("0000000000001000000000000", false)
+                
                 this.SetPiecePosition(pieceOption.shape)
                 this.option1 = this.CreatePiece(pieceOption, 1000-this.posOptionX,400-this.posOptionY,100,0.25)
                 this.option1.name = "0"
@@ -548,18 +549,16 @@ export class MainScene extends Phaser.Scene{
             }
             if(this.optionsBools[1]){
                 //creamos pieza
-                var pieceOption = this.RegeneratePiece("0000000000001000000000000", false)
                 this.SetPiecePosition(pieceOption.shape)
                 this.option2 = this.CreatePiece(pieceOption, 1000-this.posOptionX,570-this.posOptionY,100,0.25)
-                this.option2.name = "0"
+                this.option2.name = "1"
                 this.optionsPieces[1] = pieceOption
             }
             if(this.optionsBools[2]){
                 //creamos pieza
-                var pieceOption = this.RegeneratePiece("0000000000001000000000000", false)
                 this.SetPiecePosition(pieceOption.shape)
                 this.option3 = this.CreatePiece(pieceOption, 1000-this.posOptionX,720-this.posOptionY,100,0.25)
-                this.option3.name = "0"
+                this.option3.name = "2"
                 this.optionsPieces[2] = pieceOption
             }
             
@@ -612,7 +611,7 @@ export class MainScene extends Phaser.Scene{
         this.probArray = [false,false,false]
         console.log(this.probArray)
         var probPowerUp = this.GetRandomInt(10)
-        if(probPowerUp <6){
+        if(probPowerUp <1){
             this.probArray = [true,false,false]
         } 
         this.ShuffleArray(this.probArray)
@@ -1045,7 +1044,7 @@ export class MainScene extends Phaser.Scene{
         this.scoreText.setStroke('#553b37', 8);
 
         //TIMER
-        this.maxTimePerTurn = 150
+        this.maxTimePerTurn = 15
         this.currentTime = this.maxTimePerTurn
         var timerContainer = this.add.image(980, 210, 'menuUI', 'Cronometro_fondo.png')
         
@@ -1140,13 +1139,13 @@ export class MainScene extends Phaser.Scene{
         for(let i = 0; i < this.boardSize; i++){
             this.xCounters[i] = this.add.text((i*93)+150, 900,"i", { 
                 fontFamily: 'Bungee', fontSize: '34px',  color: '#f4f4f4', align: 'center' })
-            this.xCounters[i].visible = true
+            this.xCounters[i].visible = false
         }
         this.yCounters = []
         for(let i = 0; i < this.boardSize; i++){
             this.yCounters[i] = this.add.text(880, (i*93 )+170,"i",  { 
                 fontFamily: 'Bungee', fontSize: '34px',  color: '#f4f4f4', align: 'center' })
-            this.yCounters[i].visible = true
+            this.yCounters[i].visible = false
         }
         //CREATE BUTTONS
         this.pauseButton = this.add.image(1010, 73, 'menuUI', 'Pausa_NonClicked.png').setInteractive();
