@@ -24,22 +24,12 @@
 		"frame": {"x":0, "y":0, "w":355, "h":113},
 		"spriteSourceSize": {"x":0,"y":3,"w":355,"h":116},
 		"sourceSize": {"w":355,"h":116}
-	},
-	"Record_.png": {
-		"frame": {"x":138, "y":359, "w":137, "h":24},
-		"spriteSourceSize": {"x":0,"y":0,"w":137,"h":24},
-		"sourceSize": {"w":137,"h":24}
-	},
-	"TIEMPO_.png": {
-		"frame": {"x":0, "y":359, "w":137, "h":24},
-		"spriteSourceSize": {"x":0,"y":0,"w":137,"h":24},
-		"sourceSize": {"w":137,"h":24}
 	}
 
 },
 "meta": {
 	"image": "sprites.png",
-	"size": {"w": 402, "h": 384},
+	"size": {"w": 402, "h": 359},
 	"scale": "1"
 }
 }

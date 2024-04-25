@@ -411,6 +411,11 @@ export class MainScene extends Phaser.Scene{
                 this.ConverterPowerUp()
 
             }
+            if(this.GetTexture(this.board[filas][columnas])=='powerup_girador.png'){
+                //POWERUP CONVERTIDOR
+                this.RotatePowerup()
+
+            }
             this.piecesToClear[i].setTint(0xffffff)
             this.piecesToClear[i].setTexture("piece",this.colorsList[0])
             this.SetName(this.piecesToClear[i],this.colorsList[0])
@@ -511,7 +516,24 @@ export class MainScene extends Phaser.Scene{
     }
 
     //POWERUPS
+    RotatePowerup(){
+        
+        console.log("ROTATE")
+        var container = this.boardContainer
+        var newAngle = this.boardAngle + 90
+        if(newAngle>280) newAngle = 0
+        // Tween para rotar el contenedor 90 grados
+        this.tweens.add({
+            targets: container,
+            angle: newAngle,
+            duration: 1000, // Duración de la animación en milisegundos
+            ease: 'Linear', // Tipo de easing (opcional)
+            repeat: 0, // Número de repeticiones (-1 para infinito)
+            yoyo: false // Si se debe invertir la animación al finalizar
+        });
+        this.boardAngle = newAngle
 
+    }
     ConverterPowerUp(){
         //limpiamos la cola
         this.queuePieces = new Queue()
@@ -611,7 +633,7 @@ export class MainScene extends Phaser.Scene{
         this.probArray = [false,false,false]
         console.log(this.probArray)
         var probPowerUp = this.GetRandomInt(10)
-        if(probPowerUp <1){
+        if(probPowerUp <8){
             this.probArray = [true,false,false]
         } 
         this.ShuffleArray(this.probArray)
@@ -959,7 +981,7 @@ export class MainScene extends Phaser.Scene{
         this.queuePieces = new Queue()
 
         this.counter = 0
-        
+        this.boardAngle = 0
         this.boardSize = 8
         this.squareSize = 88
         this.offsetX = 182
@@ -970,7 +992,7 @@ export class MainScene extends Phaser.Scene{
         this.isPaused = false
 
         //THE FIRST ELEMENT MUST BE THE EMPTY SPACE
-        this.colorsList = ["blockblast_piece_woodpiece.png","blockblast_piece_a.png","blockblast_piece_b.png","blockblast_piece_c.png","blockblast_piece_d.png","blockblast_piece_e.png"
+        this.colorsList = ["blockblast_piece_shadow.png","blockblast_piece_a.png","blockblast_piece_b.png","blockblast_piece_c.png","blockblast_piece_d.png","blockblast_piece_e.png"
         ,"blockblast_piece_f.png","blockblast_piece_g.png","blockblast_piece_h.png","blockblast_piece_i.png","blockblast_piece_j.png"
         ,"blockblast_piece_k.png","blockblast_piece_m.png","blockblast_piece_n.png","blockblast_piece_l.png"]
         //POWERUPS
@@ -1017,17 +1039,19 @@ export class MainScene extends Phaser.Scene{
         this.colorsToRestore = []
         //CREATE BOARD
         this.board = []
-
+        this.boardContainer = this.add.container(0,0)
 
         for(let i = 0; i < this.boardSize; i++){
             this.board[i] = []
             for(let j = 0; j < this.boardSize; j++){
-                this.board[i][j] = this.add.image((i*this.squareSize)+this.offsetX, (j*this.squareSize)+this.offsetY,"piece", this.colorsList[0])
+                this.board[i][j] = this.add.image(((i-this.boardSize/2)*this.squareSize)+(this.squareSize/2), ((j-this.boardSize/2)*this.squareSize)+(this.squareSize/2),"piece", this.colorsList[0])
                 //this.board[i][j].visible = false
                 this.board[i][j].name = i.toString()+j.toString()+this.colorsList[0]
+                this.boardContainer.add(this.board[i][j])
             }
         }
-
+        this.boardContainer.x += (this.boardSize/2*this.squareSize)+this.offsetX-(this.squareSize/2)
+        this.boardContainer.y += (this.boardSize/2*this.squareSize)+this.offsetY-(this.squareSize/2)
         this.boardMatrix = []
         for(let i = 0; i < this.boardSize; i++){
             this.boardMatrix[i] = []
@@ -1160,12 +1184,14 @@ export class MainScene extends Phaser.Scene{
         this.settingsButton.setScale(.8);
         this.settingsButton.on('pointerdown', () => 
             {
-                this.OpenSettings();
+                this.RotatePowerup();
                 //this.uiScene.audioManager.playButtonClick.play();
             });
         
 
         //const container = this.CreatePiece(this.piece, 200,200,100)
+        
+
        
         this.input.on('pointermove', function (pointer) {
                 if (pointer.pointerType === 'touch') {

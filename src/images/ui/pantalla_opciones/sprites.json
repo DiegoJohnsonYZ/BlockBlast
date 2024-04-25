@@ -11,12 +11,12 @@
 		"sourceSize": {"w":356,"h":35}
 	},
 	"Button1_NonClicked.png": {
-		"frame": {"x":33, "y":257, "w":32, "h":55},
+		"frame": {"x":0, "y":257, "w":32, "h":55},
 		"spriteSourceSize": {"x":0,"y":0,"w":32,"h":55},
 		"sourceSize": {"w":32,"h":55}
 	},
 	"Button1_clicked.png": {
-		"frame": {"x":0, "y":257, "w":32, "h":55},
+		"frame": {"x":33, "y":257, "w":32, "h":55},
 		"spriteSourceSize": {"x":0,"y":0,"w":32,"h":55},
 		"sourceSize": {"w":32,"h":55}
 	},
