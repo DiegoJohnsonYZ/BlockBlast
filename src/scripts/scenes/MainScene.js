@@ -521,12 +521,12 @@ export class MainScene extends Phaser.Scene{
         console.log("ROTATE")
         var container = this.boardContainer
         var newAngle = this.boardAngle + 90
-        if(newAngle>280) newAngle = 0
+        if(newAngle>180) newAngle = -90
         // Tween para rotar el contenedor 90 grados
         this.tweens.add({
             targets: container,
             angle: newAngle,
-            duration: 1000, // Duración de la animación en milisegundos
+            duration: 500, // Duración de la animación en milisegundos
             ease: 'Linear', // Tipo de easing (opcional)
             repeat: 0, // Número de repeticiones (-1 para infinito)
             yoyo: false // Si se debe invertir la animación al finalizar
@@ -1019,8 +1019,10 @@ export class MainScene extends Phaser.Scene{
         this.add.image(this.offsetPictures+436,this.offsetPictures,"preview_space","blockblast_backgroud_previewspace_b.png")
         this.add.image(this.offsetPictures+382,this.offsetPictures,"preview_space","blockblast_backgroud_previewspace_c.png")
 
-        this.add.image(this.offsetPictures-50,this.offsetPictures-12,"b_box")
-        this.add.image(this.offsetPictures-50,this.offsetPictures-12,"b_chess")
+        this.halfBox = ((this.boardSize/2)*this.squareSize)-(this.squareSize/2)
+        console.log("HALF"+this.halfBox)
+        var boardBox = this.add.image(this.offsetPictures-50-this.halfBox,this.offsetPictures-12,"b_box")
+        var boardChess = this.add.image(this.offsetPictures-50-this.halfBox,this.offsetPictures-12,"b_chess")
 
         //POSITIONS
         this.positions = []
@@ -1040,7 +1042,8 @@ export class MainScene extends Phaser.Scene{
         //CREATE BOARD
         this.board = []
         this.boardContainer = this.add.container(0,0)
-
+        this.boardContainer.add(boardBox)
+        this.boardContainer.add(boardChess)
         for(let i = 0; i < this.boardSize; i++){
             this.board[i] = []
             for(let j = 0; j < this.boardSize; j++){
