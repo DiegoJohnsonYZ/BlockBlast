@@ -20,6 +20,7 @@ export class UIScene extends Phaser.Scene
         //this.load.atlas('toggle', './src/images/ui/toggle.png', './src/images/ui/toggle.json');
         //this.load.image('leapLogo', './src/images/ui/leap_logo.png',);
         this.load.image('logoPChuJoy', './src/images/logo_pchujoy.jpg');
+        this.load.image('fade', './src/images/black_alpha_40.png');
 
         //sounds
         this.audioManager = new AudioManager(this);

@@ -20,7 +20,8 @@
         "style-loader": "^3.3.4",
         "webpack": "^5.89.0",
         "webpack-cli": "^5.1.4",
-        "webpack-dev-server": "^4.15.2"
+        "webpack-dev-server": "^4.15.2",
+        "webpack-obfuscator": "^3.5.1"
     },
     "dependencies": {
         "clean-webpack-plugin": "^4.0.0",

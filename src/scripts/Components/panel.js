@@ -15,13 +15,11 @@ export class Panel
     }
 
     create(dim){
-        let graphics = this.scene.add.graphics().setDepth(10);
-        graphics.fillStyle(0x000000, 0.4);
-        graphics.fillRect(0, 0, dim, dim);
+        let background = this.scene.add.image(dim/2, dim/2, 'fade').setDisplaySize(dim, dim).setInteractive();
 
         this.panel = this.scene.add.image(dim/2, dim/2, 'panel').setScale(1);
 
-        this.panelContainer = this.scene.add.container(0, 0, [graphics, this.panel]);
+        this.panelContainer = this.scene.add.container(0, 0, [background, this.panel]);
         this.panelContainer.setDepth(10).setVisible(false);
 
         this.pauseContainer;
