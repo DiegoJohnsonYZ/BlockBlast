@@ -13,7 +13,7 @@ export class MenuScene extends Phaser.Scene
     preload(){
         this.load.image('menuBG', './src/images/bb_portrait.png');
         this.load.image('menuLogo', './src/images/lg.png');
-        this.load.atlas('menuUI', './src/images/ui/pausa_ajustes/sprites.png', './src/images/ui/pausa_ajustes/sprites.json');
+        this.load.atlas('menuUI', './src/images/ui/botones/sprites.png', './src/images/ui/botones/sprites.json');
     }
 
     init(data){
@@ -55,8 +55,8 @@ export class MenuScene extends Phaser.Scene
 
         this.sprBack = this.add.image(dim/2, dim/2, 'menuBG')
         this.sprLogo = this.add.image(dim/2, dim/2-200, 'menuLogo')
-        this.startButton = this.add.image(dim/2, dim/2+350, 'menuUI', 'Pausa_NonClicked.png').setInteractive();
-        this.startButton.setScale(.7);
+        this.startButton = this.add.image(dim/2, dim/2+350, 'menuUI', 'Play_NonClicked.png').setInteractive();
+        this.startButton.setScale(1);
         this.startButton.on('pointerdown', () => 
             {
                 this.nextSceneReady = false;
@@ -64,19 +64,19 @@ export class MenuScene extends Phaser.Scene
                 //this.uiScene.audioManager.playButtonClick.play();
             });
         
-        this.helpButton = this.add.image(dim/2+210, dim/2+350,'menuUI', 'Ajustes_Clicked.png').setInteractive();
-        this.helpButton.setScale(.7);
+        this.helpButton = this.add.image(dim/2+210, dim/2+350,'menuUI', 'Info_NonClicked.png').setInteractive();
+        this.helpButton.setScale(1);
         this.helpButton.on('pointerdown', () => { this.uiScene.panel.showInstructions(() => null); 
             //this.uiScene.audioManager.buttonClick.play(); 
         });
 
-        this.optionsButton = this.add.image(dim/2-210, dim/2+350, 'menuUI', 'Ajustes_NonClicked.png').setInteractive();
-        this.optionsButton.setScale(.7);
+        this.optionsButton = this.add.image(dim/2-210, dim/2+350, 'menuUI', 'Settings_NonClicked.png').setInteractive();
+        this.optionsButton.setScale(1);
         this.optionsButton.on('pointerdown', () => { this.uiScene.panel.showOptions(); 
             //this.uiScene.audioManager.buttonClick.play(); 
         });
         
-        this.creditsButton = this.add.image(dim-90, 80, 'menuUI', 'Pausa_NonClicked.png').setInteractive();
+        this.creditsButton = this.add.image(dim-90, 80, 'menuUI', 'Credits_NonClicked.png').setInteractive();
         this.creditsButton.setScale(.7);
         this.creditsButton.on('pointerdown', () => { this.uiScene.panel.showCredits(); 
             //this.uiScene.audioManager.buttonClick.play(); 

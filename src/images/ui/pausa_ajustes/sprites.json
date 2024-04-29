@@ -1,12 +1,12 @@
 {
 "frames": {
 	"Ajustes_Clicked.png": {
-		"frame": {"x":0, "y":137, "w":87, "h":87},
+		"frame": {"x":0, "y":225, "w":87, "h":87},
 		"spriteSourceSize": {"x":0,"y":0,"w":87,"h":87},
 		"sourceSize": {"w":87,"h":87}
 	},
 	"Ajustes_NonClicked.png": {
-		"frame": {"x":0, "y":313, "w":87, "h":87},
+		"frame": {"x":88, "y":137, "w":87, "h":87},
 		"spriteSourceSize": {"x":0,"y":0,"w":87,"h":87},
 		"sourceSize": {"w":87,"h":87}
 	},
@@ -16,12 +16,22 @@
 		"sourceSize": {"w":154,"h":61}
 	},
 	"Pausa_Clicked.png": {
-		"frame": {"x":0, "y":401, "w":87, "h":87},
+		"frame": {"x":0, "y":313, "w":87, "h":87},
 		"spriteSourceSize": {"x":0,"y":0,"w":87,"h":87},
 		"sourceSize": {"w":87,"h":87}
 	},
 	"Pausa_NonClicked.png": {
-		"frame": {"x":0, "y":225, "w":87, "h":87},
+		"frame": {"x":88, "y":225, "w":87, "h":87},
+		"spriteSourceSize": {"x":0,"y":0,"w":87,"h":87},
+		"sourceSize": {"w":87,"h":87}
+	},
+	"Reinicio_Clicked.png": {
+		"frame": {"x":0, "y":401, "w":87, "h":87},
+		"spriteSourceSize": {"x":0,"y":0,"w":87,"h":87},
+		"sourceSize": {"w":87,"h":87}
+	},
+	"Reinicio_NonClicked.png": {
+		"frame": {"x":0, "y":137, "w":87, "h":87},
 		"spriteSourceSize": {"x":0,"y":0,"w":87,"h":87},
 		"sourceSize": {"w":87,"h":87}
 	},

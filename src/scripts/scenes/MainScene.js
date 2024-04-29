@@ -437,7 +437,7 @@ export class MainScene extends Phaser.Scene{
         this.RecountLineCounters()
         this.colorsToRestore= []
         this.piecesToClear = []
-        this.scoreText.setText(this.scorePoints.toString().padStart(5, '0') )
+        this.scoreText.setText(this.scorePoints.toString().padStart(8, '0') )
         if(rotate)this.RotatePowerup()
         
     }
@@ -686,7 +686,7 @@ export class MainScene extends Phaser.Scene{
         this.probArray = [false,false,false]
         console.log(this.probArray)
         let probPowerUp = this.GetRandomInt(10)
-        if(probPowerUp <8){
+        if(probPowerUp <1){
             this.probArray = [true,false,false]
         } 
         this.ShuffleArray(this.probArray)
@@ -1001,6 +1001,8 @@ export class MainScene extends Phaser.Scene{
        this.load.image("table", "src/images/blockblast_backgroud_table.png")
        this.load.image("b_chess", "src/images/blockblast_backgroud_chess.png")
        this.load.image("b_box", "src/images/blockblast_backgroud_box.png")
+       //IN GAME UI
+       this.load.atlas('inGameUI', './src/images/ui/pausa_ajustes/sprites.png', './src/images/ui/pausa_ajustes/sprites.json');
        //TABLE DECOR
        this.load.atlas("table_decor", "src/images/blockblast_backgroud_table_decor/sprites.png", "src/images/blockblast_backgroud_table_decor/sprites.json") 
        //PREVIEW SPACE
@@ -1133,15 +1135,15 @@ export class MainScene extends Phaser.Scene{
         //SCORES
         this.scorePoints = 0
         this.gameoverBool = false
-        let scoreContainer = this.add.image(320, 1000, 'menuUI', 'Score.png')
-        this.scoreText = this.add.text(400, 997,"SCORE: ", { 
-            fontFamily: 'Bungee', fontSize: '34px',  color: '#f4f4f4', align: 'center' }).setOrigin(0.5)
+        //let scoreContainer = this.add.image(320, 1000, 'menuUI', 'Score.png')
+        this.scoreText = this.add.text(350, 970,"SCORE: ", { 
+            fontFamily: 'Bungee', fontSize: '60px',  color: '#f4f4f4', align: 'center' }).setOrigin(0.5)
         this.scoreText.setStroke('#553b37', 8);
 
         //TIMER
-        this.maxTimePerTurn = 1500
+        this.maxTimePerTurn = 15
         this.currentTime = this.maxTimePerTurn
-        let timerContainer = this.add.image(980, 210, 'menuUI', 'Cronometro_fondo.png')
+        //let timerContainer = this.add.image(980, 210, 'menuUI', 'Cronometro_fondo.png')
         
         this.timerText = this.add.text(980,210,this.FormatTime(this.currentTime), { 
             fontFamily: 'Bungee', fontSize: '34px',  color: '#f4f4f4', align: 'center' }).setOrigin(0.5)
@@ -1204,7 +1206,7 @@ export class MainScene extends Phaser.Scene{
         this.InsertPiece(this.GeneratePiece(),0,0)
         this.InsertPiece(this.GeneratePiece(),3,3)
         this.scorePoints = 0
-        this.scoreText.setText(this.scorePoints.toString().padStart(5, '0') )
+        this.scoreText.setText(this.scorePoints.toString().padStart(8, '0') )
 
         //CREATE OPTIONS
         this.optionsBools = []
@@ -1234,16 +1236,16 @@ export class MainScene extends Phaser.Scene{
         for(let i = 0; i < this.boardSize; i++){
             this.xCounters[i] = this.add.text((i*93)+150, 900,"i", { 
                 fontFamily: 'Bungee', fontSize: '34px',  color: '#f4f4f4', align: 'center' })
-            this.xCounters[i].visible = true
+            this.xCounters[i].visible = false
         }
         this.yCounters = []
         for(let i = 0; i < this.boardSize; i++){
             this.yCounters[i] = this.add.text(880, (i*93 )+170,"i",  { 
                 fontFamily: 'Bungee', fontSize: '34px',  color: '#f4f4f4', align: 'center' })
-            this.yCounters[i].visible = true
+            this.yCounters[i].visible = false
         }
         //CREATE BUTTONS
-        this.pauseButton = this.add.image(1010, 73, 'menuUI', 'Pausa_NonClicked.png').setInteractive();
+        this.pauseButton = this.add.image(1010, 73, 'inGameUI', 'Pausa_NonClicked.png').setInteractive();
         this.pauseButton.setScale(.8);
         this.pauseButton.on('pointerdown', () => 
             {
@@ -1251,7 +1253,7 @@ export class MainScene extends Phaser.Scene{
                 //this.uiScene.audioManager.playButtonClick.play();
             });
 
-        this.settingsButton = this.add.image(910, 73, 'menuUI', 'Ajustes_NonClicked.png').setInteractive();
+        this.settingsButton = this.add.image(910, 73, 'inGameUI', 'Reinicio_NonClicked.png').setInteractive();
         this.settingsButton.setScale(.8);
         this.settingsButton.on('pointerdown', () => 
             {
