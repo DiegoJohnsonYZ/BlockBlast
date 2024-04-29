@@ -31,7 +31,7 @@ export class Panel
         let pauseTitle = this.scene.add.text(dim/2, 318, 'PAUSA', { 
             fontFamily: 'Bungee', fontSize: '34px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
         pauseTitle.setStroke('#503530', 10);
-        let closeImage = this.scene.add.image(dim - 150, 240, 'pantalla_opciones_UI', 'Button2_NonClicked.png').setInteractive().setDisplaySize(80,80);
+        let closeImage = this.scene.add.image(dim - 190, 315, 'menuUI', 'Equis_NonClicked.png').setInteractive().setScale(.5);
         closeImage.on('pointerdown', () => { this.scene.audioManager.resumeMusic(); this.scene.currentScene.PauseGame(); });
         
         let optionsButton = this.scene.add.image(dim/2, dim/2-80, 'pantalla_pausa_UI', 'Botón_opciones_NonClicked.png').setInteractive().setDisplaySize(400,75);
@@ -58,34 +58,34 @@ export class Panel
     }
 
     createFirstTutorialPage(dim){
-        let text1 = this.scene.add.text(dim/2, 380, 'CORRE A TODA VELOCIDAD MIENTRAS EVADES OBSTÁCULOS Y AUTOMÓVILES', { 
-            font: '600 25px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
+        let text1 = this.scene.add.text(dim/2, 410, 'CORRE A TODA VELOCIDAD MIENTRAS EVADES OBSTÁCULOS Y AUTOMÓVILES', { 
+            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
         text1.setStroke('#2D1935', 13).setLineSpacing(0).setShadow(2, 2, '#000000', 2, true, false).setWordWrapWidth(this.panel.displayWidth-450);
 
-        let image1 = this.scene.add.image(dim/2-250, 480, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png');
-        let image2 = this.scene.add.image(dim/2-100, 480, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png');
-        let image3 = this.scene.add.image(dim/2+50, 480, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png');
-        let image4 = this.scene.add.image(dim/2+220, 480, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png');
+        let image1 = this.scene.add.image(dim/2-250, 480, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
+        let image2 = this.scene.add.image(dim/2-100, 480, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
+        let image3 = this.scene.add.image(dim/2+50, 480, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
+        let image4 = this.scene.add.image(dim/2+220, 480, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
 
         let text2 = this.scene.add.text(dim/2, dim/2+50, 'RECOGE Y REPARTE PAQUETES A LOS CLIENTES AL BORDE DE LA PISTA PARA AUMENTAR TU MULTIPLICADOR DE PUNTAJE', { 
-            font: '600 25px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
+            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
         text2.setStroke('#2D1935', 13).setLineSpacing(0).setShadow(2, 2, '#000000', 2, true, false).setWordWrapWidth(this.panel.displayWidth-450);
 
-        let image5 = this.scene.add.image(dim/2-250, dim/2+180, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(1.5);
+        let image5 = this.scene.add.image(dim/2-250, dim/2+180, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
         let sumText = this.scene.add.text(dim/2-175, dim/2+180, '+', { 
-            font: '600 50px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
+            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
         sumText.setStroke('#2D1935', 13).setShadow(2, 2, '#000000', 2, true, false);
 
-        let image6 = this.scene.add.image(dim/2-100, dim/2+180, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png');
+        let image6 = this.scene.add.image(dim/2-100, dim/2+180, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
         let equalText = this.scene.add.text(dim/2-35, dim/2+180, '=', { 
-            font: '600 50px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
+            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
         equalText.setStroke('#2D1935', 13).setShadow(2, 2, '#000000', 2, true, false);
 
-        let image7 = this.scene.add.image(dim/2+80, dim/2+180, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png');
+        let image7 = this.scene.add.image(dim/2+80, dim/2+180, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
         let numText = this.scene.add.text(dim/2+110, dim/2+180, 'x2', { 
-            font: '1000 30px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5).setStroke('#000000', 6);
+            font: '1000 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5).setStroke('#000000', 6);
 
-        let image8 = this.scene.add.image(dim/2+220, dim/2+180, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png');
+        let image8 = this.scene.add.image(dim/2+220, dim/2+180, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
 
         const textContainer1 = this.scene.add.container(0, 0, 
             [text1, image1, image2, image3, image4, text2, image5, sumText, image6, equalText, image7, numText, image8]).setVisible(false);
@@ -93,30 +93,30 @@ export class Panel
     }
 
     createSecondTutorialPage(dim){
-        let text1 = this.scene.add.text(dim/2, 350, 'APROVECHA LOS ITEMS DE APOYO COMO:', { 
-            font: '600 25px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
+        let text1 = this.scene.add.text(dim/2, 410, 'APROVECHA LOS ITEMS DE APOYO COMO:', { 
+            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
         text1.setStroke('#2D1935', 13).setLineSpacing(0).setShadow(2, 2, '#000000', 2, true, false).setWordWrapWidth(this.panel.displayWidth-450);
 
-        let image1 = this.scene.add.image(dim/2-150, 410, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png');
+        let image1 = this.scene.add.image(dim/2-150, 410, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
         let doubleText = this.scene.add.text(dim/2-100, 410, 'PUNTAJE x10', { 
-            font: '600 25px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0, .5);
+            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0, .5);
         doubleText.setStroke('#2D1935', 13).setShadow(2, 2, '#000000', 2, true, false);
 
-        let image2 = this.scene.add.image(dim/2-150, 480, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png');
+        let image2 = this.scene.add.image(dim/2-150, 480, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
         let shieldText = this.scene.add.text(dim/2-100, 480, 'ESCUDO PROTECTOR', { 
-            font: '600 25px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0, .5);
+            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0, .5);
         shieldText.setStroke('#2D1935', 13).setShadow(2, 2, '#000000', 2, true, false);
 
-        let image3 = this.scene.add.image(dim/2-150, 550, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png');
+        let image3 = this.scene.add.image(dim/2-150, 550, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
         let slowText = this.scene.add.text(dim/2-100, 550, 'CÁMARA LENTA', { 
-            font: '600 25px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0, .5);
+            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0, .5);
         slowText.setStroke('#2D1935', 13).setShadow(2, 2, '#000000', 2, true, false);
 
         let text2 = this.scene.add.text(dim/2, dim/2+110, 'ALGUNOS PUEDEN ESTAR EN EL AIRE USA LAS RAMPAS PARA ALCANZARLOS', { 
-            font: '600 25px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
+            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
         text2.setStroke('#2D1935', 13).setLineSpacing(0).setShadow(2, 2, '#000000', 2, true, false).setWordWrapWidth(this.panel.displayWidth-450);
         
-        let image4 = this.scene.add.image(dim/2, dim/2+210, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png');
+        let image4 = this.scene.add.image(dim/2, dim/2+210, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
 
         const textContainer2 = this.scene.add.container(0, 0, [text1, image1, doubleText, image2, shieldText, image3, slowText, text2, image4]).setVisible(false);
         return textContainer2
@@ -128,17 +128,16 @@ export class Panel
   
         //let intructionsTitleContainer = this.scene.add.image(dim/2, 250, 'panelUI', 'cartel.png').setScale(.75);
 
-        this.intructionsTitle = this.scene.add.text(dim/2, 240, 'TUTORIAL', { 
-            font: '700 40px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
-        this.intructionsTitle.setStroke('#11102B', 10).setShadow(0, 3, '#534A82', 2, true, false);
-
-        let closeImage = this.scene.add.image(dim - 150, 240, 'pantalla_pausa_UI', 'Botón_Continuar_NonClicked.png').setInteractive().setDisplaySize(80,80);
+        this.intructionsTitle = this.scene.add.text(dim/2, 318, 'TUTORIAL', { 
+            fontFamily: 'Bungee', fontSize: '34px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
+        this.intructionsTitle.setStroke('#503530', 10);
+        let closeImage = this.scene.add.image(dim - 190, 315, 'menuUI', 'Equis_NonClicked.png').setInteractive().setScale(.5);
         closeImage.on('pointerdown', () => this.hideInstructions());
 
-        this.leftArrow = this.scene.add.image(dim/2-59, dim - 210, 'pantalla_pausa_UI', 'Botón_Continuar_NonClicked.png').setInteractive().setDisplaySize(120,120);
+        this.leftArrow = this.scene.add.image(dim/2-59, dim - 210, 'menuUI', 'Previous_NonClicked.png').setInteractive().setDisplaySize(120,120);
         this.leftArrow.on('pointerdown', () => this.leftArrowClicked());
 
-        this.rightArrow = this.scene.add.image(dim/2+59, dim - 210, 'pantalla_pausa_UI', 'Botón_Continuar_NonClicked.png').setInteractive().setDisplaySize(120,120);
+        this.rightArrow = this.scene.add.image(dim/2+59, dim - 210, 'menuUI', 'Next_NonClicked.png').setInteractive().setDisplaySize(120,120);
         this.rightArrow.on('pointerdown', () => this.rightArrowClicked());
 
         this.instructionsContainer = this.scene.add.container(0, 0, 
@@ -153,7 +152,7 @@ export class Panel
             fontFamily: 'Bungee', fontSize: '34px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
         optionsTitle.setStroke('#503530', 10);
 
-        let closeImage = this.scene.add.image(dim - 150, 240, 'pantalla_pausa_UI', 'Botón_Continuar_NonClicked.png').setInteractive().setDisplaySize(80,80);
+        let closeImage = this.scene.add.image(dim - 190, 315, 'menuUI', 'Equis_NonClicked.png').setInteractive().setScale(.5);
         closeImage.on('pointerdown', () => this.hideOptions());
 
         let musicTitle = this.scene.add.text(dim/2-200, dim/2 - 65, 'MÚSICA', { 
@@ -234,19 +233,20 @@ export class Panel
     }
 
     createCreditsPanel(dim){
-        //let creditsTitleContainer = this.scene.add.image(dim/2, 235, 'panelUI', 'cartel.png').setScale(.75);
+        let creditsTitleContainer = this.scene.add.image(dim/2, 535, 'panel').setScale(1.15);
 
-        let creditsTitle = this.scene.add.text(dim/2, 225, 'CRÉDITOS', { 
-            font: '700 40px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
-        creditsTitle.setStroke('#11102B', 10).setShadow(0, 3, '#534A82', 2, true, false);
+        let creditsTitle = this.scene.add.text(dim/2, 280, 'CRÉDITOS', { 
+            font: '700 40px Bungee', color: '#ebebeb', align: 'center' }).setOrigin(0.5);
+        creditsTitle.setStroke('#503530', 8);
 
-        let closeImage = this.scene.add.image(dim - 150, 225, 'pantalla_pausa_UI', 'Botón_Continuar_NonClicked.png').setInteractive().setDisplaySize(80,80);
+        let closeImage = this.scene.add.image(dim - 130, 280, 'menuUI', 'Equis_NonClicked.png').setInteractive().setScale(.5);
         closeImage.on('pointerdown', () => this.hideCredits());
 
         let labels = []
         let previousChildCount = 0;
         for (let i = 0; i < this.credits.length; i++){
             let newH = previousChildCount <= 1 ? 325+80*i : 325+80*i+20*previousChildCount;
+            newH+=40
             let label = this.addCreditsLabel(dim/2, newH, i);
             if (previousChildCount < label.list.length - 1) previousChildCount = label.list.length - 1;
             labels.push(label);
@@ -254,21 +254,21 @@ export class Panel
 
         //let logo = this.scene.add.image(dim/2, dim-300, 'leapLogo').setScale(.25);
 
-        this.creditsContainer = this.scene.add.container(0, 0, [creditsTitle, closeImage]);
+        this.creditsContainer = this.scene.add.container(0, 0, [creditsTitleContainer,creditsTitle, closeImage]);
         for(let i = 0; i < labels.length; i++){ this.creditsContainer.add(labels[i]); }
         this.creditsContainer.setVisible(false).setDepth(10.1);
     }
 
     addCreditsLabel(x, y, index){
         let title = this.scene.add.text(x, y, this.credits[index][0], { 
-            font: '800 25px Bungee', color: '#FFB600', align: 'center' }).setOrigin(0.5);
-        title.setStroke('#2D1935', 9);
+            font: '700 20px Bungee', color: '#ebebeb', align: 'center' }).setOrigin(0.5);
+        title.setStroke('#503530', 8);
 
         let names = [];
         for(let i = 1; i < this.credits[index].length; i++){
             let name = this.scene.add.text(x, y+30*i, this.credits[index][i], { 
-                font: '800 25px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
-            name.setStroke('#2D1935', 9);
+                font: '700 20px Bungee', color: '#ebebeb', align: 'center' }).setOrigin(0.5);
+            name.setStroke('#503530', 8);
             names.push(name);
         }
 
@@ -459,16 +459,19 @@ export class Panel
     }
 
     showScore(score, newHighScore){
+        console.log("SCORE" + newHighScore)
         this.panel.setTexture("panel_dark")
         this.scoreText.setText(score);
         this.recordText.setText(newHighScore);
         let gameplayTime = this.scene.currentScene.finishTime - this.scene.currentScene.startTime;
+        
         this.timeText.setText(this.secondsToString(gameplayTime));
         this.scoreContainer.setVisible(true);
         this.panelContainer.setVisible(true);
     }
 
     hideScore(){
+        this.panel.setTexture("panel")
         this.scoreContainer.setVisible(false);
         this.panelContainer.setVisible(false);
     }

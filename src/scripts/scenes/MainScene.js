@@ -42,6 +42,10 @@ export class MainScene extends Phaser.Scene{
         super({key: 'MainScene'})
         this.ready = false;
     }
+    init(data){
+        this.data = data;
+    }
+
     //MENUS 
     OpenSettings(){
         if(!this.isPaused){
@@ -64,7 +68,8 @@ export class MainScene extends Phaser.Scene{
     RestartGame(){
         this.audioManager.stopMusic()
         this.isPaused = false
-        this.scene.restart([this.data, false])
+        this.panel.hideScore()
+        this.scene.restart(this.data)
     }
 
     BackMenu(){
@@ -982,17 +987,18 @@ export class MainScene extends Phaser.Scene{
         this.finishTime = this.time.now * 0.001
         //this.panel.showScore(this.scorePoints,this.scorePoints)
         const newScore = this.scorePoints;
+
         const highScore = parseInt(this.data.get(`highScore`));
         const gameplayTime = this.finishTime - this.startTime;
 
         if(newScore >= highScore){
             this.data.set(`highScore`, newScore);
-            this.panel.showScore(newScore, newScore, gameplayTime);
+            this.panel.showScore(newScore, newScore);
         }else{
-            this.panel.showScore(newScore, highScore, gameplayTime);
+            this.panel.showScore(newScore, highScore);
         }
 
-        this.game.config.metadata.onGameEnd({state:`game_end`, name:`turbo_delivery`, score:newScore, time:gameplayTime});
+        this.game.config.metadata.onGameEnd({state:`game_end`, name:`blockblast`, score:newScore, time:gameplayTime});
     }
 
     preload(){
@@ -1077,9 +1083,9 @@ export class MainScene extends Phaser.Scene{
         this.add.image(this.offsetPictures-11,this.offsetPictures-440,"table_decor","blockblast_backgroud_table_decor_c.png")
         
         //DECOR
-        this.add.image(this.offsetPictures-463,this.offsetPictures+397,"decor_b", "blockblast_decor_b_a.png")
-        this.add.image(this.offsetPictures-560,this.offsetPictures+10,"decor_b", "blockblast_decor_b_b.png")
-        this.add.image(this.offsetPictures-563,this.offsetPictures-140,"decor_b", "blockblast_decor_b_c.png")
+        this.add.image(this.offsetPictures-466,this.offsetPictures+400,"decor_b", "blockblast_decor_b_a.png")
+        this.add.image(this.offsetPictures-500,this.offsetPictures+10,"decor_b", "blockblast_decor_b_b.png")
+        this.add.image(this.offsetPictures-530,this.offsetPictures-140,"decor_b", "blockblast_decor_b_c.png")
         this.add.image(this.offsetPictures-520,this.offsetPictures-490,"decor_b", "blockblast_decor_b_d.png")
         this.add.image(this.offsetPictures-545,this.offsetPictures+185,"decor_b", "blockblast_decor_b_e.png")
         //PREVIEW
@@ -1125,6 +1131,7 @@ export class MainScene extends Phaser.Scene{
         }
         this.boardContainer.x += (this.boardSize/2*this.squareSize)+this.offsetX-(this.squareSize/2)
         this.boardContainer.y += (this.boardSize/2*this.squareSize)+this.offsetY-(this.squareSize/2)
+        this.boardContainer.visible = false
         this.boardMatrix = []
         for(let i = 0; i < this.boardSize; i++){
             this.boardMatrix[i] = []
@@ -1180,7 +1187,7 @@ export class MainScene extends Phaser.Scene{
                             "0000000000011100001000000", //LI abajo
                             "0000001000011000010000000", //S
                             "0000000110011000000000000", //SI
-                            "0000000010001100010000000", //Z
+                            "0000000100011000100000000", //Z
                             "0000001100001100000000000", //ZI
                             "0000001000011000000000000", //l
                             "0000000100011000000000000", //l arriba

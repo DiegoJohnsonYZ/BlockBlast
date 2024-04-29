@@ -13,7 +13,7 @@ export class MenuScene extends Phaser.Scene
     preload(){
         this.load.image('menuBG', './src/images/bb_portrait.png');
         this.load.image('menuLogo', './src/images/lg.png');
-        this.load.atlas('menuUI', './src/images/ui/botones/sprites.png', './src/images/ui/botones/sprites.json');
+        
     }
 
     init(data){
@@ -125,7 +125,7 @@ export class MenuScene extends Phaser.Scene
             }
         });
 
-        this.scene.launch('MainScene', [this.data, true]);
+        this.scene.launch('MainScene', this.data);
         this.scene.sendToBack('MainScene');
         this.mainScene = this.scene.get("MainScene");
         this.mainScene.events.once("create", () => {
