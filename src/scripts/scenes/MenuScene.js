@@ -11,7 +11,8 @@ export class MenuScene extends Phaser.Scene
     }
     
     preload(){
-        this.load.image('menuBG', './src/images/preview.png');
+        this.load.image('menuBG', './src/images/bb_portrait.png');
+        this.load.image('menuLogo', './src/images/lg.png');
         this.load.atlas('menuUI', './src/images/ui/pausa_ajustes/sprites.png', './src/images/ui/pausa_ajustes/sprites.json');
     }
 
@@ -29,31 +30,31 @@ export class MenuScene extends Phaser.Scene
         this.loadingSlider = this.uiScene.rexUI.add.slider({
             x: dim/2,
             y: dim/2,
-            width: 650,
-            height: 50,
+            width: 850,
+            height: 60,
             orientation: 'x',
             value: 0,
-            track: this.add.sprite(0,0,'loadingUI','Barra_vacia.png'),
-            indicator: this.addCropResizeMethod(this.add.sprite(0,0,'loadingUI','Barra_llena.png').setScale(.95,1)),
-            thumb: this.add.sprite(0,0,'loadingUI','Button1_clicked.png').setScale(.9,.9),
+            track: this.add.sprite(0,0,'loadingUI','Barra.png'),
+            indicator: this.addCropResizeMethod(this.add.sprite(0,0,'loadingUI','Fill.png').setDisplaySize(770,64)),
+            thumb: this.add.sprite(80,0,'loadingUI','Marcador.png').setScale(1,1),
     
             input: 'none',
             space: {
               top: 10,
-              right: 0,
-              left: -16,
+              right: 35,
+              left: -40,
               bottom: 4
             },
         }).layout().setDepth(5).setVisible(false);
+
+        
 
         this.isPaused = false;
 
         window.addEventListener('touchstart', () => {this.data.set('IS_TOUCH', "true"); });
 
-        this.sprBack = this.add.image(dim/2, dim/2, 'menuBG').setInteractive();
-        this.sprBack.setDisplaySize(dim, dim);
-        this.sprBack.on('pointerdown', () => { this.uiScene.audioManager.resumeMusic(); this.isPaused = false; });
-
+        this.sprBack = this.add.image(dim/2, dim/2, 'menuBG')
+        this.sprLogo = this.add.image(dim/2, dim/2-200, 'menuLogo')
         this.startButton = this.add.image(dim/2, dim/2+350, 'menuUI', 'Pausa_NonClicked.png').setInteractive();
         this.startButton.setScale(.7);
         this.startButton.on('pointerdown', () => 

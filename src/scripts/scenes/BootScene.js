@@ -6,9 +6,9 @@ export class BootScene extends Phaser.Scene
     }
 
     preload(){
-        this.load.image('loadingBG', './src/images/preview.png');
-        this.load.atlas('loadingUI', './src/images/ui/pantalla_opciones/sprites.png', './src/images/ui/pantalla_opciones/sprites.json');
-
+        this.load.image('loadingBG', './src/images/bb_portrait.png');
+        this.load.atlas('loadingUI', './src/images/loading_UI/sprites.png', './src/images/loading_UI/sprites.json');
+        
         this.load.scenePlugin({
             key: 'rexuiplugin',
             url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
@@ -27,26 +27,25 @@ export class BootScene extends Phaser.Scene
         this.data.set('parentSize', phaserDiv.style.width);
 
         this.bg = this.add.image(dim/2, dim/2, 'loadingBG').setDisplaySize(dim, dim).setDepth(5).setInteractive();
-        this.playButton = this.add.image(dim/2, dim/2, 'loadingUI', 'Switch_On.png').setDepth(5).setInteractive();
+        this.playButton = this.add.image(dim/2, dim/2, 'loadingUI', 'Play_NonClicked.png').setDepth(5).setInteractive();
         this.playButton.setVisible(false).on('pointerdown', () => { this.scene.stop(); this.scene.get("MenuScene").uiScene.splashScreenAnim(); });
 
         this.loadingSlider = this.rexUI.add.slider({
             x: dim/2,
             y: dim/2,
-            width: 650,
-            height: 50,
+            width: 850,
+            height: 60,
             orientation: 'x',
             value: 0,
-    
-            track: this.add.sprite(0,0,'loadingUI','Barra_vacia.png'),
-            indicator: this.addCropResizeMethod(this.add.sprite(0,0,'loadingUI','Barra_llena.png').setScale(.95,1)),
-            thumb: this.add.sprite(0,0,'loadingUI','Button1_clicked.png').setScale(.9,.9),
+            track: this.add.sprite(0,0,'loadingUI','Barra.png'),
+            indicator: this.addCropResizeMethod(this.add.sprite(0,0,'loadingUI','Fill.png').setDisplaySize(770,64)),
+            thumb: this.add.sprite(80,0,'loadingUI','Marcador.png').setScale(1,1),
     
             input: 'none',
             space: {
               top: 10,
-              right: 0,
-              left: -16,
+              right: 35,
+              left: -40,
               bottom: 4
             },
         }).layout().setDepth(5);
