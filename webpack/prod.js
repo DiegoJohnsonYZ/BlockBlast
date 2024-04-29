@@ -1,6 +1,7 @@
 const { merge } = require('webpack-merge'); // For merging this config        // with base.js
 const TerserPlugin = require('terser-webpack-plugin'); // To minify       // your JS file in the build folder
 const CopyPlugin = require('copy-webpack-plugin'); // To copy your        // assets to the build folder
+const JavaScriptObfuscator = require('webpack-obfuscator')
 const base = require('./base'); // Importing base.js file
 module.exports = merge(base, { // Merging this config with base.js        // config 
    mode: 'production', // enable webpack's built-in optimizations         // that correspond to production
