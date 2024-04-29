@@ -1131,7 +1131,7 @@ export class MainScene extends Phaser.Scene{
         }
         this.boardContainer.x += (this.boardSize/2*this.squareSize)+this.offsetX-(this.squareSize/2)
         this.boardContainer.y += (this.boardSize/2*this.squareSize)+this.offsetY-(this.squareSize/2)
-        this.boardContainer.visible = false
+        //this.boardContainer.visible = false
         this.boardMatrix = []
         for(let i = 0; i < this.boardSize; i++){
             this.boardMatrix[i] = []
