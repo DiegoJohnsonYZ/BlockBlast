@@ -1257,7 +1257,7 @@ export class MainScene extends Phaser.Scene{
         this.settingsButton.setScale(.8);
         this.settingsButton.on('pointerdown', () => 
             {
-                this.RotatePowerup();
+                this.RestartGame()
                 //this.uiScene.audioManager.playButtonClick.play();
             });
         
