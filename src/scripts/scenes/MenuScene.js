@@ -30,19 +30,19 @@ export class MenuScene extends Phaser.Scene
         this.loadingSlider = this.uiScene.rexUI.add.slider({
             x: dim/2,
             y: dim/2,
-            width: 850,
+            width: 600,
             height: 60,
             orientation: 'x',
             value: 0,
             track: this.add.sprite(0,0,'loadingUI','Barra.png'),
-            indicator: this.addCropResizeMethod(this.add.sprite(0,0,'loadingUI','Fill.png').setDisplaySize(770,64)),
+            indicator: this.addCropResizeMethod(this.add.sprite(0,0,'loadingUI','Fill.png').setDisplaySize(680,64)),
             thumb: this.add.sprite(80,0,'loadingUI','Marcador.png').setScale(1,1),
     
             input: 'none',
             space: {
               top: 10,
-              right: 35,
-              left: -40,
+              right: -20,
+              left: -30,
               bottom: 4
             },
         }).layout().setDepth(5).setVisible(false);

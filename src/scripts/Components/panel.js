@@ -8,7 +8,7 @@ export class Panel
 
         this.credits = 
         [['Programación', 'Diego Johnson'],
-        ['Arte, interfaz y animación', 'Lephirea', 'Edward Torres'],
+        ['Arte, interfaz y animación', 'Lephirea', 'Edward Torres','Karoline Jiménez'],
         ['Marketing y diseño', 'Karoline Jiménez'],
         ['Música y sonido', 'Gunter Brenner'],
         ['Dirección', 'Jorge García']]
@@ -261,8 +261,8 @@ export class Panel
 
     addCreditsLabel(x, y, index){
         let title = this.scene.add.text(x, y, this.credits[index][0], { 
-            font: '700 20px Bungee', color: '#ebebeb', align: 'center' }).setOrigin(0.5);
-        title.setStroke('#503530', 8);
+            fontFamily: 'Bungee', fontSize: '20px',  color: '#ebebeb', align: 'center' }).setOrigin(0.5);
+        title.setStroke('#000000', 8);
 
         let names = [];
         for(let i = 1; i < this.credits[index].length; i++){

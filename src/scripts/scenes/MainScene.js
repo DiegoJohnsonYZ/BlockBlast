@@ -56,10 +56,12 @@ export class MainScene extends Phaser.Scene{
 
     PauseGame(){
         if(!this.isPaused){
+            this.sliderTween.pause()
             this.isPaused = true
             this.panel.showPause();
         }
         else{
+            this.sliderTween.resume()
             this.isPaused = false
             this.panel.hidePause()
         }
@@ -77,6 +79,14 @@ export class MainScene extends Phaser.Scene{
     }
 
     //UTILITIES
+    addCropResizeMethod = function (gameObject) {
+        gameObject.resize = function (width, height) {
+            gameObject.setCrop(0, 0, width, height);
+            return gameObject;
+        }
+    
+        return gameObject;
+    }
     ObtainInt(letter){
         return  letter.charCodeAt(0)-97
     }
@@ -206,7 +216,7 @@ export class MainScene extends Phaser.Scene{
             for(let j = 0; j < 5; j++){
                 if(piece.shape.charAt((5*i)+j) != 0){
                     if(this.ObtainInt(piece.shape.charAt((5*i)+j))<-10){
-                        let s1 = this.add.image((size*j)-(size*2),(size*i)-(size*2) , "powerUps", this.powerUpsList[piece.shape.charAt((5*i)+j)-1])
+                        let s1 = this.add.image((size*j)-(size*2),(size*i)-(size*2) , this.powerUpsList[piece.shape.charAt((5*i)+j)-1])
                         //s1.setInteractive()
                         s1.setScale(sizeM)
                         //this.input.setDraggable(s1)
@@ -239,7 +249,7 @@ export class MainScene extends Phaser.Scene{
                 if(this.piece.shape.charAt((5*i)+j) != 0){
                     if(this.ObtainInt(this.piece.shape.charAt((5*i)+j))<-10){
                         
-                        this.pointer[j][i].setTexture("powerUps", this.powerUpsList[this.piece.shape.charAt((5*i)+j)-1])
+                        this.pointer[j][i].setTexture(this.powerUpsList[this.piece.shape.charAt((5*i)+j)-1])
                     }
                     else{
                         this.pointer[j][i].setTexture("piece", this.colorsList[this.ObtainInt(this.piece.shape.charAt((5*i)+j))])
@@ -370,7 +380,8 @@ export class MainScene extends Phaser.Scene{
             for(let j = 0; j < 5; j++){
                 if(piece.shape.charAt((5*i)+j) != 0){
                     if(this.ObtainInt(piece.shape.charAt((5*i)+j))<-10){
-                        this.board[j+x][i+y].setTexture("powerUps", this.powerUpsList[piece.shape.charAt((5*i)+j)-1]).setTint(0xffffff).visible = true
+                        this.board[j+x][i+y].setTexture(this.powerUpsList[piece.shape.charAt((5*i)+j)-1]).setTint(0xffffff).visible = true
+                        this.powerUpsInGame[(j+x).toString()+(i+y).toString()] = (j+x).toString()+(i+y).toString()
                         this.SetName(this.board[j+x][i+y],this.powerUpsList[piece.shape.charAt((5*i)+j)-1])
                     }
                     else{
@@ -399,6 +410,7 @@ export class MainScene extends Phaser.Scene{
             }
             console.log(line)
         }
+        //console.log("POWER" + this.powerUpsInGame)
         //this.currentTime += (this.secondsToAdd*2)
         
     }
@@ -416,12 +428,12 @@ export class MainScene extends Phaser.Scene{
 
             let filas =this.piecesToClear[i].name.charAt(0)
             let columnas = this.piecesToClear[i].name.charAt(1)
-            if(this.GetTexture(this.board[filas][columnas])=='powerup_convertidor.png'){
+            if(this.GetTexture(this.board[filas][columnas])=='reduct'){
                 //POWERUP CONVERTIDOR
                 this.ConverterPowerUp()
 
             }
-            if(this.GetTexture(this.board[filas][columnas])=='powerup_girador.png'){
+            if(this.GetTexture(this.board[filas][columnas])=='rotate'){
                 //POWERUP CONVERTIDOR
                 rotate = true
 
@@ -434,6 +446,11 @@ export class MainScene extends Phaser.Scene{
             //this.lineCounterX[columnas]=Phaser.Math.Clamp(this.lineCounterX[columnas]-1,0,8)
             //this.lineCounterY[filas]=Phaser.Math.Clamp(this.lineCounterY[filas]-1,0,8)
             this.scorePoints+=1
+            let dictKey = filas.toString()+columnas.toString()
+            if((dictKey) in this.powerUpsInGame){
+                delete this.powerUpsInGame[dictKey]
+                console.log("POWER " + dictKey)
+            }
 
 
             
@@ -477,7 +494,7 @@ export class MainScene extends Phaser.Scene{
             if(this.lineCounterXadd[i]+this.lineCounterX[i]== this.boardSize){
                 
                 for(let j = 0; j < this.boardSize; j++){
-                    if(this.GetTexture(this.board[j][i])=='powerup_bomba.png'){
+                    if(this.GetTexture(this.board[j][i])=='bomb'){
                         this.BombBreakingLines(j,i)
                         console.log("BOOM")
                     }
@@ -493,7 +510,7 @@ export class MainScene extends Phaser.Scene{
             if(this.lineCounterYadd[i]+this.lineCounterY[i]== this.boardSize){
                 
                 for(let j = 0; j < this.boardSize; j++){
-                    if(this.GetTexture(this.board[i][j])=='powerup_bomba.png'){
+                    if(this.GetTexture(this.board[i][j])=='bomb'){
                         this.BombBreakingLines(i,j)
                         console.log("BOOM")
                     }
@@ -514,7 +531,7 @@ export class MainScene extends Phaser.Scene{
         for(let i = 0; i < this.colorsToRestore.length; i++){
 
             console.log(this.colorsToRestore[i])
-            if(this.colorsToRestore[i][0]=='p') this.piecesToClear[i].setTexture("powerUps",this.colorsToRestore[i])
+            if(this.colorsToRestore[i][0]!='b') this.piecesToClear[i].setTexture(this.colorsToRestore[i])
             else this.piecesToClear[i].setTexture("piece",this.colorsToRestore[i])
 
 
@@ -688,6 +705,9 @@ export class MainScene extends Phaser.Scene{
         
         if(this.queuePieces.isEmpty)this.queuePieces = this.GetBestPieces()
         console.log(this.queuePieces.length)
+
+        this.ShowTime()
+
         this.probArray = [false,false,false]
         console.log(this.probArray)
         let probPowerUp = this.GetRandomInt(10)
@@ -724,6 +744,9 @@ export class MainScene extends Phaser.Scene{
         this.option2.destroy()
         this.option3.destroy()
     }
+    
+
+   
     
     CheckGameOver(){
         console.log(this.optionsBools)
@@ -798,6 +821,17 @@ export class MainScene extends Phaser.Scene{
         }
         return true
     }
+
+    ShineBlock(){
+        for (let clave in this.powerUpsInGame) {
+            if (this.powerUpsInGame.hasOwnProperty(clave)) {
+                console.log('POWER' + this.board[clave[0]][clave[1]].name)
+                this.board[clave[0]][clave[1]].play(this.GetTexture(this.board[clave[0]][clave[1]]),true)
+            }
+        }
+        
+    }
+
 
     InsertPieceBoard(board,linecounterX, linecounterY, piece,x,y){
         let auxX = 0
@@ -976,14 +1010,55 @@ export class MainScene extends Phaser.Scene{
             // Aquí puedes agregar cualquier acción que desees cuando el temporizador llegue a cero
             this.time.removeEvent(this.UpdateTimer)
             this.timerText.text = this.FormatTime(this.currentTime)
-            console.log("¡Tiempo agotado!")
-            this.MakeGameOver()
+            
             
         }
     }
+
+    ShowTime(){
+        console.log("TIMER IS WORKING")
+        this.sliderTween?.remove();
+        this.sliderTween = null;
+        this.maxTimePerTurn-=.2
+        console.log("TIMER " + this.maxTimePerTurn +" VS " + this.level2Time)
+        console.log("TIMER " + this.maxTimePerTurn +" VS " + this.level1Time)
+        if(this.maxTimePerTurn<this.minTimePerTurn)this.maxTimePerTurn=this.minTimePerTurn
+        else if(this.maxTimePerTurn<this.level2Time){
+            this.timeSlider.childrenMap.indicator.setTexture('timerBar','Rojo.png')
+        }else if(this.maxTimePerTurn<this.level1Time){
+            this.timeSlider.childrenMap.indicator.setTexture('timerBar','Amarillo.png')
+        }
+
+
+
+        this.sliderTween = this.tweens.add({
+            targets: this.timeSlider,
+            duration: this.maxTimePerTurn*1000,
+            repeat: 0,
+            value: {
+              getStart: () => 1,
+              getEnd: () => 0
+            },
+            onComplete: () => {
+                console.log("¡Tiempo agotado!")
+                this.MakeGameOver()
+                this.sliderTween?.remove();
+                this.sliderTween = null;
+            }
+        });
+    }
     
     MakeGameOver(){
+        this.isPaused=true
+        setTimeout(() => {
+                this.StartGameOver()
+        }, 2000);
+                
+    }
+
+    StartGameOver(){
         this.isPaused = true
+        this.sliderTween.pause()
         this.finishTime = this.time.now * 0.001
         //this.panel.showScore(this.scorePoints,this.scorePoints)
         const newScore = this.scorePoints;
@@ -1002,25 +1077,49 @@ export class MainScene extends Phaser.Scene{
     }
 
     preload(){
-       this.load.image("square","src/images/BBSquare.png")
-       this.load.image("table_shadow", "src/images/blockblast_backgroud_table_shadow.png")
-       this.load.image("table", "src/images/blockblast_backgroud_table.png")
-       this.load.image("b_chess", "src/images/blockblast_backgroud_chess.png")
-       this.load.image("b_box", "src/images/blockblast_backgroud_box.png")
-       //IN GAME UI
-       this.load.atlas('inGameUI', './src/images/ui/pausa_ajustes/sprites.png', './src/images/ui/pausa_ajustes/sprites.json');
-       //TABLE DECOR
-       this.load.atlas("table_decor", "src/images/blockblast_backgroud_table_decor/sprites.png", "src/images/blockblast_backgroud_table_decor/sprites.json") 
-       //PREVIEW SPACE
-       this.load.atlas("preview_space", "src/images/blockblast_backgroud_previewspace/sprites.png", "src/images/blockblast_backgroud_previewspace/sprites.json") 
+        this.load.image("square","src/images/BBSquare.png")
+        this.load.image("table_shadow", "src/images/blockblast_backgroud_table_shadow.png")
+        this.load.image("table", "src/images/blockblast_backgroud_table.png")
+        this.load.image("b_chess", "src/images/blockblast_backgroud_chess.png")
+        this.load.image("b_box", "src/images/blockblast_backgroud_box.png")
+        //IN GAME UI
+        this.load.atlas('inGameUI', './src/images/ui/pausa_ajustes/sprites.png', './src/images/ui/pausa_ajustes/sprites.json');
+        //TABLE DECOR
+        this.load.atlas("table_decor", "src/images/blockblast_backgroud_table_decor/sprites.png", "src/images/blockblast_backgroud_table_decor/sprites.json") 
+        //PREVIEW SPACE
+        this.load.atlas("preview_space", "src/images/blockblast_backgroud_previewspace/sprites.png", "src/images/blockblast_backgroud_previewspace/sprites.json") 
 
-       //DECOR B
-       this.load.atlas("decor_b", "src/images/blockblast_decor_b/sprites.png", "src/images/blockblast_decor_b/sprites.json") 
+        //DECOR B
+        this.load.atlas("decor_b", "src/images/blockblast_decor_b/sprites.png", "src/images/blockblast_decor_b/sprites.json") 
 
-       //PIECES
-       this.load.atlas("piece", "src/images/blockblast_piece/sprites.png", "src/images/blockblast_piece/sprites.json") 
-       //POWER UPS
-       this.load.atlas("powerUps", "src/images/BlockBlastPowerUps/sprites.png", "src/images/BlockBlastPowerUps/sprites.json")
+        //PIECES
+        this.load.atlas("piece", "src/images/blockblast_piece/sprites.png", "src/images/blockblast_piece/sprites.json") 
+        //POWER UPS
+        this.load.atlas("powerUps", "src/images/BlockBlastPowerUps/sprites.png", "src/images/BlockBlastPowerUps/sprites.json")
+
+        //TIMER BAR
+        this.load.atlas('timerBar', './src/images/ui/cronometro/sprites.png', './src/images/ui/cronometro/sprites.json');
+
+
+
+
+
+        this.load.spritesheet('bomb', 'src/images/BlockBlastPowerUps/blockblast_powerup_bomb/blockblast_powerup_bomb.png', {
+            frameWidth: 89,
+            frameHeight: 89
+            
+            });
+        this.load.spritesheet('reduct', 'src/images/BlockBlastPowerUps/blockblast_powerup_reduct/blockblast_powerup_reduct.png', {
+        frameWidth: 89,
+        frameHeight: 89
+        
+        });
+        this.load.spritesheet('rotate', 'src/images/BlockBlastPowerUps/blockblast_powerup_rotate/blockblast_powerup_rotate.png', {
+            frameWidth: 89,
+            frameHeight: 89
+            
+            });
+        
     }
 
    
@@ -1052,6 +1151,7 @@ export class MainScene extends Phaser.Scene{
         this.lastPointerY = 0
 
         this.piecesList = []
+        this.powerUpsInGame = {}
         this.queuePieces = new Queue()
 
         this.counter = 0
@@ -1065,12 +1165,42 @@ export class MainScene extends Phaser.Scene{
         this.secondsToAdd = 0
         this.isPaused = false
 
+        //TIMERS
+        this.minTimePerTurn = 5
+        this.maxTimePerTurn = 15
+        this.level1Time =(((this.maxTimePerTurn-this.minTimePerTurn)/3)*2)+this.minTimePerTurn
+        console.log("TIMERS " + this.level1Time)
+        this.level2Time =((this.maxTimePerTurn-this.minTimePerTurn)/3)+this.minTimePerTurn
+
         //THE FIRST ELEMENT MUST BE THE EMPTY SPACE
         this.colorsList = ["blockblast_piece_shadow.png","blockblast_piece_a.png","blockblast_piece_b.png","blockblast_piece_c.png","blockblast_piece_d.png","blockblast_piece_e.png"
         ,"blockblast_piece_f.png","blockblast_piece_g.png","blockblast_piece_h.png","blockblast_piece_i.png","blockblast_piece_j.png"
         ,"blockblast_piece_k.png","blockblast_piece_m.png","blockblast_piece_n.png","blockblast_piece_l.png"]
+
+
         //POWERUPS
-        this.powerUpsList =["powerup_bomba.png","powerup_convertidor.png","powerup_girador.png"]
+        this.powerUpsList =["bomb","reduct","rotate"]
+
+        //ANIMATIONS
+        this.anims.create({
+            key: 'bomb',
+            frames: this.anims.generateFrameNumbers('bomb', { start: 0, end: 6 }),
+            frameRate: 15,
+            repeat: 0 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'reduct',
+            frames: this.anims.generateFrameNumbers('reduct', { start: 0, end: 6 }),
+            frameRate: 15,
+            repeat: 0 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'rotate',
+            frames: this.anims.generateFrameNumbers('rotate', { start: 0, end: 6 }),
+            frameRate: 15,
+            repeat: 0 // Reproducir la animación solo una vez
+        });
+
         //PICTURES
         this.offsetPictures = 540
 
@@ -1083,11 +1213,11 @@ export class MainScene extends Phaser.Scene{
         this.add.image(this.offsetPictures-11,this.offsetPictures-440,"table_decor","blockblast_backgroud_table_decor_c.png")
         
         //DECOR
-        this.add.image(this.offsetPictures-466,this.offsetPictures+400,"decor_b", "blockblast_decor_b_a.png")
+        this.add.image(this.offsetPictures-468,this.offsetPictures+402,"decor_b", "blockblast_decor_b_a.png")
         this.add.image(this.offsetPictures-500,this.offsetPictures+10,"decor_b", "blockblast_decor_b_b.png")
-        this.add.image(this.offsetPictures-530,this.offsetPictures-140,"decor_b", "blockblast_decor_b_c.png")
-        this.add.image(this.offsetPictures-520,this.offsetPictures-490,"decor_b", "blockblast_decor_b_d.png")
-        this.add.image(this.offsetPictures-545,this.offsetPictures+185,"decor_b", "blockblast_decor_b_e.png")
+        this.add.image(this.offsetPictures-526,this.offsetPictures-140,"decor_b", "blockblast_decor_b_c.png")
+        this.add.image(this.offsetPictures-512,this.offsetPictures-510,"decor_b", "blockblast_decor_b_d.png")
+        this.add.image(this.offsetPictures-533,this.offsetPictures+185,"decor_b", "blockblast_decor_b_e.png")
         //PREVIEW
         this.add.image(this.offsetPictures+491,this.offsetPictures,"preview_space","blockblast_backgroud_previewspace_a.png")
         this.add.image(this.offsetPictures+436,this.offsetPictures,"preview_space","blockblast_backgroud_previewspace_b.png")
@@ -1123,7 +1253,7 @@ export class MainScene extends Phaser.Scene{
         for(let i = 0; i < this.boardSize; i++){
             this.board[i] = []
             for(let j = 0; j < this.boardSize; j++){
-                this.board[i][j] = this.add.image(((i-this.boardSize/2)*this.squareSize)+(this.squareSize/2), ((j-this.boardSize/2)*this.squareSize)+(this.squareSize/2),"piece", this.colorsList[0])
+                this.board[i][j] = this.add.sprite(((i-this.boardSize/2)*this.squareSize)+(this.squareSize/2), ((j-this.boardSize/2)*this.squareSize)+(this.squareSize/2),"piece", this.colorsList[0])
                 //this.board[i][j].visible = false
                 this.board[i][j].name = i.toString()+j.toString()+this.colorsList[0]
                 this.boardContainer.add(this.board[i][j])
@@ -1148,16 +1278,17 @@ export class MainScene extends Phaser.Scene{
         this.scoreText.setStroke('#553b37', 8);
 
         //TIMER
-        this.maxTimePerTurn = 15
-        this.currentTime = this.maxTimePerTurn
+        
+        //this.currentTime = this.maxTimePerTurn
         //let timerContainer = this.add.image(980, 210, 'menuUI', 'Cronometro_fondo.png')
         
-        this.timerText = this.add.text(980,210,this.FormatTime(this.currentTime), { 
-            fontFamily: 'Bungee', fontSize: '34px',  color: '#f4f4f4', align: 'center' }).setOrigin(0.5)
-        this.timerText.setStroke('#553b37', 8);
-        this.time.addEvent({ delay: 1000, callback: this.UpdateTimer, callbackScope: this, loop: true })
+        //this.timerText = this.add.text(980,210,this.FormatTime(this.currentTime), { 
+            //fontFamily: 'Bungee', fontSize: '34px',  color: '#f4f4f4', align: 'center' }).setOrigin(0.5)
+        //this.timerText.setStroke('#553b37', 8);
+        //this.time.addEvent({ delay: 1000, callback: this.UpdateTimer, callbackScope: this, loop: true })
 
-        
+        //POWERUPS
+        this.time.addEvent({ delay: 5000, callback: this.ShineBlock, callbackScope: this, loop: true })
 
         //CREATE PIECES AND COLORS
         this.piecesList = ["0010000100001000010000100", //Linea vertical
@@ -1208,12 +1339,40 @@ export class MainScene extends Phaser.Scene{
         this.piece = this.GeneratePiece()
         this.piece.shape = this.piecesList[this.piecesList.length-3]
         this.piecesToDelete = []
+
         
         //SETTING BOARD
         this.InsertPiece(this.GeneratePiece(),0,0)
         this.InsertPiece(this.GeneratePiece(),3,3)
         this.scorePoints = 0
         this.scoreText.setText(this.scorePoints.toString().padStart(8, '0') )
+
+        //CREATE LOADING BAR
+        let barX = this.offsetPictures-500
+        let barY = this.offsetPictures
+        this.add.image(barX,barY,"timerBar", "Base cronometro.png")
+        this.timeSlider = this.uiScene.rexUI.add.slider({
+            x: barX,
+            y: barY,
+            width: 35,
+            height: 630,
+            orientation: 'y',
+            reverseAxis: true,
+            value: 1,
+            end: 0, // Cambiado a 0 para que el valor máximo sea 0
+            start: 1, // Cambiado a 1 para que el valor mínimo sea 1
+            track: this.add.sprite(0,0,'timerBar','Delineado cronometro.png'),
+            indicator: this.add.sprite(0,10,'timerBar','Verde.png').setDisplaySize(20,630),
+            thumb: this.add.sprite(0,0,'timerBar','Reloj.png').setScale(1,1),
+    
+            input: 'none',
+            space: {
+              top: -5,
+              right: 0,
+              left: 0,
+              bottom: -5
+            },
+        }).layout()
 
         //CREATE OPTIONS
         this.optionsBools = []
@@ -1268,8 +1427,8 @@ export class MainScene extends Phaser.Scene{
                 //this.uiScene.audioManager.playButtonClick.play();
             });
         
+        
 
-        //const container = this.CreatePiece(this.piece, 200,200,100)
         
 
        
@@ -1284,57 +1443,64 @@ export class MainScene extends Phaser.Scene{
             }, this);
         
         this.input.on('dragstart', function (pointer, gameObject) {
-            console.log(gameObject.parentContainer.name)
-            gameObject.parentContainer.visible = false
-            this.piece = this.optionsPieces[parseInt(gameObject.parentContainer.name)]
-            this.optionsBools[parseInt(gameObject.parentContainer.name)]= false
-            this.ChangePointer()
-            if (pointer.pointerType === 'touch') {
-                this.pX = pointer.touches[0].worldX
-                this.pY = pointer.touches[0].worldY
-            } else {
-                this.pX = pointer.worldX
-                this.pY = pointer.worldY
+            if(!this.isPaused){
+                console.log(gameObject.parentContainer.name)
+                gameObject.parentContainer.visible = false
+                this.piece = this.optionsPieces[parseInt(gameObject.parentContainer.name)]
+                this.optionsBools[parseInt(gameObject.parentContainer.name)]= false
+                this.ChangePointer()
+                if (pointer.pointerType === 'touch') {
+                    this.pX = pointer.touches[0].worldX
+                    this.pY = pointer.touches[0].worldY
+                } else {
+                    this.pX = pointer.worldX
+                    this.pY = pointer.worldY
+                }
+                pointerContainer.x = this.pX-2*this.squareSize 
+                
+                pointerContainer.y = this.pY-2*this.squareSize
+                pointerContainer.visible = true
+                this.canCheck = true
             }
-            pointerContainer.x = this.pX-2*this.squareSize 
             
-            pointerContainer.y = this.pY-2*this.squareSize
-            pointerContainer.visible = true
-            this.canCheck = true
             
         }, this);
         this.input.on('drag', (pointer, gameObject, dragX, dragY) =>
         {
-            pointerContainer.x = this.pX-2*this.squareSize 
-            
-            pointerContainer.y = this.pY-2*this.squareSize
+            if(!this.isPaused){
+                pointerContainer.x = this.pX-2*this.squareSize 
+                
+                pointerContainer.y = this.pY-2*this.squareSize
+            }
 
         });
 
         this.input.on('dragend', function (pointer, gameObject) {
-            console.log(gameObject.parentContainer.name)
-            this.canCheck = false
-            pointerContainer.visible = false
-            pointerContainer.x = -800
-            
-            pointerContainer.y =  -800
-            if(this.CanPutPiece(this.piece.shape,this.pointerX, this.pointerY,this.boardMatrix)){
-                this.piecesToDelete = []
-                this.InsertPiece(this.piece,this.pointerX, this.pointerY)
+            if(!this.isPaused){
+                console.log(gameObject.parentContainer.name)
+                this.canCheck = false
+                pointerContainer.visible = false
+                pointerContainer.x = -800
                 
-                this.refillCounter +=1
-                
-                if(this.CheckGameOver() && this.refillCounter <3)this.MakeGameOver()
-                if(this.refillCounter>2){
-                    this.RemoveOptions()
-                    this.CreateOptions()
-                    this.refillCounter = 0
+                pointerContainer.y =  -800
+                if(this.CanPutPiece(this.piece.shape,this.pointerX, this.pointerY,this.boardMatrix)){
+                    this.piecesToDelete = []
+                    this.InsertPiece(this.piece,this.pointerX, this.pointerY)
+                    
+                    this.refillCounter +=1
+                    
+                    if(this.CheckGameOver() && this.refillCounter <3)this.MakeGameOver()
+                    if(this.refillCounter>2){
+                        this.RemoveOptions()
+                        this.CreateOptions()
+                        this.refillCounter = 0
+                    }
+                    
                 }
-                
-            }
-            else{
-                gameObject.parentContainer.visible = true
-                this.optionsBools[parseInt(gameObject.parentContainer.name)]= true
+                else{
+                    gameObject.parentContainer.visible = true
+                    this.optionsBools[parseInt(gameObject.parentContainer.name)]= true
+                }
             }
             
         }, this);
@@ -1345,7 +1511,7 @@ export class MainScene extends Phaser.Scene{
       
 
     update(time, deltaTime){
-        console.log("CONV REFILL COUNTER "+ this.refillCounter)
+        //console.log("CONV REFILL COUNTER "+ this.refillCounter)
         this.pointerX = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.pX-this.offsetX+50)/this.squareSize)),0,10)-2
         this.pointerY = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.pY- this.offsetY+50)/this.squareSize)),0,10)-2
         
