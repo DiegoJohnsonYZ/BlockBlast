@@ -357,10 +357,15 @@ export class MainScene extends Phaser.Scene{
     }
 
     DrawPiece(piece,x,y){
+        this.piecesToClear = []
+        this.colorsToRestore = []
         let list = new Array()
         for(let i = 0; i < 5; i++){
             for(let j = 0; j < 5; j++){
                 if(piece.shape.charAt((5*i)+j) != 0){
+                    if(piece.shape.charAt((5*i)+j) == 1){
+                        this.BombBreakingLines(j+x,i+y)
+                    }
                     this.board[j+x][i+y].setTint(899499)
                     list.push(this.board[j+x][i+y])
                     this.lineCounterXadd[i+y] += 1
@@ -485,8 +490,7 @@ export class MainScene extends Phaser.Scene{
     }
 
     ShowBreakingLines(){
-        this.piecesToClear = []
-        this.colorsToRestore = []
+        
         
         this.secondsToAdd = 0
         for(let i = 0; i < this.boardSize; i++){
@@ -711,7 +715,7 @@ export class MainScene extends Phaser.Scene{
         this.probArray = [false,false,false]
         console.log(this.probArray)
         let probPowerUp = this.GetRandomInt(10)
-        if(probPowerUp <1){
+        if(probPowerUp <9){
             this.probArray = [true,false,false]
         } 
         this.ShuffleArray(this.probArray)
