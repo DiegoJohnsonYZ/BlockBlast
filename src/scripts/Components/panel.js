@@ -210,7 +210,7 @@ export class Panel
             sfxTitle.setPosition(dim/2-255, dim/2+75);
             sfxSlider.setPosition(dim/2+100, dim/2+75);
             this.optionsContainer = this.scene.add.container(0, 0, 
-                [optionsTitleContainer, optionsTitle, closeImage, sfxSlider, sfxTitle, musicTitle, musicSlider]);
+                [optionsTitle, closeImage, sfxSlider, sfxTitle, musicTitle, musicSlider]);
         }
         else
         {
