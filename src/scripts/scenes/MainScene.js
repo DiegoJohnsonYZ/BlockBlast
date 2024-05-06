@@ -531,8 +531,8 @@ export class MainScene extends Phaser.Scene{
         for(let i = 0; i < this.colorsToRestore.length; i++){
 
             console.log(this.colorsToRestore[i])
-            if(this.colorsToRestore[i][0]!='b') this.piecesToClear[i].setTexture(this.colorsToRestore[i])
-            else this.piecesToClear[i].setTexture("piece",this.colorsToRestore[i])
+            if(this.colorsToRestore[i].startsWith("blockblast")) this.piecesToClear[i].setTexture("piece",this.colorsToRestore[i])
+            else    this.piecesToClear[i].setTexture(this.colorsToRestore[i])
 
 
             
@@ -1041,7 +1041,7 @@ export class MainScene extends Phaser.Scene{
             },
             onComplete: () => {
                 console.log("¡Tiempo agotado!")
-                this.MakeGameOver()
+                this.StartGameOver()
                 this.sliderTween?.remove();
                 this.sliderTween = null;
             }
@@ -1058,7 +1058,9 @@ export class MainScene extends Phaser.Scene{
 
     StartGameOver(){
         this.isPaused = true
-        this.sliderTween.pause()
+        this.sliderTween?.remove();
+        this.sliderTween = null;
+
         this.finishTime = this.time.now * 0.001
         //this.panel.showScore(this.scorePoints,this.scorePoints)
         const newScore = this.scorePoints;
