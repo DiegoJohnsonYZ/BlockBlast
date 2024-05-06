@@ -715,7 +715,7 @@ export class MainScene extends Phaser.Scene{
         this.probArray = [false,false,false]
         console.log(this.probArray)
         let probPowerUp = this.GetRandomInt(10)
-        if(probPowerUp <9){
+        if(probPowerUp <1){
             this.probArray = [true,false,false]
         } 
         this.ShuffleArray(this.probArray)
