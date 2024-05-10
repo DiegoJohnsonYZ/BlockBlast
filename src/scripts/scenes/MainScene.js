@@ -364,7 +364,7 @@ export class MainScene extends Phaser.Scene{
             for(let j = 0; j < 5; j++){
                 if(piece.shape.charAt((5*i)+j) != 0){
                     if(piece.shape.charAt((5*i)+j) == 1){
-                        this.BombBreakingLines(j+x,i+y)
+                        //this.BombBreakingLines(j+x,i+y)
                     }
                     this.board[j+x][i+y].setTint(899499)
                     list.push(this.board[j+x][i+y])
@@ -1125,6 +1125,17 @@ export class MainScene extends Phaser.Scene{
             frameHeight: 89
             
             });
+
+        this.load.spritesheet('bombFx', 'src/images/fx/parchados_fx_bomb/spritesheet.png', {
+            frameWidth: 500,
+            frameHeight: 500
+            
+            });
+        this.load.spritesheet('destroyFx', 'src/images/fx/parchados_fx_destruccion/spritesheet.png', {
+            frameWidth: 500,
+            frameHeight: 500
+            
+            });
         
     }
 
@@ -1173,7 +1184,7 @@ export class MainScene extends Phaser.Scene{
 
         //TIMERS
         this.minTimePerTurn = 5
-        this.maxTimePerTurn = 15
+        this.maxTimePerTurn = 25
         this.level1Time =(((this.maxTimePerTurn-this.minTimePerTurn)/3)*2)+this.minTimePerTurn
         console.log("TIMERS " + this.level1Time)
         this.level2Time =((this.maxTimePerTurn-this.minTimePerTurn)/3)+this.minTimePerTurn
@@ -1204,6 +1215,18 @@ export class MainScene extends Phaser.Scene{
             key: 'rotate',
             frames: this.anims.generateFrameNumbers('rotate', { start: 0, end: 6 }),
             frameRate: 15,
+            repeat: 0 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'bombFx',
+            frames: this.anims.generateFrameNumbers('bombFx', { start: 0, end: 19 }),
+            frameRate: 30,
+            repeat: 0 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'destroyFx',
+            frames: this.anims.generateFrameNumbers('destroyFx', { start: 0, end: 9 }),
+            frameRate: 30,
             repeat: 0 // Reproducir la animación solo una vez
         });
 
@@ -1275,6 +1298,25 @@ export class MainScene extends Phaser.Scene{
                 this.boardMatrix[i][j] = 0
             }
         }
+        //ANIMATION BOARD
+        this.animationBoard = []
+        this.animationBoardContainer = this.add.container(0,0)
+        for(let i = 0; i < this.boardSize; i++){
+            this.animationBoard[i] = []
+            for(let j = 0; j < this.boardSize; j++){
+                this.animationBoard[i][j] = this.add.sprite(((i-this.boardSize/2)*this.squareSize)+(this.squareSize/2), ((j-this.boardSize/2)*this.squareSize)+(this.squareSize/2),"piece", this.colorsList[0]).setOrigin(.5)
+                
+                
+                this.animationBoard[i][j].visible = false
+                this.animationBoardContainer.add(this.animationBoard[i][j])
+            }
+        }
+        this.animationBoard[4][3].play("bombFx",true)
+        this.animationBoard[1][7].play("destroyFx",true)
+        this.animationBoardContainer.x += (this.boardSize/2*this.squareSize)+this.offsetX-(this.squareSize/2)
+        this.animationBoardContainer.y += (this.boardSize/2*this.squareSize)+this.offsetY-(this.squareSize/2)
+
+
         //SCORES
         this.scorePoints = 0
         this.gameoverBool = false

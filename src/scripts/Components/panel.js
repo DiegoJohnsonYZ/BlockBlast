@@ -56,6 +56,7 @@ export class Panel
         this.pauseContainer = this.scene.add.container(0, 0, [pauseTitle, closeImage, continueButton, optionsButton, exitButton]);
         this.pauseContainer.setVisible(false).setDepth(10.1);
     }
+    
 
     createFirstTutorialPage(dim){
         let text1 = this.scene.add.text(dim/2, 410, 'CORRE A TODA VELOCIDAD MIENTRAS EVADES OBSTÁCULOS Y AUTOMÓVILES', { 

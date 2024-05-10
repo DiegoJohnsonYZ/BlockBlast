@@ -2,6 +2,8 @@ import { MainScene } from "./scripts/scenes/MainScene.js";
 import { MenuScene } from "./scripts/scenes/MenuScene.js";
 import { UIScene } from "./scripts/scenes/UIScene.js";
 import { BootScene } from "./scripts/scenes/BootScene.js";
+import WebFontLoaderPlugin from 'phaser3-rex-plugins/plugins/webfontloader-plugin.js';
+import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import * as Phaser from 'phaser';
 
 // -------------------------------------------
@@ -40,7 +42,21 @@ function run(opts) {
 
         // Overwrite the default game options with the provided options
         ...opts,
+        
+        plugins: {
+            global: [{
+                key: 'rexWebFontLoader',
+                plugin: WebFontLoaderPlugin,
+                start: true
+            }],
+            scene: [{
+                key: 'rexUI',
+                plugin: UIPlugin,
+                mapping: 'rexUI'
+            }]
+        },
         }
+
 
     // gama instance
     const game = new Phaser.Game(gameOptions);

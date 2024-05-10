@@ -11,7 +11,11 @@ export class MenuScene extends Phaser.Scene
     }
     
     preload(){
-        this.load.image('menuBG', './src/images/bb_portrait.png');
+        this.load.atlas('menuBG', './src/images/portrait/sprites.png', './src/images/portrait/sprites.json');
+        
+        this.load.image('cloud_a', './src/images/portrait/portada_clouds_a.png');
+        this.load.image('cloud_b', './src/images/portrait/portada_clouds_b.png');
+        this.load.image('cloud_c', './src/images/portrait/portada_clouds_c.png');
         this.load.image('menuLogo', './src/images/lg.png');
         
     }
@@ -52,8 +56,19 @@ export class MenuScene extends Phaser.Scene
         this.isPaused = false;
 
         window.addEventListener('touchstart', () => {this.data.set('IS_TOUCH', "true"); });
+        //Back
+        this.sprSky = this.add.image(dim/2, dim/2-420, 'menuBG', 'portada_background_skye.png')
+        this.sprBackCloud = this.add.tileSprite(0, dim/2-420,0,0, 'menuBG', 'portada_background_clouds.png').setOrigin(0, 0)
+       
+        this.sprBack = this.add.image(dim/2, dim/2+100, 'menuBG', 'portada_chess.png')
 
-        this.sprBack = this.add.image(dim/2, dim/2, 'menuBG')
+        this.cloud1 = this.add.tileSprite(0, dim/2-220,0,0, 'cloud_a').setOrigin(0, 0)
+        this.cloud2 = this.add.tileSprite(0, dim/2-120,0,0, 'cloud_c').setOrigin(0, 0).setScale(1)
+        this.cloud2.tilePositionX -=300
+        this.cloud3 = this.add.tileSprite(0, dim/2+180,0,0, 'cloud_b').setOrigin(0, 0).setScale(1.2)
+        this.cloud3.tilePositionX -=200
+        this.cloud4 = this.add.tileSprite(0, dim/2+300,0,0, 'cloud_b').setOrigin(0, 0).setScale(1.8)
+        this.cloud4.tilePositionX -=150
         this.sprLogo = this.add.image(dim/2, dim/2-200, 'menuLogo')
         this.startButton = this.add.image(dim/2, dim/2+350, 'menuUI', 'Play_NonClicked.png').setInteractive();
         this.startButton.setScale(1);
@@ -84,6 +99,14 @@ export class MenuScene extends Phaser.Scene
     }
 
     update(){
+        //ANIMATIONS
+        this.sprBackCloud.tilePositionX += .3;
+        this.cloud1.tilePositionX += 1;
+        this.cloud2.tilePositionX -= 1.3;
+        this.cloud3.tilePositionX += 1.6;
+        this.cloud4.tilePositionX -= 1.8;
+
+
         if (this.nextSceneReady && this.loadingSlider.value == .9) {
             this.nextSceneReady = false;
             let sliderTween = this.tweens.add({
