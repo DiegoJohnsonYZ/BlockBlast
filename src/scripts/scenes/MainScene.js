@@ -333,7 +333,7 @@ export class MainScene extends Phaser.Scene{
     
         // Reemplazamos  en la posición aleatoria el powerUp
         
-        let pp = this.GetRandomInt(3)+1
+        let pp = this.GetRandomInt(2)+1
         console.log("TRY"+pp)
         array[posicion_aleatoria] = pp;
     
@@ -692,6 +692,7 @@ export class MainScene extends Phaser.Scene{
         return rotatedMatrix;
     }
     ConverterPowerUp(){
+        this.ReductAnimation()
         //limpiamos la cola
         this.queuePieces = new Queue()
         //calculamos cuantas piezas necesitamos
@@ -729,7 +730,7 @@ export class MainScene extends Phaser.Scene{
                 
                 this.SetPiecePosition(pieceOption.shape)
                 this.option1 = this.CreatePiece(pieceOption, 965-this.posOptionX,337-this.posOptionY,100,0.45)
-                this.option1.setDepth(4)
+                this.option1.setDepth(5)
                 this.option1.name = "0"
                 this.optionsPieces[0] = pieceOption
             }
@@ -737,7 +738,7 @@ export class MainScene extends Phaser.Scene{
                 //creamos pieza
                 this.SetPiecePosition(pieceOption.shape)
                 this.option2 = this.CreatePiece(pieceOption, 965-this.posOptionX,590-this.posOptionY,100,0.45)
-                this.option2.setDepth(4)
+                this.option2.setDepth(5)
         
                 this.option2.name = "1"
                 this.optionsPieces[1] = pieceOption
@@ -746,7 +747,7 @@ export class MainScene extends Phaser.Scene{
                 //creamos pieza
                 this.SetPiecePosition(pieceOption.shape)
                 this.option3 = this.CreatePiece(pieceOption, 965-this.posOptionX,839-this.posOptionY,100,0.45)
-                this.option3.setDepth(4)
+                this.option3.setDepth(5)
         
                 this.option3.name = "2"
                 this.optionsPieces[2] = pieceOption
@@ -758,6 +759,8 @@ export class MainScene extends Phaser.Scene{
         
         
     }
+
+    
    
     BombBreakingLines(fila,columna){
         this.board[fila][columna].anims.pause()
@@ -1099,6 +1102,20 @@ export class MainScene extends Phaser.Scene{
    
         this.animationBoard[x][y].play(effect,true)
     }
+    ReductAnimation(){
+        if(this.optionsBools[0]){
+            this.option1anim.visible = true
+            this.option1anim.play("reductFx",true)
+        }   
+        if(this.optionsBools[1]){
+            this.option2anim.visible = true
+            this.option2anim.play("reductFx",true)
+        }   
+        if(this.optionsBools[2]){
+            this.option3anim.visible = true
+            this.option3anim.play("reductFx",true)
+        }   
+    }
 
 
     FormatTime(seconds) {
@@ -1220,6 +1237,11 @@ export class MainScene extends Phaser.Scene{
         this.load.spritesheet('destroyFx', 'src/images/fx/parchados_fx_destruccion/spritesheet.png', {
             frameWidth: 500,
             frameHeight: 500
+            
+            });
+        this.load.spritesheet('reductFx', 'src/images/fx/parchados_fx_reduccion/spritesheet.png', {
+            frameWidth: 200,
+            frameHeight: 200
             
             });
         
@@ -1419,6 +1441,21 @@ export class MainScene extends Phaser.Scene{
         this.animationBoardContainer.y += (this.boardSize/2*this.squareSize)+this.offsetY-(this.squareSize/2)-10
         this.animationBoardContainer.setDepth(4)
 
+        this.option1anim = this.add.sprite(965-23, 340-27,"piece", this.colorsList[0]).setOrigin(.5).setDepth(6).setScale(2)
+        this.option1anim.visible = true
+        this.option1anim.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'reductFx', function () {
+            this.option1anim.setVisible(false);
+        }, this);
+        this.option2anim = this.add.sprite(965-23, 590-27,"piece", this.colorsList[0]).setOrigin(.5).setDepth(6).setScale(2)
+        this.option2anim.visible = true
+        this.option2anim.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'reductFx', function () {
+            this.option2anim.setVisible(false);
+        }, this);
+        this.option3anim = this.add.sprite(965-23, 840-27,"piece", this.colorsList[0]).setOrigin(.5).setDepth(6).setScale(2)
+        this.option3anim.visible = true
+        this.option3anim.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'reductFx', function () {
+            this.option3anim.setVisible(false);
+        }, this);
 
         //SCORES
         this.scorePoints = 0
@@ -1499,9 +1536,9 @@ export class MainScene extends Phaser.Scene{
         this.scoreText.setText(this.scorePoints.toString().padStart(8, '0') )
 
         //CREATE LOADING BAR
-        let barX = this.offsetPictures-500
+        let barX = this.offsetPictures-510
         let barY = this.offsetPictures
-        this.add.image(barX,barY,"timerBar", "Base cronometro.png")
+        this.add.image(barX,barY,"timerBar", "Base cronometro.png").setDepth(5)
         this.timeSlider = this.uiScene.rexUI.add.slider({
             x: barX,
             y: barY,
@@ -1523,7 +1560,7 @@ export class MainScene extends Phaser.Scene{
               left: 0,
               bottom: -5
             },
-        }).layout()
+        }).layout().setDepth(5)
 
         //CREATE OPTIONS
         this.optionsBools = []
@@ -1651,7 +1688,7 @@ export class MainScene extends Phaser.Scene{
             }
             
         }, this);
-
+        this.ReductAnimation()
 
         
            
