@@ -47,27 +47,37 @@ export class MainScene extends Phaser.Scene{
     }
 
     //MENUS 
-    OpenSettings(){
-        if(!this.isPaused){
-            this.isPaused = true
-            this.panel.showOptions();
-        }
-    }
 
     PauseGame(){
-        if(!this.isPaused){
-            this.sliderTween.pause()
+        
+        if(!this.pauseOpen){
+            this.sliderTween?.pause()
             this.isPaused = true
+            this.pauseOpen = true
             this.panel.showPause();
         }
         else{
-            this.sliderTween.resume()
+            this.sliderTween?.resume()
             this.isPaused = false
+            this.pauseOpen = false
             this.panel.hidePause()
         }
         
     }
+
+    PauseTimer(){
+        if(!this.isPaused){
+            this.sliderTween?.pause()
+            this.isPaused = true
+        }
+        else{
+            this.sliderTween?.resume()
+            this.isPaused = false
+        }
+    }
+
     RestartGame(){
+        this.gamefinish = true
         this.audioManager.stopMusic()
         this.isPaused = false
         this.panel.hideScore()
@@ -166,36 +176,36 @@ export class MainScene extends Phaser.Scene{
                 this.posOptionX = 23
                 break
             case 2:
-                this.posOptionX = 12
+                this.posOptionX = 7
                 break
             case 3:
-                this.posOptionX = 25
+                this.posOptionX = 24
                 break
             case 4:
-                this.posOptionX = 10
+                this.posOptionX = 7
                 break
             case 5:
-                this.posOptionX = 25
+                this.posOptionX = 24
                 break
             default:
                 this.posOptionX = 0
           }
         //Y
-        switch (this.CountPieceX(piece)) {
+        switch (this.CountPieceY(piece)) {
             case 1:
-                this.posOptionY = 10
+                this.posOptionY = 33
                 break
             case 2:
-                this.posOptionY = 30
+                this.posOptionY = 16
                 break
             case 3:
-                this.posOptionY = 30
+                this.posOptionY = 35
                 break
             case 4:
-                this.posOptionY = 30
+                this.posOptionY = 25
                 break
             case 5:
-                this.posOptionY = 30
+                this.posOptionY = 42
                 break
             default:
                 this.posOptionY = 10
@@ -234,7 +244,7 @@ export class MainScene extends Phaser.Scene{
                 if(i==2&&j==2){
                     let s2 = this.add.image((size*j)-(size*2),(size*i)-(size*2) , "piece",this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))])
                     s2.setAlpha(0.000001)
-                    s2.setScale(1.7)
+                    s2.setScale(2.5)
                     s2.setInteractive()
                     this.input.setDraggable(s2)
                     container.add(s2)
@@ -364,7 +374,7 @@ export class MainScene extends Phaser.Scene{
             for(let j = 0; j < 5; j++){
                 if(piece.shape.charAt((5*i)+j) != 0){
                     if(piece.shape.charAt((5*i)+j) == 1){
-                        this.BombBreakingLines(j+x,i+y)
+                        //this.BombBreakingLines(j+x,i+y)
                     }
                     this.board[j+x][i+y].setTint(899499)
                     list.push(this.board[j+x][i+y])
@@ -404,7 +414,11 @@ export class MainScene extends Phaser.Scene{
             }
         }
         console.log("CHECK=========================================")
-        this.BreakLine()
+        
+        if(!this.isStarting){
+            this.refillCounter +=1
+            this.BreakLine()
+        }
         for(let i = 0; i < 8; i++){
             let line = "CHECK"
             for(let j = 0; j < 8; j++){
@@ -419,20 +433,94 @@ export class MainScene extends Phaser.Scene{
         //this.currentTime += (this.secondsToAdd*2)
         
     }
- 
+    FinishTurn(){
+        this.scoreText.setText(this.scorePoints.toString().padStart(8, '0') )
+        if(this.CheckGameOver() && this.refillCounter <3)this.MakeGameOver()
+        if(this.refillCounter>=3){
+            this.RemoveOptions()
+            this.CreateOptions()
+            this.refillCounter = 0
+        }
+    }
     DeletePiece(pieces){
         pieces.forEach((element)=> element.setTint(0xffffff))
         pieces.forEach((element)=> element.setTexture("piece",this.colorsList[0]))
     }
 
     BreakLine(){
+        if(this.linesToClear.length<1||this.gamefinish) {
+            this.FinishTurn()
+            return
+        }
+        if(this.animationsIterator === 0)this.PauseTimer()
         
-        let rotate = false
-        
-        for(let i = 0; i < this.piecesToClear.length; i++){
+        this.piecesToClear = []
+        this.colorsToRestore = []
+        this.lineCounterXadd = [0,0,0,0,0,0,0,0]
+        this.lineCounterYadd = [0,0,0,0,0,0,0,0]
 
-            let filas =this.piecesToClear[i].name.charAt(0)
-            let columnas = this.piecesToClear[i].name.charAt(1)
+
+        //RECORRER CADA LINEA Y ROMPER EL PRIMER ELEMENTO
+        for(let i = 0; i < this.linesToClear.length; i++){
+            let aux = this.linesToClear[i]
+            let filas = 0
+            let columnas = 0
+            if(aux>7){
+                //PARA EL EJE Y
+                filas = aux-8
+                columnas = this.animationsIterator
+                
+            }
+            else{
+                //PARA EL EJE X
+                
+                filas = this.animationsIterator
+                columnas = aux
+            }
+            
+            this.BreakPiece(filas,columnas,false)
+            
+
+
+            
+
+        }
+
+        //ACTUALIZAR ITERADOR
+        this.animationsIterator +=1
+
+        if(this.animationsIterator>7){
+            this.animationsIterator = 0
+
+            //FINAL ANIMATIONS
+
+
+            this.RecountLineCounters()
+            this.PauseTimer()
+            this.FinishTurn()
+            
+
+        }
+        else{
+            //MANDAR LA SIGUIENTE ANIMACION
+            setTimeout(() => {
+                this.BreakLine()
+            }, 20);
+        }
+
+        
+
+
+       
+        //if(this.rotateBool){
+            //this.rotateBool = false
+            //this.RotatePowerup()
+        //}
+        
+    }
+
+    BreakPiece(filas, columnas, bomb){
+        if(this.GetTexture(this.board[filas][columnas]) != this.colorsList[0]){
             if(this.GetTexture(this.board[filas][columnas])=='reduct'){
                 //POWERUP CONVERTIDOR
                 this.ConverterPowerUp()
@@ -440,33 +528,31 @@ export class MainScene extends Phaser.Scene{
             }
             if(this.GetTexture(this.board[filas][columnas])=='rotate'){
                 //POWERUP CONVERTIDOR
-                rotate = true
+                this.rotateBool = true
 
             }
-            this.piecesToClear[i].setTint(0xffffff)
-            this.piecesToClear[i].setTexture("piece",this.colorsList[0])
-            this.SetName(this.piecesToClear[i],this.colorsList[0])
-            //console.log("CHECK" + this.piecesToClear[i].name)
-            this.boardMatrix[filas][columnas] = 0
-            //this.lineCounterX[columnas]=Phaser.Math.Clamp(this.lineCounterX[columnas]-1,0,8)
-            //this.lineCounterY[filas]=Phaser.Math.Clamp(this.lineCounterY[filas]-1,0,8)
+            if(this.GetTexture(this.board[filas][columnas])=='bomb'){
+                //POWERUP CONVERTIDOR
+                this.BombBreakingLines(filas,columnas)
+                //this.MakeAnimation(filas,columnas,"bombFx")
+            }
+            else{
+                if(!bomb)this.MakeAnimation(filas,columnas,"destroyFx")
+                this.board[filas][columnas].anims.pause()
+                this.board[filas][columnas].setTint(0xffffff)
+                this.board[filas][columnas].setTexture("piece",this.colorsList[0])
+                this.SetName(this.board[filas][columnas],this.colorsList[0])
+                this.boardMatrix[filas][columnas] = 0
+            } 
             this.scorePoints+=1
+            
+            
             let dictKey = filas.toString()+columnas.toString()
             if((dictKey) in this.powerUpsInGame){
                 delete this.powerUpsInGame[dictKey]
                 console.log("POWER " + dictKey)
             }
-
-
-            
-            
         }
-        this.RecountLineCounters()
-        this.colorsToRestore= []
-        this.piecesToClear = []
-        this.scoreText.setText(this.scorePoints.toString().padStart(8, '0') )
-        if(rotate)this.RotatePowerup()
-        
     }
 
     RecountLineCounters(){
@@ -496,15 +582,12 @@ export class MainScene extends Phaser.Scene{
         for(let i = 0; i < this.boardSize; i++){
             
             if(this.lineCounterXadd[i]+this.lineCounterX[i]== this.boardSize){
-                
+                this.linesToClear.push(i)
                 for(let j = 0; j < this.boardSize; j++){
-                    if(this.GetTexture(this.board[j][i])=='bomb'){
-                        this.BombBreakingLines(j,i)
-                        console.log("BOOM")
-                    }
+
                     this.piecesToClear.push(this.board[j][i])
                     this.colorsToRestore.push(this.GetTexture(this.board[j][i]))
-                    this.board[j][i].setTexture("piece",this.piece.color)
+                    if(this.GetTexture(this.board[j][i]).startsWith("blockblast")) this.board[j][i].setTexture("piece",this.piece.color)
 
                     
 
@@ -512,15 +595,11 @@ export class MainScene extends Phaser.Scene{
                 }
             }
             if(this.lineCounterYadd[i]+this.lineCounterY[i]== this.boardSize){
-                
+                this.linesToClear.push(i+8)
                 for(let j = 0; j < this.boardSize; j++){
-                    if(this.GetTexture(this.board[i][j])=='bomb'){
-                        this.BombBreakingLines(i,j)
-                        console.log("BOOM")
-                    }
                     this.piecesToClear.push(this.board[i][j])
                     this.colorsToRestore.push(this.GetTexture(this.board[i][j]))
-                    this.board[i][j].setTexture("piece",this.piece.color)
+                    if(this.GetTexture(this.board[i][j]).startsWith("blockblast"))this.board[i][j].setTexture("piece",this.piece.color)
                    
                     
                 }
@@ -536,7 +615,6 @@ export class MainScene extends Phaser.Scene{
 
             console.log(this.colorsToRestore[i])
             if(this.colorsToRestore[i].startsWith("blockblast")) this.piecesToClear[i].setTexture("piece",this.colorsToRestore[i])
-            else    this.piecesToClear[i].setTexture(this.colorsToRestore[i])
 
 
             
@@ -636,29 +714,40 @@ export class MainScene extends Phaser.Scene{
             }
             
             this.CreateOptions()
-            this.refillCounter = -1
+            this.refillCounter = 0
         }else{
             //SI QUEDAN
             let pieceOption = this.RegeneratePiece("0000000000001000000000000", false)
+
+
+            
+
+
+
             if(this.optionsBools[0]){
                 //creamos pieza
                 
                 this.SetPiecePosition(pieceOption.shape)
-                this.option1 = this.CreatePiece(pieceOption, 1000-this.posOptionX,400-this.posOptionY,100,0.25)
+                this.option1 = this.CreatePiece(pieceOption, 965-this.posOptionX,337-this.posOptionY,100,0.45)
+                this.option1.setDepth(4)
                 this.option1.name = "0"
                 this.optionsPieces[0] = pieceOption
             }
             if(this.optionsBools[1]){
                 //creamos pieza
                 this.SetPiecePosition(pieceOption.shape)
-                this.option2 = this.CreatePiece(pieceOption, 1000-this.posOptionX,570-this.posOptionY,100,0.25)
+                this.option2 = this.CreatePiece(pieceOption, 965-this.posOptionX,590-this.posOptionY,100,0.45)
+                this.option2.setDepth(4)
+        
                 this.option2.name = "1"
                 this.optionsPieces[1] = pieceOption
             }
             if(this.optionsBools[2]){
                 //creamos pieza
                 this.SetPiecePosition(pieceOption.shape)
-                this.option3 = this.CreatePiece(pieceOption, 1000-this.posOptionX,720-this.posOptionY,100,0.25)
+                this.option3 = this.CreatePiece(pieceOption, 965-this.posOptionX,839-this.posOptionY,100,0.45)
+                this.option3.setDepth(4)
+        
                 this.option3.name = "2"
                 this.optionsPieces[2] = pieceOption
             }
@@ -671,21 +760,27 @@ export class MainScene extends Phaser.Scene{
     }
    
     BombBreakingLines(fila,columna){
+        this.board[fila][columna].anims.pause()
+        this.board[fila][columna].setTint(0xffffff)
+        this.board[fila][columna].setTexture("piece",this.colorsList[0])
+        this.SetName(this.board[fila][columna],this.colorsList[0])
+        this.boardMatrix[fila][columna] = 0
+        this.MakeAnimation(fila,columna,"bombFx")
+        fila = parseInt(fila)
+        columna = parseInt(columna)
+        console.log("BREAKLINE  in function" + this.piecesToClear.length)
         for (let i = -1; i <= 1; i++) {
             for (let j = -1; j <= 1; j++) {
                 // Calculamos las nuevas coordenadas
                 const nuevaFila = fila + i;
                 const nuevaColumna = columna + j;
-    
+                console.log("BREAKLINE  in function" + this.piecesToClear.length)
                 // Verificamos si las nuevas coordenadas están dentro de los límites de la matriz
-                if (nuevaFila >= 0 && nuevaFila < 8 && nuevaColumna >= 0 && nuevaColumna < 8) {
+                if (nuevaFila >= 0 && nuevaFila < 8 && nuevaColumna >= 0 && nuevaColumna < 8 && nuevaFila != nuevaColumna) {
+                    console.log("BREAKLINE  in function" + this.piecesToClear.length)
                     // Agregamos las coordenadas válidas a la lista de variables circundantes
                     //variablesCircundantes.push([nuevaFila, nuevaColumna]);
-                    if(this.GetTexture(this.board[nuevaFila][nuevaColumna])!=this.colorsList[0]){
-                        this.piecesToClear.push(this.board[nuevaFila][nuevaColumna])
-                        this.colorsToRestore.push(this.GetTexture(this.board[nuevaFila][nuevaColumna]))
-                        this.board[nuevaFila][nuevaColumna].setTexture("piece",this.piece.color)
-                    }
+                    this.BreakPiece(nuevaFila, nuevaColumna,true)
                 }
             }
         }
@@ -703,7 +798,7 @@ export class MainScene extends Phaser.Scene{
         this.optionsBools[1] = true
         this.optionsBools[2] = true
 
-        this.posOptionX = 700
+        this.posOptionX = 500
         this.posOptionY = 400
         console.log(this.posOptionX )
         
@@ -715,7 +810,7 @@ export class MainScene extends Phaser.Scene{
         this.probArray = [false,false,false]
         console.log(this.probArray)
         let probPowerUp = this.GetRandomInt(10)
-        if(probPowerUp <1){
+        if(probPowerUp <9){
             this.probArray = [true,false,false]
         } 
         this.ShuffleArray(this.probArray)
@@ -724,19 +819,22 @@ export class MainScene extends Phaser.Scene{
         console.log(this.probArray)
         let pieceOption = this.RegeneratePiece(this.queuePieces.dequeue(), this.probArray[0])
         this.SetPiecePosition(pieceOption.shape)
-        this.option1 = this.CreatePiece(pieceOption, 1000-this.posOptionX,400-this.posOptionY,100,0.25)
+        this.option1 = this.CreatePiece(pieceOption, 965-this.posOptionX,337-this.posOptionY,100,0.45)
+        this.option1.setDepth(4)
         this.option1.name = "0"
         this.optionsPieces[0] = pieceOption
 
         pieceOption = this.RegeneratePiece(this.queuePieces.dequeue(), this.probArray[1])
         this.SetPiecePosition(pieceOption.shape)
-        this.option2 = this.CreatePiece(pieceOption, 1000-this.posOptionX,570-this.posOptionY,100,0.25)
+        this.option2 = this.CreatePiece(pieceOption, 965-this.posOptionX,590-this.posOptionY,100,0.45)
+        this.option2.setDepth(4)
         this.option2.name = "1"
         this.optionsPieces[1]=pieceOption
 
         pieceOption = this.RegeneratePiece(this.queuePieces.dequeue(), this.probArray[2])
         this.SetPiecePosition(pieceOption.shape)
-        this.option3 = this.CreatePiece(pieceOption, 1000-this.posOptionX,720-this.posOptionY,100,0.25)
+        this.option3 = this.CreatePiece(pieceOption, 965-this.posOptionX,839-this.posOptionY,100,0.45)
+        this.option3.setDepth(4)
         this.option3.name = "2"
         this.optionsPieces[2]=pieceOption
 
@@ -995,6 +1093,14 @@ export class MainScene extends Phaser.Scene{
 
         return this.counter
     }
+
+    MakeAnimation(x,y,effect){
+        this.animationBoard[x][y].visible = true
+   
+        this.animationBoard[x][y].play(effect,true)
+    }
+
+
     FormatTime(seconds) {
         let minutes = Math.floor(seconds / 60);
         let secs = seconds - minutes * 60;
@@ -1002,22 +1108,7 @@ export class MainScene extends Phaser.Scene{
         secs = secs < 10 ? '0' + secs : secs;
         return minutes + ':' + secs;
     }
-    UpdateTimer() {
-        // Reducir el tiempo restante
-        if(!this.isPaused)this.currentTime--;
-        console.log("update timer" + this.currentTime)
-        // Actualizar el texto del temporizador en la pantalla
-        if (this.currentTime > 0) this.timerText.text = this.FormatTime(this.currentTime)
     
-        // Verificar si el tiempo ha llegado a cero
-        if (this.currentTime === 0 && !this.isPaused) {
-            // Aquí puedes agregar cualquier acción que desees cuando el temporizador llegue a cero
-            this.time.removeEvent(this.UpdateTimer)
-            this.timerText.text = this.FormatTime(this.currentTime)
-            
-            
-        }
-    }
 
     ShowTime(){
         console.log("TIMER IS WORKING")
@@ -1083,20 +1174,15 @@ export class MainScene extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image("square","src/images/BBSquare.png")
-        this.load.image("table_shadow", "src/images/blockblast_backgroud_table_shadow.png")
-        this.load.image("table", "src/images/blockblast_backgroud_table.png")
-        this.load.image("b_chess", "src/images/blockblast_backgroud_chess.png")
-        this.load.image("b_box", "src/images/blockblast_backgroud_box.png")
+        //this.load.image("table_shadow", "src/images/blockblast_backgroud_table_shadow.png")
+        this.load.image("table", "src/images/parchados_chess.png")
+        this.load.image("b_box", "src/images/parchados_table.png")
         //IN GAME UI
         this.load.atlas('inGameUI', './src/images/ui/pausa_ajustes/sprites.png', './src/images/ui/pausa_ajustes/sprites.json');
         //TABLE DECOR
-        this.load.atlas("table_decor", "src/images/blockblast_backgroud_table_decor/sprites.png", "src/images/blockblast_backgroud_table_decor/sprites.json") 
+        this.load.atlas("table_decor", "src/images/decor/sprites.png", "src/images/decor/sprites.json") 
         //PREVIEW SPACE
-        this.load.atlas("preview_space", "src/images/blockblast_backgroud_previewspace/sprites.png", "src/images/blockblast_backgroud_previewspace/sprites.json") 
-
-        //DECOR B
-        this.load.atlas("decor_b", "src/images/blockblast_decor_b/sprites.png", "src/images/blockblast_decor_b/sprites.json") 
+        this.load.image("preview_space", "src/images/preview_space/parchados_piecespace.png") 
 
         //PIECES
         this.load.atlas("piece", "src/images/blockblast_piece/sprites.png", "src/images/blockblast_piece/sprites.json") 
@@ -1125,6 +1211,24 @@ export class MainScene extends Phaser.Scene{
             frameHeight: 89
             
             });
+
+        this.load.spritesheet('bombFx', 'src/images/fx/parchados_fx_bomb/spritesheet.png', {
+            frameWidth: 500,
+            frameHeight: 500
+            
+            });
+        this.load.spritesheet('destroyFx', 'src/images/fx/parchados_fx_destruccion/spritesheet.png', {
+            frameWidth: 500,
+            frameHeight: 500
+            
+            });
+        this.load.spritesheet('reductFx', 'src/images/fx/parchados_fx_reduccion/spritesheet.png', {
+            frameWidth: 200,
+            frameHeight: 200
+            
+            });
+            
+
         
     }
 
@@ -1164,16 +1268,21 @@ export class MainScene extends Phaser.Scene{
         this.boardAngle = 0
         this.boardSize = 8
         this.squareSize = 88
-        this.offsetX = 182
-        this.offsetY = 220
+        this.offsetX = 113
+        this.offsetY = 232
         this.canCheck = false
         this.refillCounter = 0
         this.secondsToAdd = 0
+        this.animationsIterator = 0
+        this.rotateBool = false
         this.isPaused = false
+        this.pauseOpen = false
+        this.gamefinish = false
+        this.isStarting = true
 
         //TIMERS
         this.minTimePerTurn = 5
-        this.maxTimePerTurn = 15
+        this.maxTimePerTurn = 25
         this.level1Time =(((this.maxTimePerTurn-this.minTimePerTurn)/3)*2)+this.minTimePerTurn
         console.log("TIMERS " + this.level1Time)
         this.level2Time =((this.maxTimePerTurn-this.minTimePerTurn)/3)+this.minTimePerTurn
@@ -1206,35 +1315,53 @@ export class MainScene extends Phaser.Scene{
             frameRate: 15,
             repeat: 0 // Reproducir la animación solo una vez
         });
+        this.anims.create({
+            key: 'bombFx',
+            frames: this.anims.generateFrameNumbers('bombFx', { start: 0, end: 19 }),
+            frameRate: 30,
+            repeat: 0 // Reproducir la animación solo una vez
+        });
+        
+        this.anims.create({
+            key: 'destroyFx',
+            frames: this.anims.generateFrameNumbers('destroyFx', { start: 0, end: 9 }),
+            frameRate: 30,
+            repeat: 0 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'reductFx',
+            frames: this.anims.generateFrameNumbers('reductFx', { start: 0, end: 14}),
+            frameRate: 30,
+            repeat: 0 // Reproducir la animación solo una vez
+        });
 
         //PICTURES
         this.offsetPictures = 540
 
-        this.add.image(this.offsetPictures,this.offsetPictures,"table")
-        this.add.image(this.offsetPictures,this.offsetPictures-1,"table_shadow")
+        //this.add.image(this.offsetPictures,this.offsetPictures,"table")
+        //this.add.image(this.offsetPictures,this.offsetPictures-1,"table_shadow")
 
-        //TABLE DECOR
-        this.add.image(this.offsetPictures-11,this.offsetPictures-507,"table_decor","blockblast_backgroud_table_decor_a.png")
-        this.add.image(this.offsetPictures-11,this.offsetPictures+437,"table_decor","blockblast_backgroud_table_decor_b.png")
-        this.add.image(this.offsetPictures-11,this.offsetPictures-440,"table_decor","blockblast_backgroud_table_decor_c.png")
         
-        //DECOR
-        this.add.image(this.offsetPictures-468,this.offsetPictures+402,"decor_b", "blockblast_decor_b_a.png")
-        this.add.image(this.offsetPictures-500,this.offsetPictures+10,"decor_b", "blockblast_decor_b_b.png")
-        this.add.image(this.offsetPictures-526,this.offsetPictures-140,"decor_b", "blockblast_decor_b_c.png")
-        this.add.image(this.offsetPictures-512,this.offsetPictures-510,"decor_b", "blockblast_decor_b_d.png")
-        this.add.image(this.offsetPictures-533,this.offsetPictures+185,"decor_b", "blockblast_decor_b_e.png")
+        
         //PREVIEW
-        this.add.image(this.offsetPictures+491,this.offsetPictures,"preview_space","blockblast_backgroud_previewspace_a.png")
-        this.add.image(this.offsetPictures+436,this.offsetPictures,"preview_space","blockblast_backgroud_previewspace_b.png")
-        this.add.image(this.offsetPictures+382,this.offsetPictures,"preview_space","blockblast_backgroud_previewspace_c.png")
+        this.add.image(this.offsetPictures+400,this.offsetPictures+10,"preview_space").setDepth(3)
 
         this.halfBoxX = (this.boardSize/2*this.squareSize)+this.offsetX-(this.squareSize/2)
         
         this.halfBoxY = (this.boardSize/2*this.squareSize)+this.offsetY-(this.squareSize/2)
         console.log("HALF"+this.halfBox)
-        let boardBox = this.add.image(this.offsetPictures-50-this.halfBoxX,this.offsetPictures-12-this.halfBoxY,"b_box")
-        let boardChess = this.add.image(this.offsetPictures-50-this.halfBoxX,this.offsetPictures-12-this.halfBoxY,"b_chess")
+        this.add.image(this.offsetPictures,this.offsetPictures,"b_box").setDepth(1)
+        let boardTable = this.add.image(this.offsetPictures-120-this.halfBoxX,this.offsetPictures-this.halfBoxY,"table").setDepth(3)
+
+
+        //TABLE DECOR
+        this.add.image(this.offsetPictures-26,this.offsetPictures-455,"table_decor","parchados decor_a.png").setDepth(2)
+        this.add.image(this.offsetPictures-45,this.offsetPictures+448,"table_decor","parchados decor_b.png").setDepth(2)
+        
+        this.add.image(this.offsetPictures-476,this.offsetPictures+350,"table_decor","parchados decor_c.png").setDepth(4)
+        this.add.image(this.offsetPictures-512,this.offsetPictures-505,"table_decor","parchados decor_d.png").setDepth(4)
+        this.add.image(this.offsetPictures+517,this.offsetPictures-445,"table_decor","parchados decor_e.png").setDepth(4)
+        this.add.image(this.offsetPictures+500,this.offsetPictures+450,"table_decor","parchados decor_f.png").setDepth(4)
 
         //POSITIONS
         this.positions = []
@@ -1250,12 +1377,12 @@ export class MainScene extends Phaser.Scene{
         this.lineCounterXadd = [0,0,0,0,0,0,0,0]
         this.lineCounterYadd = [0,0,0,0,0,0,0,0]
         this.piecesToClear = []
+        this.linesToClear = []
         this.colorsToRestore = []
         //CREATE BOARD
         this.board = []
         this.boardContainer = this.add.container(0,0)
-        this.boardContainer.add(boardBox)
-        this.boardContainer.add(boardChess)
+        this.boardContainer.add(boardTable)
         for(let i = 0; i < this.boardSize; i++){
             this.board[i] = []
             for(let j = 0; j < this.boardSize; j++){
@@ -1267,7 +1394,7 @@ export class MainScene extends Phaser.Scene{
         }
         this.boardContainer.x += (this.boardSize/2*this.squareSize)+this.offsetX-(this.squareSize/2)
         this.boardContainer.y += (this.boardSize/2*this.squareSize)+this.offsetY-(this.squareSize/2)
-        //this.boardContainer.visible = false
+        this.boardContainer.setDepth(3)
         this.boardMatrix = []
         for(let i = 0; i < this.boardSize; i++){
             this.boardMatrix[i] = []
@@ -1275,12 +1402,37 @@ export class MainScene extends Phaser.Scene{
                 this.boardMatrix[i][j] = 0
             }
         }
+        //ANIMATION BOARD
+        this.animationBoard = []
+        this.animationBoardContainer = this.add.container(0,0)
+        for(let i = 0; i < this.boardSize; i++){
+            this.animationBoard[i] = []
+            for(let j = 0; j < this.boardSize; j++){
+                this.animationBoard[i][j] = this.add.sprite(((i-this.boardSize/2)*this.squareSize)+(this.squareSize/2), ((j-this.boardSize/2)*this.squareSize)+(this.squareSize/2),"piece", this.colorsList[0]).setOrigin(.5)
+                
+                
+                this.animationBoard[i][j].visible = false
+                this.animationBoardContainer.add(this.animationBoard[i][j])
+                this.animationBoard[i][j].on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'destroyFx', function () {
+                    this.animationBoard[i][j].setVisible(false);
+                }, this);
+                this.animationBoard[i][j].on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'bombFx', function () {
+                    this.animationBoard[i][j].setVisible(false);
+                }, this);
+            }
+        }
+        this.MakeAnimation(1,7,"destroyFx")
+        this.MakeAnimation(3,7,"bombFx")
+        this.animationBoardContainer.x += (this.boardSize/2*this.squareSize)+this.offsetX-(this.squareSize/2)
+        this.animationBoardContainer.y += (this.boardSize/2*this.squareSize)+this.offsetY-(this.squareSize/2)-10
+        this.animationBoardContainer.setDepth(4)
+
+
         //SCORES
         this.scorePoints = 0
-        this.gameoverBool = false
         //let scoreContainer = this.add.image(320, 1000, 'menuUI', 'Score.png')
-        this.scoreText = this.add.text(350, 970,"SCORE: ", { 
-            fontFamily: 'Bungee', fontSize: '60px',  color: '#f4f4f4', align: 'center' }).setOrigin(0.5)
+        this.scoreText = this.add.text(200, 80,"SCORE: ", { 
+            fontFamily: 'Bungee', fontSize: '60px',  color: '#f4f4f4', align: 'center' }).setOrigin(0.5).setDepth(4)
         this.scoreText.setStroke('#553b37', 8);
 
         //TIMER
@@ -1350,6 +1502,7 @@ export class MainScene extends Phaser.Scene{
         //SETTING BOARD
         this.InsertPiece(this.GeneratePiece(),0,0)
         this.InsertPiece(this.GeneratePiece(),3,3)
+        this.isStarting=false
         this.scorePoints = 0
         this.scoreText.setText(this.scorePoints.toString().padStart(8, '0') )
 
@@ -1401,6 +1554,7 @@ export class MainScene extends Phaser.Scene{
             }
         }
         pointerContainer.visible = false
+        pointerContainer.setDepth(5)
 
 
         //CREATE COUNTERS
@@ -1417,7 +1571,7 @@ export class MainScene extends Phaser.Scene{
             this.yCounters[i].visible = false
         }
         //CREATE BUTTONS
-        this.pauseButton = this.add.image(1010, 73, 'inGameUI', 'Pausa_NonClicked.png').setInteractive();
+        this.pauseButton = this.add.image(1010, 73, 'inGameUI', 'Pausa_NonClicked.png').setInteractive().setDepth(6);
         this.pauseButton.setScale(.8);
         this.pauseButton.on('pointerdown', () => 
             {
@@ -1425,7 +1579,7 @@ export class MainScene extends Phaser.Scene{
                 //this.uiScene.audioManager.playButtonClick.play();
             });
 
-        this.settingsButton = this.add.image(910, 73, 'inGameUI', 'Reinicio_NonClicked.png').setInteractive();
+        this.settingsButton = this.add.image(910, 73, 'inGameUI', 'Reinicio_NonClicked.png').setInteractive().setDepth(6);
         this.settingsButton.setScale(.8);
         this.settingsButton.on('pointerdown', () => 
             {
@@ -1493,14 +1647,9 @@ export class MainScene extends Phaser.Scene{
                     this.piecesToDelete = []
                     this.InsertPiece(this.piece,this.pointerX, this.pointerY)
                     
-                    this.refillCounter +=1
                     
-                    if(this.CheckGameOver() && this.refillCounter <3)this.MakeGameOver()
-                    if(this.refillCounter>2){
-                        this.RemoveOptions()
-                        this.CreateOptions()
-                        this.refillCounter = 0
-                    }
+                    
+                    
                     
                 }
                 else{
@@ -1510,7 +1659,9 @@ export class MainScene extends Phaser.Scene{
             }
             
         }, this);
-               
+
+
+        
            
     }
     
@@ -1521,12 +1672,13 @@ export class MainScene extends Phaser.Scene{
         this.pointerX = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.pX-this.offsetX+50)/this.squareSize)),0,10)-2
         this.pointerY = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.pY- this.offsetY+50)/this.squareSize)),0,10)-2
         
-        if(this.lastPointerX != this.pointerX || this.lastPointerY != this.pointerY){
+        if((this.lastPointerX != this.pointerX || this.lastPointerY != this.pointerY)&&!this.isPaused){
             this.lastPointerX = this.pointerX
             this.lastPointerY = this.pointerY
 
             this.lineCounterXadd = [0,0,0,0,0,0,0,0]
             this.lineCounterYadd = [0,0,0,0,0,0,0,0]
+            this.linesToClear = []
             this.RestoreColors()
             
             

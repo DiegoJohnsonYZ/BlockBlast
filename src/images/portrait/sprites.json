@@ -1,0 +1,40 @@
+{
+"frames": {
+	"portada_background_clouds.png": {
+		"frame": {"x":0, "y":0, "w":1600, "h":195},
+		"spriteSourceSize": {"x":0,"y":0,"w":1600,"h":195},
+		"sourceSize": {"w":1600,"h":195}
+	},
+	"portada_background_skye.png": {
+		"frame": {"x":0, "y":1072, "w":1080, "h":262},
+		"spriteSourceSize": {"x":0,"y":0,"w":1080,"h":262},
+		"sourceSize": {"w":1080,"h":262}
+	},
+	"portada_chess.png": {
+		"frame": {"x":0, "y":196, "w":1080, "h":875},
+		"spriteSourceSize": {"x":0,"y":205,"w":1080,"h":1080},
+		"sourceSize": {"w":1080,"h":1080}
+	},
+	"portada_clouds_a.png": {
+		"frame": {"x":1048, "y":1335, "w":697, "h":216},
+		"spriteSourceSize": {"x":0,"y":0,"w":1161,"h":216},
+		"sourceSize": {"w":1161,"h":216}
+	},
+	"portada_clouds_b.png": {
+		"frame": {"x":1081, "y":196, "w":553, "h":298},
+		"spriteSourceSize": {"x":0,"y":0,"w":553,"h":298},
+		"sourceSize": {"w":553,"h":298}
+	},
+	"portada_clouds_c.png": {
+		"frame": {"x":0, "y":1335, "w":1047, "h":363},
+		"spriteSourceSize": {"x":0,"y":0,"w":1655,"h":363},
+		"sourceSize": {"w":1655,"h":363}
+	}
+
+},
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 1746, "h": 1699},
+	"scale": "1"
+}
+}

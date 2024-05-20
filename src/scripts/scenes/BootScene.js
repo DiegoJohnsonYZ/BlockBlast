@@ -27,7 +27,10 @@ export class BootScene extends Phaser.Scene
         this.data.set('parentSize', phaserDiv.style.width);
 
         this.bg = this.add.image(dim/2, dim/2, 'loadingBG').setDisplaySize(dim, dim).setDepth(5).setInteractive();
-        this.playButton = this.add.image(dim/2, dim/2, 'loadingUI', 'Play_NonClicked.png').setDepth(5).setInteractive();
+        this.playButton = this.add.image(dim/2, dim/2, 'loadingUI', 'Jugar_NonClicked.png').setDepth(5).setInteractive();
+        this.playText = this.add.text(580, 535, 'JUGAR', { 
+            fontFamily: 'Bungee', fontSize: '34px',  color: '#dddddd', align: 'center' }).setOrigin(0.5).setDepth(5);
+        this.playText.setStroke('#503530', 10);
         this.playButton.setVisible(false).on('pointerdown', () => { this.scene.stop(); this.scene.get("MenuScene").uiScene.splashScreenAnim(); });
 
         this.loadingSlider = this.rexUI.add.slider({
