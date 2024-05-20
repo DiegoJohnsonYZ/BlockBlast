@@ -1222,13 +1222,6 @@ export class MainScene extends Phaser.Scene{
             frameHeight: 500
             
             });
-        this.load.spritesheet('reductFx', 'src/images/fx/parchados_fx_reduccion/spritesheet.png', {
-            frameWidth: 200,
-            frameHeight: 200
-            
-            });
-            
-
         
     }
 
@@ -1321,7 +1314,6 @@ export class MainScene extends Phaser.Scene{
             frameRate: 30,
             repeat: 0 // Reproducir la animación solo una vez
         });
-        
         this.anims.create({
             key: 'destroyFx',
             frames: this.anims.generateFrameNumbers('destroyFx', { start: 0, end: 9 }),
@@ -1421,8 +1413,8 @@ export class MainScene extends Phaser.Scene{
                 }, this);
             }
         }
-        this.MakeAnimation(1,7,"destroyFx")
-        this.MakeAnimation(3,7,"bombFx")
+        //this.MakeAnimation(1,7,"destroyFx")
+        //this.MakeAnimation(3,7,"bombFx")
         this.animationBoardContainer.x += (this.boardSize/2*this.squareSize)+this.offsetX-(this.squareSize/2)
         this.animationBoardContainer.y += (this.boardSize/2*this.squareSize)+this.offsetY-(this.squareSize/2)-10
         this.animationBoardContainer.setDepth(4)
