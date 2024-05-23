@@ -1632,7 +1632,7 @@ export class MainScene extends Phaser.Scene{
             });
         
         
-
+        this.pointerAdd = 0
         
 
        
@@ -1653,18 +1653,18 @@ export class MainScene extends Phaser.Scene{
                 this.piece = this.optionsPieces[parseInt(gameObject.parentContainer.name)]
                 this.optionsBools[parseInt(gameObject.parentContainer.name)]= false
                 this.ChangePointer()
-                let aumento = 0
+                
                 if (pointer.pointerType === 'touch') {
                     this.pX = pointer.touches[0].worldX
                     this.pY = pointer.touches[0].worldY
-                    aumento = this.squareSize*2.5
+                    this.pointerAdd = this.squareSize*2
                 } else {
                     this.pX = pointer.worldX
                     this.pY = pointer.worldY
                 }
                 pointerContainer.x = this.pX-2*this.squareSize 
                 
-                pointerContainer.y = (this.pY-2*this.squareSize)-aumento
+                pointerContainer.y = (this.pY-2*this.squareSize)-this.pointerAdd
                 pointerContainer.visible = true
                 this.canCheck = true
             }
@@ -1676,7 +1676,7 @@ export class MainScene extends Phaser.Scene{
             if(!this.isPaused){
                 pointerContainer.x = this.pX-2*this.squareSize 
                 
-                pointerContainer.y = this.pY-2*this.squareSize
+                pointerContainer.y = (this.pY-2*this.squareSize)-this.pointerAdd
             }
 
         });
