@@ -7,11 +7,12 @@ export class Panel
         this.scene = scene;
 
         this.credits = 
-        [['Programación', 'Diego Johnson'],
-        ['Arte, interfaz y animación', 'Lephirea', 'Edward Torres','Karoline Jiménez'],
-        ['Marketing y diseño', 'Karoline Jiménez'],
+        [['Programación', 'Diego Johnson','Braulio Baldeon'],
+        ['Arte y animación', 'Edward Torres'],
+        ['Marketing e interfaz', 'Karoline Jiménez'],
         ['Música y sonido', 'Gunter Brenner'],
-        ['Dirección', 'Jorge García']]
+        ['Dirección', 'Jorge García'],
+        ['Productor ejecutivo', 'Phillip Chu Joy']]
     }
 
     create(dim){
@@ -234,13 +235,13 @@ export class Panel
     }
 
     createCreditsPanel(dim){
-        let creditsTitleContainer = this.scene.add.image(dim/2, 535, 'panel').setScale(1.15);
+        let creditsTitleContainer = this.scene.add.image(dim/2, 535, 'panel').setDisplaySize(800,700);
 
-        let creditsTitle = this.scene.add.text(dim/2, 280, 'CRÉDITOS', { 
+        let creditsTitle = this.scene.add.text(dim/2, 245, 'CRÉDITOS', { 
             font: '700 40px Bungee', color: '#ebebeb', align: 'center' }).setOrigin(0.5);
         creditsTitle.setStroke('#503530', 8);
 
-        let closeImage = this.scene.add.image(dim - 130, 280, 'menuUI', 'Equis_NonClicked.png').setInteractive().setScale(.5);
+        let closeImage = this.scene.add.image(dim - 150, 245, 'menuUI', 'Equis_NonClicked.png').setInteractive().setScale(.5);
         closeImage.on('pointerdown', () => this.hideCredits());
 
         let labels = []
@@ -248,7 +249,7 @@ export class Panel
         for (let i = 0; i < this.credits.length; i++){
             let newH = previousChildCount <= 1 ? 325+80*i : 325+80*i+20*previousChildCount;
             newH+=40
-            let label = this.addCreditsLabel(dim/2, newH, i);
+            let label = this.addCreditsLabel(dim/2, newH-30, i);
             if (previousChildCount < label.list.length - 1) previousChildCount = label.list.length - 1;
             labels.push(label);
         }
@@ -263,12 +264,12 @@ export class Panel
     addCreditsLabel(x, y, index){
         let title = this.scene.add.text(x, y, this.credits[index][0], { 
             fontFamily: 'Bungee', fontSize: '20px',  color: '#ebebeb', align: 'center' }).setOrigin(0.5);
-        title.setStroke('#000000', 8);
+        title.setStroke('#662C2A', 8);
 
         let names = [];
         for(let i = 1; i < this.credits[index].length; i++){
             let name = this.scene.add.text(x, y+30*i, this.credits[index][i], { 
-                font: '700 20px Bungee', color: '#ebebeb', align: 'center' }).setOrigin(0.5);
+                font: '700 18px Bungee', color: '#ebebeb', align: 'center' }).setOrigin(0.5);
             name.setStroke('#503530', 8);
             names.push(name);
         }

@@ -77,6 +77,10 @@ export class MainScene extends Phaser.Scene{
     }
 
     RestartGame(){
+        if(this.gameoverTiming){
+            clearTimeout(this.gameOverTimeOut)
+            this.gameOverTimeOut = null
+        }
         this.gamefinish = true
         this.audioManager.stopMusic()
         this.isPaused = false
@@ -391,6 +395,7 @@ export class MainScene extends Phaser.Scene{
     }
 
     InsertPiece(piece,x,y){
+        this.StopVibration()
         for(let i = 0; i < 5; i++){
             for(let j = 0; j < 5; j++){
                 if(piece.shape.charAt((5*i)+j) != 0){
@@ -588,6 +593,7 @@ export class MainScene extends Phaser.Scene{
                     this.piecesToClear.push(this.board[j][i])
                     this.colorsToRestore.push(this.GetTexture(this.board[j][i]))
                     if(this.GetTexture(this.board[j][i]).startsWith("blockblast")) this.board[j][i].setTexture("piece",this.piece.color)
+                    else this.StartVibration(this.board[j][i])
 
                     
 
@@ -600,6 +606,7 @@ export class MainScene extends Phaser.Scene{
                     this.piecesToClear.push(this.board[i][j])
                     this.colorsToRestore.push(this.GetTexture(this.board[i][j]))
                     if(this.GetTexture(this.board[i][j]).startsWith("blockblast"))this.board[i][j].setTexture("piece",this.piece.color)
+                        else this.StartVibration(this.board[i][j])
                    
                     
                 }
@@ -867,8 +874,26 @@ export class MainScene extends Phaser.Scene{
             for(let j = -4; j < this.boardSize+2; j++){
                 for(let k = 0; k < 3; k++){
                     if(this.optionsBools[k]){
-                        if(this.CanPutPiece(this.optionsPieces[k].shape,i,j))return false
+                        if(this.CanPutPiece(this.optionsPieces[k].shape,i,j)){
+                            
+                            return false
+                        }
                     }                   
+                }
+            }
+        }
+        for(let k = 0; k < 3; k++){
+            if(this.optionsBools[k]){
+                switch(k){
+                    case 0:
+                        this.StartVibration(this.option1)
+                        break
+                    case 1:
+                        this.StartVibration(this.option2)
+                        break
+                    case 2:
+                        this.StartVibration(this.option3)
+                        break    
                 }
             }
         }
@@ -947,6 +972,7 @@ export class MainScene extends Phaser.Scene{
 
 
     InsertPieceBoard(board,linecounterX, linecounterY, piece,x,y){
+        
         let auxX = 0
         let startChecking = false
         let deleteX = false
@@ -1135,6 +1161,29 @@ export class MainScene extends Phaser.Scene{
     }
     
 
+    StartVibration(element) {
+        this.boardContainer.bringToTop(element)
+            let vibrateTween = this.tweens.add({
+                targets: element,
+                scaleX: 1.2,
+                scaleY: 1.2,
+                duration: 400,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.easeInOut'
+            })
+            this.vibrateTweens.push(vibrateTween)
+    }
+    
+    StopVibration() {
+        this.vibrateTweens.forEach(tween => {
+            tween.stop();
+            tween.targets[0].setScale(1, 1); // Restablecer la escala del elemento a la normalidad
+        });
+        this.vibrateTweens = [];
+    }
+
+
     ShowTime(){
         console.log("TIMER IS WORKING")
         this.sliderTween?.remove();
@@ -1174,14 +1223,18 @@ export class MainScene extends Phaser.Scene{
     }
     
     MakeGameOver(){
+
         this.isPaused=true
-        setTimeout(() => {
+        this.gameoverTiming = true
+        this.gameOverTimeOut = setTimeout(() => {
+                
                 this.StartGameOver()
         }, 2000);
                 
     }
 
     StartGameOver(){
+        this.StopVibration()
         this.isPaused = true
         this.sliderTween?.remove();
         this.sliderTween = null;
@@ -1308,6 +1361,7 @@ export class MainScene extends Phaser.Scene{
         this.gamefinish = false
         this.isStarting = true
         this.powerupcd=4
+        this.gameoverTiming = false
 
         //TIMERS
         this.minTimePerTurn = 5
@@ -1470,6 +1524,10 @@ export class MainScene extends Phaser.Scene{
         this.option3anim.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'reductFx', function () {
             this.option3anim.setVisible(false);
         }, this);
+
+
+        this.vibrateTweens = []
+
 
         //SCORES
         this.scorePoints = 0
@@ -1735,6 +1793,7 @@ export class MainScene extends Phaser.Scene{
             this.lineCounterXadd = [0,0,0,0,0,0,0,0]
             this.lineCounterYadd = [0,0,0,0,0,0,0,0]
             this.linesToClear = []
+            this.StopVibration()
             this.RestoreColors()
             
             
