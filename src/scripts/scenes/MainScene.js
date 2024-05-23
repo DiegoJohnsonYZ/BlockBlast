@@ -1657,14 +1657,14 @@ export class MainScene extends Phaser.Scene{
                 if (pointer.pointerType === 'touch') {
                     this.pX = pointer.touches[0].worldX
                     this.pY = pointer.touches[0].worldY
-                    aumento = squareSize*2.5
+                    aumento = this.squareSize*2.5
                 } else {
                     this.pX = pointer.worldX
                     this.pY = pointer.worldY
                 }
                 pointerContainer.x = this.pX-2*this.squareSize 
                 
-                pointerContainer.y = (this.pY-2*this.squareSize)+aumento
+                pointerContainer.y = (this.pY-2*this.squareSize)-aumento
                 pointerContainer.visible = true
                 this.canCheck = true
             }
