@@ -1635,6 +1635,16 @@ export class MainScene extends Phaser.Scene{
         this.pointerAdd = 0
         
 
+        if (this.sys.game.device.os.android || this.sys.game.device.os.iOS) {
+            // Código específico para dispositivos móviles
+            console.log("Ejecutando en un dispositivo móvil");
+            this.pointerAdd = this.squareSize*2
+            // Puedes agregar aquí el código específico que deseas ejecutar solo en dispositivos móviles
+        } else {
+            // Código para dispositivos no móviles
+            console.log("Ejecutando en un dispositivo no móvil");
+        }
+
        
         this.input.on('pointermove', function (pointer) {
                 if (pointer.pointerType === 'touch') {
@@ -1657,7 +1667,7 @@ export class MainScene extends Phaser.Scene{
                 if (pointer.pointerType === 'touch') {
                     this.pX = pointer.touches[0].worldX
                     this.pY = pointer.touches[0].worldY
-                    this.pointerAdd = this.squareSize*2
+                    
                 } else {
                     this.pX = pointer.worldX
                     this.pY = pointer.worldY
