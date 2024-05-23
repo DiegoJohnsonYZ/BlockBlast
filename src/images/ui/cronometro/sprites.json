@@ -1,45 +1,35 @@
 {
 "frames": {
 	"Amarillo.png": {
-		"frame": {"x":209, "y":0, "w":24, "h":619},
-		"spriteSourceSize": {"x":0,"y":0,"w":24,"h":619},
-		"sourceSize": {"w":24,"h":619}
-	},
-	"Base cronometro.png": {
-		"frame": {"x":56, "y":0, "w":55, "h":691},
-		"spriteSourceSize": {"x":0,"y":0,"w":55,"h":691},
-		"sourceSize": {"w":55,"h":691}
+		"frame": {"x":0, "y":78, "w":619, "h":24},
+		"spriteSourceSize": {"x":0,"y":0,"w":619,"h":24},
+		"sourceSize": {"w":619,"h":24}
 	},
 	"Delineado cronometro.png": {
-		"frame": {"x":156, "y":0, "w":27, "h":649},
-		"spriteSourceSize": {"x":0,"y":0,"w":27,"h":649},
-		"sourceSize": {"w":27,"h":649}
-	},
-	"Mockup.png": {
-		"frame": {"x":0, "y":0, "w":55, "h":691},
-		"spriteSourceSize": {"x":0,"y":0,"w":55,"h":691},
-		"sourceSize": {"w":55,"h":691}
+		"frame": {"x":0, "y":0, "w":649, "h":27},
+		"spriteSourceSize": {"x":0,"y":0,"w":649,"h":27},
+		"sourceSize": {"w":649,"h":27}
 	},
 	"Reloj.png": {
-		"frame": {"x":112, "y":0, "w":43, "h":48},
+		"frame": {"x":0, "y":103, "w":43, "h":48},
 		"spriteSourceSize": {"x":0,"y":0,"w":44,"h":48},
 		"sourceSize": {"w":44,"h":48}
 	},
 	"Rojo.png": {
-		"frame": {"x":112, "y":49, "w":24, "h":619},
-		"spriteSourceSize": {"x":0,"y":0,"w":24,"h":619},
-		"sourceSize": {"w":24,"h":619}
+		"frame": {"x":0, "y":53, "w":619, "h":24},
+		"spriteSourceSize": {"x":0,"y":0,"w":619,"h":24},
+		"sourceSize": {"w":619,"h":24}
 	},
 	"Verde.png": {
-		"frame": {"x":184, "y":0, "w":24, "h":619},
-		"spriteSourceSize": {"x":0,"y":0,"w":24,"h":619},
-		"sourceSize": {"w":24,"h":619}
+		"frame": {"x":0, "y":28, "w":619, "h":24},
+		"spriteSourceSize": {"x":0,"y":0,"w":619,"h":24},
+		"sourceSize": {"w":619,"h":24}
 	}
 
 },
 "meta": {
 	"image": "sprites.png",
-	"size": {"w": 234, "h": 692},
+	"size": {"w": 650, "h": 152},
 	"scale": "1"
 }
 }

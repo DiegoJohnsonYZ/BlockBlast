@@ -779,12 +779,16 @@ export class MainScene extends Phaser.Scene{
                 const nuevaColumna = columna + j;
                 console.log("BREAKLINE  in function" + this.piecesToClear.length)
                 // Verificamos si las nuevas coordenadas están dentro de los límites de la matriz
-                if (nuevaFila >= 0 && nuevaFila < 8 && nuevaColumna >= 0 && nuevaColumna < 8 && nuevaFila != nuevaColumna) {
+                if (nuevaFila >= 0 && nuevaFila < 8 && nuevaColumna >= 0 && nuevaColumna < 8) {
+                    if(i == j && i==0){
+                        continue
+                    }
                     console.log("BREAKLINE  in function" + this.piecesToClear.length)
-                    // Agregamos las coordenadas válidas a la lista de variables circundantes
-                    //variablesCircundantes.push([nuevaFila, nuevaColumna]);
-                    this.BreakPiece(nuevaFila, nuevaColumna,true)
+                        // Agregamos las coordenadas válidas a la lista de variables circundantes
+                        //variablesCircundantes.push([nuevaFila, nuevaColumna]);
+                        this.BreakPiece(nuevaFila, nuevaColumna,true)
                 }
+                    
             }
         }
     }
@@ -797,6 +801,9 @@ export class MainScene extends Phaser.Scene{
     
 
     CreateOptions(){
+
+        this.powerupcd +=1
+        console.log("COOLDOWN "+this.powerupcd)
         this.optionsBools[0] = true
         this.optionsBools[1] = true
         this.optionsBools[2] = true
@@ -813,8 +820,9 @@ export class MainScene extends Phaser.Scene{
         this.probArray = [false,false,false]
         console.log(this.probArray)
         let probPowerUp = this.GetRandomInt(10)
-        if(probPowerUp <9){
+        if(probPowerUp <4 && this.powerupcd > 4){
             this.probArray = [true,false,false]
+            this.powerupcd = 0
         } 
         this.ShuffleArray(this.probArray)
         
@@ -1151,6 +1159,11 @@ export class MainScene extends Phaser.Scene{
               getStart: () => 1,
               getEnd: () => 0
             },
+            onUpdate: function(tween, target){
+                let sliderValue = target.value;
+                let thumbX = target.x - (target.width*.8) / 2 + (target.width*.8) * sliderValue;
+                target.getElement('thumb').x = target.getElement('thumb').x+3; // Ajustar la posición del thumb
+            },
             onComplete: () => {
                 console.log("¡Tiempo agotado!")
                 this.StartGameOver()
@@ -1294,6 +1307,7 @@ export class MainScene extends Phaser.Scene{
         this.pauseOpen = false
         this.gamefinish = false
         this.isStarting = true
+        this.powerupcd=4
 
         //TIMERS
         this.minTimePerTurn = 5
@@ -1442,17 +1456,17 @@ export class MainScene extends Phaser.Scene{
         this.animationBoardContainer.setDepth(4)
 
         this.option1anim = this.add.sprite(965-23, 340-27,"piece", this.colorsList[0]).setOrigin(.5).setDepth(6).setScale(2)
-        this.option1anim.visible = true
+        this.option1anim.visible = false
         this.option1anim.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'reductFx', function () {
             this.option1anim.setVisible(false);
         }, this);
         this.option2anim = this.add.sprite(965-23, 590-27,"piece", this.colorsList[0]).setOrigin(.5).setDepth(6).setScale(2)
-        this.option2anim.visible = true
+        this.option2anim.visible = false
         this.option2anim.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'reductFx', function () {
             this.option2anim.setVisible(false);
         }, this);
         this.option3anim = this.add.sprite(965-23, 840-27,"piece", this.colorsList[0]).setOrigin(.5).setDepth(6).setScale(2)
-        this.option3anim.visible = true
+        this.option3anim.visible = false
         this.option3anim.on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'reductFx', function () {
             this.option3anim.setVisible(false);
         }, this);
@@ -1536,31 +1550,32 @@ export class MainScene extends Phaser.Scene{
         this.scoreText.setText(this.scorePoints.toString().padStart(8, '0') )
 
         //CREATE LOADING BAR
-        let barX = this.offsetPictures-510
-        let barY = this.offsetPictures
-        this.add.image(barX,barY,"timerBar", "Base cronometro.png").setDepth(5)
+        let barX = this.offsetPictures-40
+        let barY = this.offsetPictures+450
+        //this.add.image(barX,barY,"timerBar", "Base cronometro.png").setDepth(5)
         this.timeSlider = this.uiScene.rexUI.add.slider({
             x: barX,
             y: barY,
-            width: 35,
-            height: 630,
-            orientation: 'y',
-            reverseAxis: true,
+            width: 630,
+            height: 30,
+            orientation: 'x',
+            reverseAxis: false,
             value: 1,
             end: 0, // Cambiado a 0 para que el valor máximo sea 0
             start: 1, // Cambiado a 1 para que el valor mínimo sea 1
-            track: this.add.sprite(0,0,'timerBar','Delineado cronometro.png'),
-            indicator: this.add.sprite(0,10,'timerBar','Verde.png').setDisplaySize(20,630),
+            indicator: this.add.sprite(0,40,'timerBar','Verde.png').setDisplaySize(610,20),
+            track: this.add.sprite(0,0,'timerBar','Delineado cronometro.png').setDisplaySize( 630,20),
+            
             thumb: this.add.sprite(0,0,'timerBar','Reloj.png').setScale(1,1),
-    
-            input: 'none',
             space: {
-              top: -5,
-              right: 0,
-              left: 0,
-              bottom: -5
+                right:10,
+                left:-3
             },
+            input: 'none',
         }).layout().setDepth(5)
+
+
+        
 
         //CREATE OPTIONS
         this.optionsBools = []
@@ -1638,16 +1653,18 @@ export class MainScene extends Phaser.Scene{
                 this.piece = this.optionsPieces[parseInt(gameObject.parentContainer.name)]
                 this.optionsBools[parseInt(gameObject.parentContainer.name)]= false
                 this.ChangePointer()
+                let aumento = 0
                 if (pointer.pointerType === 'touch') {
                     this.pX = pointer.touches[0].worldX
                     this.pY = pointer.touches[0].worldY
+                    aumento = squareSize*2.5
                 } else {
                     this.pX = pointer.worldX
                     this.pY = pointer.worldY
                 }
                 pointerContainer.x = this.pX-2*this.squareSize 
                 
-                pointerContainer.y = this.pY-2*this.squareSize
+                pointerContainer.y = (this.pY-2*this.squareSize)+aumento
                 pointerContainer.visible = true
                 this.canCheck = true
             }
@@ -1688,7 +1705,7 @@ export class MainScene extends Phaser.Scene{
             }
             
         }, this);
-        this.ReductAnimation()
+        //this.ReductAnimation()
 
         
            
@@ -1724,6 +1741,8 @@ export class MainScene extends Phaser.Scene{
             this.yCounters[i].setText(this.lineCounterX[i])
             this.xCounters[i].setText(this.lineCounterY[i])
         }
+
+        //this.timeSlider.thumb.x = this.timeSlider.track.x + this.timeSlider.track.width * this.timeSlider.value - (this.timeSlider.thumb.width / 2);
 
     }
 }

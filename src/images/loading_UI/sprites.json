@@ -11,12 +11,12 @@
 		"sourceSize": {"w":722,"h":67}
 	},
 	"Jugar_Clicked.png": {
-		"frame": {"x":0, "y":204, "w":393, "h":104},
+		"frame": {"x":0, "y":307, "w":393, "h":104},
 		"spriteSourceSize": {"x":0,"y":0,"w":393,"h":104},
 		"sourceSize": {"w":393,"h":104}
 	},
 	"Jugar_NonClicked.png": {
-		"frame": {"x":0, "y":309, "w":393, "h":102},
+		"frame": {"x":0, "y":204, "w":393, "h":102},
 		"spriteSourceSize": {"x":0,"y":0,"w":393,"h":102},
 		"sourceSize": {"w":393,"h":102}
 	},
