@@ -1726,7 +1726,7 @@ export class MainScene extends Phaser.Scene{
     update(time, deltaTime){
         //console.log("CONV REFILL COUNTER "+ this.refillCounter)
         this.pointerX = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.pX-this.offsetX+50)/this.squareSize)),0,10)-2
-        this.pointerY = Phaser.Math.Clamp((Phaser.Math.FloorTo((this.pY- this.offsetY+50)/this.squareSize)),0,10)-2
+        this.pointerY = Phaser.Math.Clamp((Phaser.Math.FloorTo(((this.pY-this.pointerAdd)- this.offsetY+50)/this.squareSize)),0,10)-2
         
         if((this.lastPointerX != this.pointerX || this.lastPointerY != this.pointerY)&&!this.isPaused){
             this.lastPointerX = this.pointerX
