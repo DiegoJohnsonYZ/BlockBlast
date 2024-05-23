@@ -118,6 +118,9 @@ export class MenuScene extends Phaser.Scene
                   getStart: () => .9,
                   getEnd: () => 1
                 },
+                onUpdate: function(tween, target){
+                    target.getElement('thumb').x = target.getElement('thumb').x+12; // Ajustar la posición del thumb
+                },
                 onComplete: () => {
                     this.mainScene.startRunning = false;
                     //this.uiScene.audioManager.menuMusic.stop();
@@ -141,6 +144,9 @@ export class MenuScene extends Phaser.Scene
             value: {
               getStart: () => 0,
               getEnd: () => .9
+            },
+            onUpdate: function(tween, target){
+                target.getElement('thumb').x = target.getElement('thumb').x+12; // Ajustar la posición del thumb
             },
             onComplete: () => {
                 sliderTween?.remove();
