@@ -510,7 +510,7 @@ export class MainScene extends Phaser.Scene{
             //MANDAR LA SIGUIENTE ANIMACION
             setTimeout(() => {
                 this.BreakLine()
-            }, 20);
+            }, 50);
         }
 
         
@@ -699,9 +699,7 @@ export class MainScene extends Phaser.Scene{
         return rotatedMatrix;
     }
     ConverterPowerUp(){
-        this.ReductAnimation()
-        //limpiamos la cola
-        this.queuePieces = new Queue()
+        this.RemoveOptions()
         //calculamos cuantas piezas necesitamos
         let remainingPieces = 0
         for(let k = 0; k < 3; k++){
@@ -709,21 +707,11 @@ export class MainScene extends Phaser.Scene{
                 remainingPieces++
             }                   
         }
-        console.log("CONV"+remainingPieces)
-        this.RemoveOptions()
         //SI YA NO QUEDAN PIEZAS
         if(remainingPieces === 0){
-            console.log("CONV"+ " ENTRO AL CONVERTER")
-            remainingPieces = 3
-            //aniadimos piezas de 1
-            for(let k = 0; k < remainingPieces; k++){
-                this.queuePieces.enqueue("0000000000001000000000000")
-            
-            }
-            
-            this.CreateOptions()
-            this.refillCounter = 0
+            this.converterBool = true
         }else{
+            this.ReductAnimation()
             //SI QUEDAN
             let pieceOption = this.RegeneratePiece("0000000000001000000000000", false)
 
@@ -808,7 +796,10 @@ export class MainScene extends Phaser.Scene{
     
 
     CreateOptions(){
-
+        if(this.converterBool){
+            this.sliderTween?.pause()
+            this.isPaused = true
+        }
         this.powerupcd +=1
         console.log("COOLDOWN "+this.powerupcd)
         this.optionsBools[0] = true
@@ -855,6 +846,24 @@ export class MainScene extends Phaser.Scene{
         this.option3.setDepth(4)
         this.option3.name = "2"
         this.optionsPieces[2]=pieceOption
+
+        const tween = this.tweens.add({
+            targets: [this.option1, this.option2, this.option3],
+            scale: { from: 0.01, to: 1 }, // Escalado de 0.01 a 0.45
+            duration: 300, // Duración del tween en milisegundos
+            ease: 'Cubic.easeIn', // Tipo de interpolación
+            onComplete: () => {
+                // Limpia el tween después de que termine
+                if(this.converterBool){
+                    this.ConverterPowerUp()
+                    this.sliderTween?.resume()
+                    this.isPaused = false
+                }
+                this.converterBool = false
+                tween.remove();
+            }
+        });
+
 
         this.currentTime = this.maxTimePerTurn
     }
@@ -1209,8 +1218,6 @@ export class MainScene extends Phaser.Scene{
               getEnd: () => 0
             },
             onUpdate: function(tween, target){
-                let sliderValue = target.value;
-                let thumbX = target.x - (target.width*.8) / 2 + (target.width*.8) * sliderValue;
                 target.getElement('thumb').x = target.getElement('thumb').x+3; // Ajustar la posición del thumb
             },
             onComplete: () => {
@@ -1362,6 +1369,7 @@ export class MainScene extends Phaser.Scene{
         this.isStarting = true
         this.powerupcd=4
         this.gameoverTiming = false
+        this.converterBool = false
 
         //TIMERS
         this.minTimePerTurn = 5
@@ -1413,7 +1421,7 @@ export class MainScene extends Phaser.Scene{
         this.anims.create({
             key: 'reductFx',
             frames: this.anims.generateFrameNumbers('reductFx', { start: 0, end: 14}),
-            frameRate: 30,
+            frameRate:30,
             repeat: 0 // Reproducir la animación solo una vez
         });
 
