@@ -60,67 +60,47 @@ export class Panel
     
 
     createFirstTutorialPage(dim){
-        let text1 = this.scene.add.text(dim/2, 410, 'CORRE A TODA VELOCIDAD MIENTRAS EVADES OBSTÁCULOS Y AUTOMÓVILES', { 
-            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
-        text1.setStroke('#2D1935', 13).setLineSpacing(0).setShadow(2, 2, '#000000', 2, true, false).setWordWrapWidth(this.panel.displayWidth-450);
+        let text1 = this.scene.add.text(dim/2, 440, 'JALA LAS FICHAS HACIA EL TABLERO Y FORMA LINEAS PARA DESTRUIRLAS Y GANAR PUNTOS. A MAS LINEAS COMPLETADAS, MÁS PUNTOS.', { 
+            fontFamily: 'Bungee', fontSize: '20px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
+        text1.setStroke('#503530', 8).setLineSpacing(0).setWordWrapWidth(this.panel.displayWidth-100);
 
-        let image1 = this.scene.add.image(dim/2-250, 480, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
-        let image2 = this.scene.add.image(dim/2-100, 480, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
-        let image3 = this.scene.add.image(dim/2+50, 480, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
-        let image4 = this.scene.add.image(dim/2+220, 480, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
+        let image1 = this.scene.add.image(dim/2, 550, 'tutorial', 'linecomplete.png').setScale(.5);
 
-        let text2 = this.scene.add.text(dim/2, dim/2+50, 'RECOGE Y REPARTE PAQUETES A LOS CLIENTES AL BORDE DE LA PISTA PARA AUMENTAR TU MULTIPLICADOR DE PUNTAJE', { 
-            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
-        text2.setStroke('#2D1935', 13).setLineSpacing(0).setShadow(2, 2, '#000000', 2, true, false).setWordWrapWidth(this.panel.displayWidth-450);
+        let text2 = this.scene.add.text(dim/2, dim/2+120, 'COLOCA LAS FICHAS CON CUIDADO, SI ES IMPOSIBLE COLOCAR ALGUNA O SE TE ACABA EL TIEMPO, PERDERÁS.', { 
+            fontFamily: 'Bungee', fontSize: '20px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
+        text2.setStroke('#503530', 8).setLineSpacing(0).setWordWrapWidth(this.panel.displayWidth-100);
 
-        let image5 = this.scene.add.image(dim/2-250, dim/2+180, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
-        let sumText = this.scene.add.text(dim/2-175, dim/2+180, '+', { 
-            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
-        sumText.setStroke('#2D1935', 13).setShadow(2, 2, '#000000', 2, true, false);
-
-        let image6 = this.scene.add.image(dim/2-100, dim/2+180, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
-        let equalText = this.scene.add.text(dim/2-35, dim/2+180, '=', { 
-            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
-        equalText.setStroke('#2D1935', 13).setShadow(2, 2, '#000000', 2, true, false);
-
-        let image7 = this.scene.add.image(dim/2+80, dim/2+180, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
-        let numText = this.scene.add.text(dim/2+110, dim/2+180, 'x2', { 
-            font: '1000 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5).setStroke('#000000', 6);
-
-        let image8 = this.scene.add.image(dim/2+220, dim/2+180, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
+        let image2 = this.scene.add.image(dim/2, dim/2+200, 'tutorial', 'timer.png').setScale(.5);
+        
 
         const textContainer1 = this.scene.add.container(0, 0, 
-            [text1, image1, image2, image3, image4, text2, image5, sumText, image6, equalText, image7, numText, image8]).setVisible(false);
+            [text1, image1, image2, text2]).setVisible(false);
         return textContainer1
     }
 
     createSecondTutorialPage(dim){
-        let text1 = this.scene.add.text(dim/2, 410, 'APROVECHA LOS ITEMS DE APOYO COMO:', { 
-            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
-        text1.setStroke('#2D1935', 13).setLineSpacing(0).setShadow(2, 2, '#000000', 2, true, false).setWordWrapWidth(this.panel.displayWidth-450);
+        let text1 = this.scene.add.text(dim/2, 410, 'COMPLETA LINEAS QUE INCLUYEN PIEZAS ESPECIALES Y APROVECHA SUS VENTAJAS', { 
+            fontFamily: 'Bungee', fontSize: '20px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
+        text1.setStroke('#503530', 8).setLineSpacing(0).setWordWrapWidth(this.panel.displayWidth-100);
 
-        let image1 = this.scene.add.image(dim/2-150, 410, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
-        let doubleText = this.scene.add.text(dim/2-100, 410, 'PUNTAJE x10', { 
-            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0, .5);
-        doubleText.setStroke('#2D1935', 13).setShadow(2, 2, '#000000', 2, true, false);
+        let image1 = this.scene.add.image(dim/2-200-60, dim/2-50, 'tutorial', 'bomb.png').setScale(1);
+        let image2 = this.scene.add.image(dim/2+50-60, dim/2-50, 'tutorial', 'bombprep.png').setScale(.28);
+        let image3 = this.scene.add.image(dim/2+300-60, dim/2-50, 'tutorial', 'bombexplode.png').setScale(.28);
 
-        let image2 = this.scene.add.image(dim/2-150, 480, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
-        let shieldText = this.scene.add.text(dim/2-100, 480, 'ESCUDO PROTECTOR', { 
-            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0, .5);
-        shieldText.setStroke('#2D1935', 13).setShadow(2, 2, '#000000', 2, true, false);
+        let text2 = this.scene.add.text(dim/2, dim/2+50, 'LAS BOMBAS DESTRUYEN LAS FICHAS A SU ALREDEDOR, LIMPIANDO EL TABLERO', { 
+            fontFamily: 'Bungee', fontSize: '20px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
+        text2.setStroke('#503530', 8).setLineSpacing(0).setWordWrapWidth(this.panel.displayWidth-100);
 
-        let image3 = this.scene.add.image(dim/2-150, 550, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
-        let slowText = this.scene.add.text(dim/2-100, 550, 'CÁMARA LENTA', { 
-            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0, .5);
-        slowText.setStroke('#2D1935', 13).setShadow(2, 2, '#000000', 2, true, false);
-
-        let text2 = this.scene.add.text(dim/2, dim/2+110, 'ALGUNOS PUEDEN ESTAR EN EL AIRE USA LAS RAMPAS PARA ALCANZARLOS', { 
-            font: '600 15px Bungee', color: '#FCF4D9', align: 'center' }).setOrigin(0.5);
-        text2.setStroke('#2D1935', 13).setLineSpacing(0).setShadow(2, 2, '#000000', 2, true, false).setWordWrapWidth(this.panel.displayWidth-450);
+        let image4 = this.scene.add.image(dim/2-200-60, dim/2+100, 'tutorial', 'reduct.png').setScale(1);
+        let image5 = this.scene.add.image(dim/2+50-60, dim/2+100, 'tutorial', 'reductprep.png').setScale(.3);
+        let image6 = this.scene.add.image(dim/2+300-60, dim/2+100, 'tutorial', 'reductworks.png').setScale(.3);
         
-        let image4 = this.scene.add.image(dim/2, dim/2+210, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setScale(.5);
+        let text3 = this.scene.add.text(dim/2, dim/2+190, 'EL REDUCTOR TRANSFORMA LAS FICHAS QUE NO HAS USADO EN PEQUEÑOS CUADROS', { 
+            fontFamily: 'Bungee', fontSize: '20px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
+        text3.setStroke('#503530', 8).setLineSpacing(0).setWordWrapWidth(this.panel.displayWidth-100);
 
-        const textContainer2 = this.scene.add.container(0, 0, [text1, image1, doubleText, image2, shieldText, image3, slowText, text2, image4]).setVisible(false);
+        const textContainer2 = this.scene.add.container(0, 0, 
+            [text1, image1, image2,image3, text2,image4,image5,image6,text3]).setVisible(false);
         return textContainer2
     }
 

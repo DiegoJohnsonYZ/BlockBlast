@@ -12,7 +12,6 @@ export class MenuScene extends Phaser.Scene
     
     preload(){
         this.load.atlas('menuBG', './src/images/portrait/sprites.png', './src/images/portrait/sprites.json');
-        
         this.load.image('cloud_a', './src/images/portrait/portada_clouds_a.png');
         this.load.image('cloud_b', './src/images/portrait/portada_clouds_b.png');
         this.load.image('cloud_c', './src/images/portrait/portada_clouds_c.png');

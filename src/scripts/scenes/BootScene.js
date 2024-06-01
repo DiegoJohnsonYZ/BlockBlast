@@ -7,6 +7,7 @@ export class BootScene extends Phaser.Scene
 
     preload(){
         this.load.image('loadingBG', './src/images/bb_portrait.png');
+        this.load.atlas('tutorial', './src/images/tutorial/sprites.png', './src/images/tutorial/sprites.json');
         this.load.atlas('loadingUI', './src/images/loading_UI/sprites.png', './src/images/loading_UI/sprites.json');
         this.load.atlas('menuUI', './src/images/ui/botones/sprites.png', './src/images/ui/botones/sprites.json');
         this.load.scenePlugin({

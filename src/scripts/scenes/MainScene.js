@@ -223,7 +223,7 @@ export class MainScene extends Phaser.Scene{
 
 
     //PIECE GENERATORS
-    CreatePiece(piece, x, y, size, sizeM){
+    CreatePiece(piece, x, y, size, sizeM, pieceWord){
         size = size*sizeM
         const container = this.add.container(x,y)
         for(let i = 0; i < 5; i++){
@@ -237,7 +237,7 @@ export class MainScene extends Phaser.Scene{
                         container.add(s1)
                     }
                     else{
-                        let s1 = this.add.image((size*j)-(size*2),(size*i)-(size*2) , "piece", this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))])
+                        let s1 = this.add.image((size*j)-(size*2),(size*i)-(size*2) , pieceWord, this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))])
                         //s1.setInteractive()
                         s1.setScale(sizeM)
                         //this.input.setDraggable(s1)
@@ -246,7 +246,7 @@ export class MainScene extends Phaser.Scene{
                     
                 }
                 if(i==2&&j==2){
-                    let s2 = this.add.image((size*j)-(size*2),(size*i)-(size*2) , "piece",this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))])
+                    let s2 = this.add.image((size*j)-(size*2),(size*i)-(size*2) ,pieceWord,this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))])
                     s2.setAlpha(0.000001)
                     s2.setScale(2.5)
                     s2.setInteractive()
@@ -266,7 +266,7 @@ export class MainScene extends Phaser.Scene{
                         this.pointer[j][i].setTexture(this.powerUpsList[this.piece.shape.charAt((5*i)+j)-1])
                     }
                     else{
-                        this.pointer[j][i].setTexture("piece", this.colorsList[this.ObtainInt(this.piece.shape.charAt((5*i)+j))])
+                        this.pointer[j][i].setTexture("originalPiece", this.colorsList[this.ObtainInt(this.piece.shape.charAt((5*i)+j))])
                     }
                     this.pointer[j][i].alpha = 1
                     
@@ -399,13 +399,16 @@ export class MainScene extends Phaser.Scene{
         for(let i = 0; i < 5; i++){
             for(let j = 0; j < 5; j++){
                 if(piece.shape.charAt((5*i)+j) != 0){
-                    if(this.ObtainInt(piece.shape.charAt((5*i)+j))<-10){
+                    if(this.ObtainInt(piece.shape.charAt((5*i)+j))<-10){//powerups
                         this.board[j+x][i+y].setTexture(this.powerUpsList[piece.shape.charAt((5*i)+j)-1]).setTint(0xffffff).visible = true
+                        
                         this.powerUpsInGame[(j+x).toString()+(i+y).toString()] = (j+x).toString()+(i+y).toString()
                         this.SetName(this.board[j+x][i+y],this.powerUpsList[piece.shape.charAt((5*i)+j)-1])
                     }
-                    else{
-                        this.board[j+x][i+y].setTexture("piece",this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))]).setTint(0xffffff).visible = true
+                    else{//piezas normales
+                        let colorForPiece = this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))]
+                        this.board[j+x][i+y].setTexture("piece",colorForPiece).setTint(0xffffff).visible = true
+                        this.idleboard[j+x][i+y].play("idle_"+colorForPiece[17],true).visible = true
                         this.SetName(this.board[j+x][i+y],this.colorsList[this.ObtainInt(piece.shape.charAt((5*i)+j))])
                     }
                     
@@ -546,6 +549,8 @@ export class MainScene extends Phaser.Scene{
                 this.board[filas][columnas].anims.pause()
                 this.board[filas][columnas].setTint(0xffffff)
                 this.board[filas][columnas].setTexture("piece",this.colorsList[0])
+                this.idleboard[filas][columnas].anims.pause()
+                this.idleboard[filas][columnas].visible = false
                 this.SetName(this.board[filas][columnas],this.colorsList[0])
                 this.boardMatrix[filas][columnas] = 0
             } 
@@ -590,9 +595,11 @@ export class MainScene extends Phaser.Scene{
                 this.linesToClear.push(i)
                 for(let j = 0; j < this.boardSize; j++){
 
-                    this.piecesToClear.push(this.board[j][i])
+                    this.piecesToClear.push(this.idleboard[j][i])
                     this.colorsToRestore.push(this.GetTexture(this.board[j][i]))
-                    if(this.GetTexture(this.board[j][i]).startsWith("blockblast")) this.board[j][i].setTexture("piece",this.piece.color)
+                    if(this.GetTexture(this.board[j][i]).startsWith("blockblast")) {
+                        this.idleboard[j][i].anims.pause()
+                        this.idleboard[j][i].setTexture("originalPiece",this.piece.color)}
                     else this.StartVibration(this.board[j][i])
 
                     
@@ -603,9 +610,11 @@ export class MainScene extends Phaser.Scene{
             if(this.lineCounterYadd[i]+this.lineCounterY[i]== this.boardSize){
                 this.linesToClear.push(i+8)
                 for(let j = 0; j < this.boardSize; j++){
-                    this.piecesToClear.push(this.board[i][j])
+                    this.piecesToClear.push(this.idleboard[i][j])
                     this.colorsToRestore.push(this.GetTexture(this.board[i][j]))
-                    if(this.GetTexture(this.board[i][j]).startsWith("blockblast"))this.board[i][j].setTexture("piece",this.piece.color)
+                    if(this.GetTexture(this.board[i][j]).startsWith("blockblast")){
+                        this.idleboard[i][j].anims.pause()
+                        this.idleboard[i][j].setTexture("originalPiece",this.piece.color)}
                         else this.StartVibration(this.board[i][j])
                    
                     
@@ -621,7 +630,7 @@ export class MainScene extends Phaser.Scene{
         for(let i = 0; i < this.colorsToRestore.length; i++){
 
             console.log(this.colorsToRestore[i])
-            if(this.colorsToRestore[i].startsWith("blockblast")) this.piecesToClear[i].setTexture("piece",this.colorsToRestore[i])
+            if(this.colorsToRestore[i].startsWith("blockblast")) this.piecesToClear[i].play("idle" + this.colorsToRestore[i][17],true)
 
 
             
@@ -724,7 +733,7 @@ export class MainScene extends Phaser.Scene{
                 //creamos pieza
                 
                 this.SetPiecePosition(pieceOption.shape)
-                this.option1 = this.CreatePiece(pieceOption, 965-this.posOptionX,337-this.posOptionY,100,0.45)
+                this.option1 = this.CreatePiece(pieceOption, 965-this.posOptionX,337-this.posOptionY,100,0.45,"originalPiece")
                 this.option1.setDepth(5)
                 this.option1.name = "0"
                 this.optionsPieces[0] = pieceOption
@@ -732,7 +741,7 @@ export class MainScene extends Phaser.Scene{
             if(this.optionsBools[1]){
                 //creamos pieza
                 this.SetPiecePosition(pieceOption.shape)
-                this.option2 = this.CreatePiece(pieceOption, 965-this.posOptionX,590-this.posOptionY,100,0.45)
+                this.option2 = this.CreatePiece(pieceOption, 965-this.posOptionX,590-this.posOptionY,100,0.45,"originalPiece")
                 this.option2.setDepth(5)
         
                 this.option2.name = "1"
@@ -741,7 +750,7 @@ export class MainScene extends Phaser.Scene{
             if(this.optionsBools[2]){
                 //creamos pieza
                 this.SetPiecePosition(pieceOption.shape)
-                this.option3 = this.CreatePiece(pieceOption, 965-this.posOptionX,839-this.posOptionY,100,0.45)
+                this.option3 = this.CreatePiece(pieceOption, 965-this.posOptionX,839-this.posOptionY,100,0.45,"originalPiece")
                 this.option3.setDepth(5)
         
                 this.option3.name = "2"
@@ -828,21 +837,21 @@ export class MainScene extends Phaser.Scene{
         console.log(this.probArray)
         let pieceOption = this.RegeneratePiece(this.queuePieces.dequeue(), this.probArray[0])
         this.SetPiecePosition(pieceOption.shape)
-        this.option1 = this.CreatePiece(pieceOption, 965-this.posOptionX,337-this.posOptionY,100,0.45)
+        this.option1 = this.CreatePiece(pieceOption, 965-this.posOptionX,337-this.posOptionY,100,0.45,"originalPiece")
         this.option1.setDepth(4)
         this.option1.name = "0"
         this.optionsPieces[0] = pieceOption
 
         pieceOption = this.RegeneratePiece(this.queuePieces.dequeue(), this.probArray[1])
         this.SetPiecePosition(pieceOption.shape)
-        this.option2 = this.CreatePiece(pieceOption, 965-this.posOptionX,590-this.posOptionY,100,0.45)
+        this.option2 = this.CreatePiece(pieceOption, 965-this.posOptionX,590-this.posOptionY,100,0.45,"originalPiece")
         this.option2.setDepth(4)
         this.option2.name = "1"
         this.optionsPieces[1]=pieceOption
 
         pieceOption = this.RegeneratePiece(this.queuePieces.dequeue(), this.probArray[2])
         this.SetPiecePosition(pieceOption.shape)
-        this.option3 = this.CreatePiece(pieceOption, 965-this.posOptionX,839-this.posOptionY,100,0.45)
+        this.option3 = this.CreatePiece(pieceOption, 965-this.posOptionX,839-this.posOptionY,100,0.45,"originalPiece")
         this.option3.setDepth(4)
         this.option3.name = "2"
         this.optionsPieces[2]=pieceOption
@@ -1276,6 +1285,8 @@ export class MainScene extends Phaser.Scene{
 
         //PIECES
         this.load.atlas("piece", "src/images/blockblast_piece/sprites.png", "src/images/blockblast_piece/sprites.json") 
+        //ORIGINAL PIECES
+        this.load.atlas("originalPiece", "src/images/originalPiece/sprites.png", "src/images/originalPiece/sprites.json") 
         //POWER UPS
         this.load.atlas("powerUps", "src/images/BlockBlastPowerUps/sprites.png", "src/images/BlockBlastPowerUps/sprites.json")
 
@@ -1302,6 +1313,8 @@ export class MainScene extends Phaser.Scene{
             
             });
 
+
+
         this.load.spritesheet('bombFx', 'src/images/fx/parchados_fx_bomb/spritesheet.png', {
             frameWidth: 500,
             frameHeight: 500
@@ -1315,6 +1328,79 @@ export class MainScene extends Phaser.Scene{
         this.load.spritesheet('reductFx', 'src/images/fx/parchados_fx_reduccion/spritesheet.png', {
             frameWidth: 200,
             frameHeight: 200
+            
+            });
+
+        //ANIMATIONS IDLE
+
+        this.load.spritesheet('idle_a', 'src/images/piece_animations/idle_a.png', {
+            frameWidth: 90,
+            frameHeight: 90
+            
+            });
+        this.load.spritesheet('idle_b', 'src/images/piece_animations/idle_b.png', {
+            frameWidth: 90,
+            frameHeight: 90
+            
+            });
+        this.load.spritesheet('idle_c', 'src/images/piece_animations/idle_c.png', {
+            frameWidth: 90,
+            frameHeight: 90
+            
+            });
+        this.load.spritesheet('idle_d', 'src/images/piece_animations/idle_d.png', {
+            frameWidth: 90,
+            frameHeight: 90
+            
+            });
+        this.load.spritesheet('idle_e', 'src/images/piece_animations/idle_e.png', {
+            frameWidth: 90,
+            frameHeight: 90
+            
+            });
+        this.load.spritesheet('idle_f', 'src/images/piece_animations/idle_f.png', {
+            frameWidth: 90,
+            frameHeight: 90
+            
+            });
+        this.load.spritesheet('idle_g', 'src/images/piece_animations/idle_g.png', {
+            frameWidth: 90,
+            frameHeight: 90
+            
+            });
+        this.load.spritesheet('idle_h', 'src/images/piece_animations/idle_h.png', {
+            frameWidth: 90,
+            frameHeight: 90
+            
+            });
+        this.load.spritesheet('idle_i', 'src/images/piece_animations/idle_i.png', {
+            frameWidth: 90,
+            frameHeight: 90
+            
+            });
+        this.load.spritesheet('idle_j', 'src/images/piece_animations/idle_j.png', {
+            frameWidth: 90,
+            frameHeight: 90
+            
+            });
+        this.load.spritesheet('idle_k', 'src/images/piece_animations/idle_k.png', {
+            frameWidth: 90,
+            frameHeight: 90
+            
+            });
+        this.load.spritesheet('idle_l', 'src/images/piece_animations/idle_l.png', {
+            frameWidth: 90,
+            frameHeight: 90
+            
+            });
+        this.load.spritesheet('idle_m', 'src/images/piece_animations/idle_m.png', {
+            frameWidth: 90,
+            frameHeight: 90
+            
+            });
+        this.load.spritesheet('idle_n', 'src/images/piece_animations/idle_n.png', {
+            frameWidth: 90,
+            frameHeight: 90
             
             });
         
@@ -1425,6 +1511,93 @@ export class MainScene extends Phaser.Scene{
             repeat: 0 // Reproducir la animación solo una vez
         });
 
+        //IDLE
+        let idleFramerate = 7
+        this.anims.create({
+            key: 'idle_a',
+            frames: this.anims.generateFrameNumbers('idle_a', { start: 0, end: 3}),
+            frameRate:idleFramerate,
+            repeat: -1 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'idle_b',
+            frames: this.anims.generateFrameNumbers('idle_b', { start: 0, end: 1}),
+            frameRate:idleFramerate,
+            repeat: -1 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'idle_c',
+            frames: this.anims.generateFrameNumbers('idle_c', { start: 0, end: 1}),
+            frameRate:idleFramerate,
+            repeat: -1 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'idle_d',
+            frames: this.anims.generateFrameNumbers('idle_d', { start: 0, end: 2}),
+            frameRate:idleFramerate,
+            repeat: -1 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'idle_e',
+            frames: this.anims.generateFrameNumbers('idle_e', { start: 0, end: 2}),
+            frameRate:idleFramerate,
+            repeat: -1 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'idle_f',
+            frames: this.anims.generateFrameNumbers('idle_f', { start: 0, end: 1}),
+            frameRate:idleFramerate,
+            repeat: -1 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'idle_g',
+            frames: this.anims.generateFrameNumbers('idle_g', { start: 0, end: 1}),
+            frameRate:idleFramerate,
+            repeat: -1 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'idle_h',
+            frames: this.anims.generateFrameNumbers('idle_h', { start: 0, end: 1}),
+            frameRate:idleFramerate,
+            repeat: -1 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'idle_i',
+            frames: this.anims.generateFrameNumbers('idle_i', { start: 0, end: 1}),
+            frameRate:idleFramerate,
+            repeat: -1 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'idle_j',
+            frames: this.anims.generateFrameNumbers('idle_j', { start: 0, end: 1}),
+            frameRate:idleFramerate,
+            repeat: -1 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'idle_k',
+            frames: this.anims.generateFrameNumbers('idle_k', { start: 0, end: 6}),
+            frameRate:idleFramerate,
+            repeat: -1 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'idle_l',
+            frames: this.anims.generateFrameNumbers('idle_l', { start: 0, end: 1}),
+            frameRate:idleFramerate,
+            repeat: -1 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'idle_m',
+            frames: this.anims.generateFrameNumbers('idle_m', { start: 0, end: 1}),
+            frameRate:idleFramerate,
+            repeat: -1 // Reproducir la animación solo una vez
+        });
+        this.anims.create({
+            key: 'idle_n',
+            frames: this.anims.generateFrameNumbers('idle_n', { start: 0, end: 1}),
+            frameRate:idleFramerate,
+            repeat: -1 // Reproducir la animación solo una vez
+        });
+
         //PICTURES
         this.offsetPictures = 540
 
@@ -1471,12 +1644,15 @@ export class MainScene extends Phaser.Scene{
         this.colorsToRestore = []
         //CREATE BOARD
         this.board = []
+        this.idleboard = []
         this.boardContainer = this.add.container(0,0)
         this.boardContainer.add(boardTable)
         for(let i = 0; i < this.boardSize; i++){
             this.board[i] = []
+            this.idleboard[i] = []
             for(let j = 0; j < this.boardSize; j++){
                 this.board[i][j] = this.add.sprite(((i-this.boardSize/2)*this.squareSize)+(this.squareSize/2), ((j-this.boardSize/2)*this.squareSize)+(this.squareSize/2),"piece", this.colorsList[0])
+                this.idleboard[i][j] = this.add.sprite((i*this.squareSize)+this.offsetX, (j*this.squareSize)+this.offsetY,"piece", this.colorsList[0]).setDepth(4).setVisible(false)
                 //this.board[i][j].visible = false
                 this.board[i][j].name = i.toString()+j.toString()+this.colorsList[0]
                 this.boardContainer.add(this.board[i][j])
