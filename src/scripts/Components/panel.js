@@ -60,13 +60,13 @@ export class Panel
     
 
     createFirstTutorialPage(dim){
-        let text1 = this.scene.add.text(dim/2, 440, 'JALA LAS FICHAS HACIA EL TABLERO Y FORMA LINEAS PARA DESTRUIRLAS Y GANAR PUNTOS. A MAS LINEAS COMPLETADAS, MÁS PUNTOS.', { 
+        let text1 = this.scene.add.text(dim/2, 440, 'JALA LAS FICHAS HACIA EL TABLERO Y FORMA LÍNEAS PARA DESTRUIRLAS Y GANAR PUNTOS ¡A MÁS LÍNEAS, MÁS PUNTOS!', { 
             fontFamily: 'Bungee', fontSize: '20px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
         text1.setStroke('#503530', 8).setLineSpacing(0).setWordWrapWidth(this.panel.displayWidth-100);
 
         let image1 = this.scene.add.image(dim/2, 550, 'tutorial', 'linecomplete.png').setScale(.5);
 
-        let text2 = this.scene.add.text(dim/2, dim/2+120, 'COLOCA LAS FICHAS CON CUIDADO, SI ES IMPOSIBLE COLOCAR ALGUNA O SE TE ACABA EL TIEMPO, PERDERÁS.', { 
+        let text2 = this.scene.add.text(dim/2, dim/2+120, 'COLOCA LAS FICHAS CON CUIDADO. SI ES IMPOSIBLE COLOCAR ALGUNA O SE TE ACABA EL TIEMPO, PERDERÁS', { 
             fontFamily: 'Bungee', fontSize: '20px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
         text2.setStroke('#503530', 8).setLineSpacing(0).setWordWrapWidth(this.panel.displayWidth-100);
 
@@ -79,34 +79,43 @@ export class Panel
     }
 
     createSecondTutorialPage(dim){
-        let text1 = this.scene.add.text(dim/2, 410, 'COMPLETA LINEAS QUE INCLUYEN PIEZAS ESPECIALES Y APROVECHA SUS VENTAJAS', { 
+        let text1 = this.scene.add.text(dim/2, 440, 'COMPLETA LÍNEAS QUE INCLUYEN PIEZAS ESPECIALES Y APROVECHA SUS VENTAJAS', { 
             fontFamily: 'Bungee', fontSize: '20px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
         text1.setStroke('#503530', 8).setLineSpacing(0).setWordWrapWidth(this.panel.displayWidth-100);
 
-        let image1 = this.scene.add.image(dim/2-200-60, dim/2-50, 'tutorial', 'bomb.png').setScale(1);
-        let image2 = this.scene.add.image(dim/2+50-60, dim/2-50, 'tutorial', 'bombprep.png').setScale(.28);
-        let image3 = this.scene.add.image(dim/2+300-60, dim/2-50, 'tutorial', 'bombexplode.png').setScale(.28);
+        let image1 = this.scene.add.image(dim/2-200-60, 580, 'tutorial', 'bomb.png').setScale(1);
+        let image2 = this.scene.add.image(dim/2+50-80, 570, 'tutorial', 'bombprep.png').setScale(.4);
+        let image3 = this.scene.add.image(dim/2+300-80, 580, 'tutorial', 'bombexplode.png').setScale(.4);
 
-        let text2 = this.scene.add.text(dim/2, dim/2+50, 'LAS BOMBAS DESTRUYEN LAS FICHAS A SU ALREDEDOR, LIMPIANDO EL TABLERO', { 
+        let text2 = this.scene.add.text(dim/2, dim/2+150, 'LAS BOMBAS DESTRUYEN LOS CUADROS A SU ALREDEDOR', { 
             fontFamily: 'Bungee', fontSize: '20px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
         text2.setStroke('#503530', 8).setLineSpacing(0).setWordWrapWidth(this.panel.displayWidth-100);
 
-        let image4 = this.scene.add.image(dim/2-200-60, dim/2+100, 'tutorial', 'reduct.png').setScale(1);
-        let image5 = this.scene.add.image(dim/2+50-60, dim/2+100, 'tutorial', 'reductprep.png').setScale(.3);
-        let image6 = this.scene.add.image(dim/2+300-60, dim/2+100, 'tutorial', 'reductworks.png').setScale(.3);
         
-        let text3 = this.scene.add.text(dim/2, dim/2+190, 'EL REDUCTOR TRANSFORMA LAS FICHAS QUE NO HAS USADO EN PEQUEÑOS CUADROS', { 
-            fontFamily: 'Bungee', fontSize: '20px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
-        text3.setStroke('#503530', 8).setLineSpacing(0).setWordWrapWidth(this.panel.displayWidth-100);
 
         const textContainer2 = this.scene.add.container(0, 0, 
-            [text1, image1, image2,image3, text2,image4,image5,image6,text3]).setVisible(false);
+            [text1, image1, image2,image3, text2]).setVisible(false);
         return textContainer2
+    }
+    createThirdTutorialPage(dim){
+        let text1 = this.scene.add.text(dim/2, 440, 'EL REDUCTOR TRANSFORMA LAS FICHAS QUE NO HAS USADO AUN EN PEQUEÑOS CUADROS', { 
+            fontFamily: 'Bungee', fontSize: '20px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
+        text1.setStroke('#503530', 8).setLineSpacing(0).setWordWrapWidth(this.panel.displayWidth-100);
+
+        let image4 = this.scene.add.image(dim/2-200-60, 580, 'tutorial', 'reduct.png').setScale(1);
+        let image5 = this.scene.add.image(dim/2+50-80, 570, 'tutorial', 'reductprep.png').setScale(.4);
+        let image6 = this.scene.add.image(dim/2+300-80, 580, 'tutorial', 'reductworks.png').setScale(.4);
+        
+       
+
+        const textContainer3 = this.scene.add.container(0, 0, 
+            [text1,image4,image5,image6]).setVisible(false);
+        return textContainer3
     }
 
     createInstructionsPanel(dim){      
         this.instructionIndex = 0;
-        this.instructionTexts = [this.createFirstTutorialPage(dim), this.createSecondTutorialPage(dim)];
+        this.instructionTexts = [this.createFirstTutorialPage(dim), this.createSecondTutorialPage(dim), this.createThirdTutorialPage(dim)];
   
         //let intructionsTitleContainer = this.scene.add.image(dim/2, 250, 'panelUI', 'cartel.png').setScale(.75);
 
@@ -116,14 +125,14 @@ export class Panel
         let closeImage = this.scene.add.image(dim - 190, 315, 'menuUI', 'Equis_NonClicked.png').setInteractive().setScale(.5);
         closeImage.on('pointerdown', () => this.hideInstructions());
 
-        this.leftArrow = this.scene.add.image(dim/2-59, dim - 210, 'menuUI', 'Previous_NonClicked.png').setInteractive().setDisplaySize(120,120);
+        this.leftArrow = this.scene.add.image(dim/2-55, dim - 260, 'menuUI', 'Previous_NonClicked.png').setInteractive().setDisplaySize(100,100);
         this.leftArrow.on('pointerdown', () => this.leftArrowClicked());
 
-        this.rightArrow = this.scene.add.image(dim/2+59, dim - 210, 'menuUI', 'Next_NonClicked.png').setInteractive().setDisplaySize(120,120);
+        this.rightArrow = this.scene.add.image(dim/2+55, dim - 260, 'menuUI', 'Next_NonClicked.png').setInteractive().setDisplaySize(100,100);
         this.rightArrow.on('pointerdown', () => this.rightArrowClicked());
 
         this.instructionsContainer = this.scene.add.container(0, 0, 
-            [this.intructionsTitle, closeImage, this.instructionTexts[0], this.instructionTexts[1], this.leftArrow, this.rightArrow]);
+            [this.intructionsTitle, closeImage, this.instructionTexts[0], this.instructionTexts[1], this.instructionTexts[2], this.leftArrow, this.rightArrow]);
         this.instructionsContainer.setVisible(false).setDepth(10.1);
     }
 
@@ -226,17 +235,23 @@ export class Panel
 
         let labels = []
         let previousChildCount = 0;
+        let modifierX =0
+        let modifierY = 0
         for (let i = 0; i < this.credits.length; i++){
+            if(i>2){
+                modifierX = 350
+                modifierY = 280
+            }
             let newH = previousChildCount <= 1 ? 325+80*i : 325+80*i+20*previousChildCount;
             newH+=40
-            let label = this.addCreditsLabel(dim/2, newH-30, i);
+            let label = this.addCreditsLabel(dim/2-200+modifierX, newH+70-modifierY, i);
             if (previousChildCount < label.list.length - 1) previousChildCount = label.list.length - 1;
             labels.push(label);
         }
 
-        //let logo = this.scene.add.image(dim/2, dim-300, 'leapLogo').setScale(.25);
+        let logo = this.scene.add.image(dim/2, dim-300, 'leapLogo').setScale(.25);
 
-        this.creditsContainer = this.scene.add.container(0, 0, [creditsTitleContainer,creditsTitle, closeImage]);
+        this.creditsContainer = this.scene.add.container(0, 0, [creditsTitleContainer,creditsTitle, logo,closeImage]);
         for(let i = 0; i < labels.length; i++){ this.creditsContainer.add(labels[i]); }
         this.creditsContainer.setVisible(false).setDepth(10.1);
     }
@@ -380,8 +395,9 @@ export class Panel
         }
 
         this.leftArrow.setVisible(this.instructionIndex != 0);
+        this.rightArrow.setVisible(this.instructionIndex != this.instructionTexts.length-1);
         this.instructionTexts[this.instructionIndex].setVisible(true);
-        this.intructionsTitle.setText('Tutorial ' + (this.instructionIndex + 1) + '/2');
+        this.intructionsTitle.setText('Tutorial ' + (this.instructionIndex + 1) + '/'+this.instructionTexts.length);
     }
 
     showInstructions(callback){

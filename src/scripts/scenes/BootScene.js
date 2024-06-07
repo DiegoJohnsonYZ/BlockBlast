@@ -10,6 +10,7 @@ export class BootScene extends Phaser.Scene
         this.load.atlas('tutorial', './src/images/tutorial/sprites.png', './src/images/tutorial/sprites.json');
         this.load.atlas('loadingUI', './src/images/loading_UI/sprites.png', './src/images/loading_UI/sprites.json');
         this.load.atlas('menuUI', './src/images/ui/botones/sprites.png', './src/images/ui/botones/sprites.json');
+        this.load.image('leapLogo','./src/images/leap_logo.png')
         this.load.scenePlugin({
             key: 'rexuiplugin',
             url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
@@ -28,7 +29,7 @@ export class BootScene extends Phaser.Scene
         this.data.set('parentSize', phaserDiv.style.width);
 
         this.bg = this.add.image(dim/2, dim/2, 'loadingBG').setDisplaySize(dim, dim).setDepth(5).setInteractive();
-        this.playButton = this.add.image(dim/2, dim/2, 'loadingUI', 'Jugar_NonClicked.png').setDepth(5).setInteractive();
+        this.playButton = this.add.image(dim/2, dim/2, 'loadingUI', 'Jugar_Clicked.png').setDepth(5).setInteractive();
         
         this.playButton.setVisible(false).on('pointerdown', () => { this.scene.stop(); this.scene.get("MenuScene").uiScene.splashScreenAnim(); });
 

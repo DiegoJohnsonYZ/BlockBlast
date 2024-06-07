@@ -60,7 +60,7 @@ export class MenuScene extends Phaser.Scene
         this.sprBackCloud = this.add.tileSprite(0, dim/2-420,0,0, 'menuBG', 'portada_background_clouds.png').setOrigin(0, 0)
        
         this.sprBack = this.add.image(dim/2, dim/2+100, 'menuBG', 'portada_chess.png')
-
+        this.cloudSpeedModifier = 0.5
         this.cloud1 = this.add.tileSprite(0, dim/2-220,0,0, 'cloud_a').setOrigin(0, 0)
         this.cloud2 = this.add.tileSprite(0, dim/2-120,0,0, 'cloud_c').setOrigin(0, 0).setScale(1)
         this.cloud2.tilePositionX -=300
@@ -99,11 +99,11 @@ export class MenuScene extends Phaser.Scene
 
     update(){
         //ANIMATIONS
-        this.sprBackCloud.tilePositionX += .3;
-        this.cloud1.tilePositionX += 1;
-        this.cloud2.tilePositionX -= 1.3;
-        this.cloud3.tilePositionX += 1.6;
-        this.cloud4.tilePositionX -= 1.8;
+        this.sprBackCloud.tilePositionX += .3*this.cloudSpeedModifier;
+        this.cloud1.tilePositionX += 1*this.cloudSpeedModifier;
+        this.cloud2.tilePositionX -= 1.3*this.cloudSpeedModifier;
+        this.cloud3.tilePositionX += 1.6*this.cloudSpeedModifier;
+        this.cloud4.tilePositionX -= 1.8*this.cloudSpeedModifier;
 
 
         if (this.nextSceneReady && this.loadingSlider.value == .9) {

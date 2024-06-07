@@ -443,7 +443,11 @@ export class MainScene extends Phaser.Scene{
     }
     FinishTurn(){
         this.scoreText.setText(this.scorePoints.toString().padStart(8, '0') )
-        if(this.CheckGameOver() && this.refillCounter <3)this.MakeGameOver()
+        if(this.CheckGameOver() && this.refillCounter <3){
+            this.sliderTween?.pause()
+            this.isPaused = true
+            this.MakeGameOver()
+        }
         if(this.refillCounter>=3){
             this.RemoveOptions()
             this.CreateOptions()
@@ -454,6 +458,34 @@ export class MainScene extends Phaser.Scene{
         pieces.forEach((element)=> element.setTint(0xffffff))
         pieces.forEach((element)=> element.setTexture("piece",this.colorsList[0]))
     }
+
+
+    ShowContainerWithFade(scene, fila, columna, fadeInDuration, displayDuration, fadeOutDuration, container) {
+        
+        container.x = (fila*this.squareSize )+this.offsetX
+        container.y =(columna*this.squareSize )+this.offsetY
+        // Crear el tween para el fade in
+        scene.tweens.add({
+            targets: container,
+            alpha: 1, // Opacidad completa
+            duration: fadeInDuration,
+            onComplete: () => {
+                // Después del fade in, esperar el displayDuration y luego hacer fade out
+                scene.time.delayedCall(displayDuration, () => {
+                    scene.tweens.add({
+                        targets: container,
+                        alpha: 0, // Volver a transparente
+                        duration: fadeOutDuration,
+                        onComplete: () => {
+                            // Destruir el contenedor después del fade out
+                            container.destroy();
+                        }
+                    });
+                });
+            }
+        });
+    }
+    
 
     BreakLine(){
         if(this.linesToClear.length<1||this.gamefinish) {
@@ -527,10 +559,19 @@ export class MainScene extends Phaser.Scene{
         
     }
 
+    CreateEffectText(filas,columnas,effect){
+        this.effectText = this.add.image(0, 0, 'textos',effect).setDepth(6)
+        this.effectTextContainer = this.add.container(0,0).setDepth(6)
+        this.effectTextContainer.add(this.effectText)
+        this.effectTextContainer.setAlpha(0)
+        this.ShowContainerWithFade(this, filas, columnas, 300, 600, 300, this.effectTextContainer);
+    }
+
     BreakPiece(filas, columnas, bomb){
         if(this.GetTexture(this.board[filas][columnas]) != this.colorsList[0]){
             if(this.GetTexture(this.board[filas][columnas])=='reduct'){
                 //POWERUP CONVERTIDOR
+                this.CreateEffectText(filas,columnas,"reductor.png")
                 this.ConverterPowerUp()
 
             }
@@ -542,7 +583,8 @@ export class MainScene extends Phaser.Scene{
             if(this.GetTexture(this.board[filas][columnas])=='bomb'){
                 //POWERUP CONVERTIDOR
                 this.BombBreakingLines(filas,columnas)
-                //this.MakeAnimation(filas,columnas,"bombFx")
+                this.CreateEffectText(filas,columnas,"bomba.png")
+                this.MakeAnimation(filas,columnas,"bombFx")
             }
             else{
                 if(!bomb)this.MakeAnimation(filas,columnas,"destroyFx")
@@ -1207,29 +1249,53 @@ export class MainScene extends Phaser.Scene{
         this.sliderTween?.remove();
         this.sliderTween = null;
         this.maxTimePerTurn-=.2
+        this.timeSlider.childrenMap.indicator.setTexture('timerBar','verde.png')
         console.log("TIMER " + this.maxTimePerTurn +" VS " + this.level2Time)
         console.log("TIMER " + this.maxTimePerTurn +" VS " + this.level1Time)
         if(this.maxTimePerTurn<this.minTimePerTurn)this.maxTimePerTurn=this.minTimePerTurn
-        else if(this.maxTimePerTurn<this.level2Time){
-            this.timeSlider.childrenMap.indicator.setTexture('timerBar','Rojo.png')
-        }else if(this.maxTimePerTurn<this.level1Time){
-            this.timeSlider.childrenMap.indicator.setTexture('timerBar','Amarillo.png')
-        }
+        //else if(this.maxTimePerTurn<this.level2Time){
+           // this.timeSlider.childrenMap.indicator.setTexture('timerBar','rojo.png')
+        //}else if(this.maxTimePerTurn<this.level1Time){
+           // this.timeSlider.childrenMap.indicator.setTexture('timerBar','amarillo.png')
+        //}
 
-
-
+        
+        let limit = 0.3
         this.sliderTween = this.tweens.add({
             targets: this.timeSlider,
             duration: this.maxTimePerTurn*1000,
             repeat: 0,
+            ease: 'linear',
             value: {
               getStart: () => 1,
               getEnd: () => 0
             },
             onUpdate: function(tween, target){
-                target.getElement('thumb').x = target.getElement('thumb').x+3; // Ajustar la posición del thumb
+                let indicator = target.getElement('indicator');
+                //target.getElement('thumb').x = target.getElement('thumb').x+3; // Ajustar la posición del thumb
+                 // Obtén el valor actual del slider
+                let value = target.value;
+
+                // Ajustar el tamaño del indicador según el valor actual
+                let indicatorWidth = value *  600; // Ajusta este valor según el tamaño de tu indicador
+                indicator.resize(indicatorWidth, 40);
+
+                // Ajustar la posición del thumb según el valor actual
+                let thumbX = (target.width ) * value;
+                target.getElement('thumb').setX(thumbX+150);
+                //if(value <= .6 && value >= .4)indicator.setFrame('amarillo.png');
+                if (value <= limit) {
+                    limit-=0.01
+                    
+                    let currentFrame = indicator.frame.name;
+                    indicator.setFrame(currentFrame === 'verde.png' ? 'rojo.png' : 'verde.png');
+                }
+               
+                
+
             },
             onComplete: () => {
+                
                 console.log("¡Tiempo agotado!")
                 this.StartGameOver()
                 this.sliderTween?.remove();
@@ -1293,7 +1359,8 @@ export class MainScene extends Phaser.Scene{
         //TIMER BAR
         this.load.atlas('timerBar', './src/images/ui/cronometro/sprites.png', './src/images/ui/cronometro/sprites.json');
 
-
+        //TEXTOS
+        this.load.atlas('textos', './src/images/ui/text/sprites.png', './src/images/ui/text/sprites.json');
 
 
 
@@ -1512,7 +1579,7 @@ export class MainScene extends Phaser.Scene{
         });
 
         //IDLE
-        let idleFramerate = 7
+        let idleFramerate = 4
         this.anims.create({
             key: 'idle_a',
             frames: this.anims.generateFrameNumbers('idle_a', { start: 0, end: 3}),
@@ -1798,20 +1865,22 @@ export class MainScene extends Phaser.Scene{
         this.timeSlider = this.uiScene.rexUI.add.slider({
             x: barX,
             y: barY,
-            width: 630,
-            height: 30,
+            width: 700,
+            height: 50,
             orientation: 'x',
             reverseAxis: false,
             value: 1,
             end: 0, // Cambiado a 0 para que el valor máximo sea 0
             start: 1, // Cambiado a 1 para que el valor mínimo sea 1
-            indicator: this.add.sprite(0,40,'timerBar','Verde.png').setDisplaySize(610,20),
-            track: this.add.sprite(0,0,'timerBar','Delineado cronometro.png').setDisplaySize( 630,20),
+            track: this.add.sprite(0,0,'timerBar','Delineado cronometro.png').setDisplaySize( 700,50),
+            indicator: this.addCropResizeMethod( this.add.sprite(0,0,'timerBar','verde.png').setDisplaySize(690,35)),
+            
             
             thumb: this.add.sprite(0,0,'timerBar','Reloj.png').setScale(1,1),
             space: {
-                right:10,
-                left:-3
+                right:5,
+                left:-5,
+                bottom:3
             },
             input: 'none',
         }).layout().setDepth(5)

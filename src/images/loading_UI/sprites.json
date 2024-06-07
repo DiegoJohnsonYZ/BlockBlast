@@ -11,17 +11,17 @@
 		"sourceSize": {"w":722,"h":67}
 	},
 	"Jugar_Clicked.png": {
-		"frame": {"x":0, "y":307, "w":393, "h":104},
-		"spriteSourceSize": {"x":0,"y":0,"w":393,"h":104},
-		"sourceSize": {"w":393,"h":104}
+		"frame": {"x":0, "y":310, "w":394, "h":103},
+		"spriteSourceSize": {"x":0,"y":0,"w":394,"h":103},
+		"sourceSize": {"w":394,"h":103}
 	},
 	"Jugar_NonClicked.png": {
-		"frame": {"x":0, "y":204, "w":393, "h":102},
-		"spriteSourceSize": {"x":0,"y":0,"w":393,"h":102},
-		"sourceSize": {"w":393,"h":102}
+		"frame": {"x":0, "y":204, "w":394, "h":105},
+		"spriteSourceSize": {"x":0,"y":0,"w":394,"h":105},
+		"sourceSize": {"w":394,"h":105}
 	},
 	"Marcador.png": {
-		"frame": {"x":0, "y":412, "w":96, "h":151},
+		"frame": {"x":0, "y":414, "w":96, "h":151},
 		"spriteSourceSize": {"x":0,"y":1,"w":96,"h":152},
 		"sourceSize": {"w":96,"h":152}
 	}
@@ -29,7 +29,7 @@
 },
 "meta": {
 	"image": "sprites.png",
-	"size": {"w": 801, "h": 564},
+	"size": {"w": 801, "h": 566},
 	"scale": "1"
 }
 }
