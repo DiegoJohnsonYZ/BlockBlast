@@ -395,6 +395,8 @@ export class MainScene extends Phaser.Scene{
     }
 
     InsertPiece(piece,x,y){
+        if(this.isPaused)return
+        this.newScorePoints = 0
         this.StopVibration()
         for(let i = 0; i < 5; i++){
             for(let j = 0; j < 5; j++){
@@ -415,17 +417,21 @@ export class MainScene extends Phaser.Scene{
                     this.boardMatrix[j+x][i+y] = 1
                     this.lineCounterX[i+y] += 1
                     this.lineCounterY[j+x] += 1
-                    this.scorePoints += 1
+                    this.newScorePoints += 10
                 }
                 
                 
             }
         }
+
+
+
         console.log("CHECK=========================================")
         
         if(!this.isStarting){
             this.refillCounter +=1
-            this.BreakLine()
+            this.CreateNumbersText(x,y,this.newScorePoints)
+            this.BreakLine(x,y)
         }
         for(let i = 0; i < 8; i++){
             let line = "CHECK"
@@ -442,6 +448,7 @@ export class MainScene extends Phaser.Scene{
         
     }
     FinishTurn(){
+        this.scorePoints += this.newScorePoints
         this.scoreText.setText(this.scorePoints.toString().padStart(8, '0') )
         if(this.CheckGameOver() && this.refillCounter <3){
             this.sliderTween?.pause()
@@ -487,7 +494,7 @@ export class MainScene extends Phaser.Scene{
     }
     
 
-    BreakLine(){
+    BreakLine(x,y){
         if(this.linesToClear.length<1||this.gamefinish) {
             this.FinishTurn()
             return
@@ -534,6 +541,33 @@ export class MainScene extends Phaser.Scene{
 
             //FINAL ANIMATIONS
 
+            let aux = this.linesToClear[0]
+            let filas = 0
+            let columnas = 0
+            if(aux>7){
+                //PARA EL EJE Y
+                filas = aux-8 -3
+                columnas = this.animationsIterator+4
+                
+            }
+            else{
+                //PARA EL EJE X
+                
+                filas = this.animationsIterator+4
+                columnas = aux -3
+            }
+
+
+            let combo = this.linesToClear.length
+          
+            let numberCombo = 0;
+            for (let i = 1; i <= combo; i++) {
+                numberCombo += i;
+            }
+            numberCombo*= 1000;
+            this.newScorePoints += numberCombo
+            //this.CreateNumbersText(x,y,number)
+            this.CreateComboText(filas,columnas,combo,numberCombo)
 
             this.RecountLineCounters()
             this.PauseTimer()
@@ -544,7 +578,7 @@ export class MainScene extends Phaser.Scene{
         else{
             //MANDAR LA SIGUIENTE ANIMACION
             setTimeout(() => {
-                this.BreakLine()
+                this.BreakLine(x,y)
             }, 50);
         }
 
@@ -564,7 +598,56 @@ export class MainScene extends Phaser.Scene{
         this.effectTextContainer = this.add.container(0,0).setDepth(6)
         this.effectTextContainer.add(this.effectText)
         this.effectTextContainer.setAlpha(0)
-        this.ShowContainerWithFade(this, filas, columnas, 300, 600, 300, this.effectTextContainer);
+        this.ShowContainerWithFade(this, filas, columnas, 200, 400, 200, this.effectTextContainer);
+    }
+
+    CreateNumbersText(filas,columnas,number){
+        let strNumber = number.toString()
+        
+        this.effectTextContainer = this.add.container(0,0).setDepth(6)
+        this.effectTextContainer.add(this.add.image(0, 0, 'textos', "+.png").setDepth(6))
+        for(let i = 0; i<=strNumber.length; i++){
+            if(i===strNumber.length){
+                let number = this.add.image((i*32)+65, 0, 'textos',  "pts.png").setDepth(6)
+                this.effectTextContainer.add(number)
+            }
+            else{
+                let number = this.add.image((i*32)+32, 0, 'textos', strNumber[i] + ".png").setDepth(6)
+                this.effectTextContainer.add(number)
+            }
+            
+        }
+        this.effectTextContainer.setAlpha(0)
+        this.ShowContainerWithFade(this, filas+2, columnas+2, 200, 400, 200, this.effectTextContainer);
+    }
+    CreateComboText(filas,columnas,combo, number){
+        //columnas-=2
+        //filas+=3
+        this.effectTextContainer = this.add.container(0,0).setDepth(6)
+
+        //COMBO
+
+
+        
+        this.effectTextContainer.add(this.add.image(40, 0, 'textos', "combo.png").setDepth(6))
+        this.effectTextContainer.add(this.add.image(140, 0, 'textos', combo.toString()+".png").setDepth(6))
+
+        //PTS
+        this.effectTextContainer.add(this.add.image(0, 50, 'textos', "+.png").setDepth(6))
+        let strNumber = number.toString()
+        for(let i = 0; i<=strNumber.length; i++){
+            if(i===strNumber.length){
+                let number = this.add.image((i*32)+65, 50, 'textos',  "pts.png").setDepth(6)
+                this.effectTextContainer.add(number)
+            }
+            else{
+                let number = this.add.image((i*32)+32, 50, 'textos', strNumber[i] + ".png").setDepth(6)
+                this.effectTextContainer.add(number)
+            }
+            
+        }
+        this.effectTextContainer.setAlpha(0)
+        this.ShowContainerWithFade(this, filas+2, columnas+2, 200, 400, 200, this.effectTextContainer);
     }
 
     BreakPiece(filas, columnas, bomb){
@@ -576,12 +659,12 @@ export class MainScene extends Phaser.Scene{
 
             }
             if(this.GetTexture(this.board[filas][columnas])=='rotate'){
-                //POWERUP CONVERTIDOR
+                //POWERUP ROTAR
                 this.rotateBool = true
 
             }
             if(this.GetTexture(this.board[filas][columnas])=='bomb'){
-                //POWERUP CONVERTIDOR
+                //POWERUP BOMBA
                 this.BombBreakingLines(filas,columnas)
                 this.CreateEffectText(filas,columnas,"bomba.png")
                 this.MakeAnimation(filas,columnas,"bombFx")
@@ -596,7 +679,7 @@ export class MainScene extends Phaser.Scene{
                 this.SetName(this.board[filas][columnas],this.colorsList[0])
                 this.boardMatrix[filas][columnas] = 0
             } 
-            this.scorePoints+=1
+            //this.scorePoints+=1
             
             
             let dictKey = filas.toString()+columnas.toString()
