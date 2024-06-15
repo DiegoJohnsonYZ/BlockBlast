@@ -1127,6 +1127,16 @@ export class MainScene extends Phaser.Scene{
         }
         
     }
+    SpecialBlock(){
+        let x = this.GetRandomInt(7)
+        let y = this.GetRandomInt(7)
+        let blockname = this.GetTexture(this.board[x][y]).slice(0, -4) + "_special.png"
+        console.log("SPECIAL" + blockname)
+        if(this.textures.get('piece').getFrameNames().includes(blockname)){
+            this.idleboard[x][y].setTexture('piece', blockname )
+        }
+       
+    }
 
 
     InsertPieceBoard(board,linecounterX, linecounterY, piece,x,y){
@@ -1920,9 +1930,9 @@ export class MainScene extends Phaser.Scene{
         //this.timerText.setStroke('#553b37', 8);
         //this.time.addEvent({ delay: 1000, callback: this.UpdateTimer, callbackScope: this, loop: true })
 
-        //POWERUPS
+        //SPECIALS
         this.time.addEvent({ delay: 5000, callback: this.ShineBlock, callbackScope: this, loop: true })
-
+        this.time.addEvent({ delay: 5000, callback: this.SpecialBlock, callbackScope: this, loop: true })
         //CREATE PIECES AND COLORS
         this.piecesList = ["0010000100001000010000100", //Linea vertical
                             "0010000100001000010000000", //Linea vertical 4X4
