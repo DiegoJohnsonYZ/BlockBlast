@@ -1,22 +1,22 @@
 {
 "frames": {
 	"blockblast_piece_a.png": {
-		"frame": {"x":91, "y":273, "w":90, "h":90},
+		"frame": {"x":182, "y":182, "w":90, "h":90},
 		"spriteSourceSize": {"x":0,"y":0,"w":90,"h":90},
 		"sourceSize": {"w":90,"h":90}
 	},
 	"blockblast_piece_b.png": {
-		"frame": {"x":273, "y":91, "w":90, "h":90},
+		"frame": {"x":91, "y":182, "w":90, "h":90},
 		"spriteSourceSize": {"x":0,"y":0,"w":90,"h":90},
 		"sourceSize": {"w":90,"h":90}
 	},
 	"blockblast_piece_c.png": {
-		"frame": {"x":273, "y":0, "w":90, "h":90},
+		"frame": {"x":182, "y":273, "w":90, "h":90},
 		"spriteSourceSize": {"x":0,"y":0,"w":90,"h":90},
 		"sourceSize": {"w":90,"h":90}
 	},
 	"blockblast_piece_d.png": {
-		"frame": {"x":182, "y":273, "w":90, "h":90},
+		"frame": {"x":182, "y":91, "w":90, "h":90},
 		"spriteSourceSize": {"x":0,"y":0,"w":90,"h":90},
 		"sourceSize": {"w":90,"h":90}
 	},
@@ -26,12 +26,12 @@
 		"sourceSize": {"w":90,"h":90}
 	},
 	"blockblast_piece_e.png": {
-		"frame": {"x":182, "y":91, "w":90, "h":90},
+		"frame": {"x":273, "y":182, "w":90, "h":90},
 		"spriteSourceSize": {"x":0,"y":0,"w":90,"h":90},
 		"sourceSize": {"w":90,"h":90}
 	},
 	"blockblast_piece_f.png": {
-		"frame": {"x":182, "y":0, "w":90, "h":90},
+		"frame": {"x":273, "y":91, "w":90, "h":90},
 		"spriteSourceSize": {"x":0,"y":0,"w":90,"h":90},
 		"sourceSize": {"w":90,"h":90}
 	},
@@ -41,32 +41,32 @@
 		"sourceSize": {"w":90,"h":90}
 	},
 	"blockblast_piece_g.png": {
-		"frame": {"x":91, "y":182, "w":90, "h":90},
+		"frame": {"x":273, "y":0, "w":90, "h":90},
 		"spriteSourceSize": {"x":0,"y":0,"w":90,"h":90},
 		"sourceSize": {"w":90,"h":90}
 	},
 	"blockblast_piece_g_special.png": {
-		"frame": {"x":341, "y":359, "w":66, "h":66},
-		"spriteSourceSize": {"x":12,"y":12,"w":90,"h":90},
-		"sourceSize": {"w":90,"h":90}
-	},
-	"blockblast_piece_h.png": {
-		"frame": {"x":91, "y":0, "w":90, "h":90},
-		"spriteSourceSize": {"x":0,"y":0,"w":90,"h":90},
-		"sourceSize": {"w":90,"h":90}
-	},
-	"blockblast_piece_h_special.png": {
 		"frame": {"x":362, "y":273, "w":66, "h":66},
 		"spriteSourceSize": {"x":12,"y":12,"w":90,"h":90},
 		"sourceSize": {"w":90,"h":90}
 	},
+	"blockblast_piece_h.png": {
+		"frame": {"x":0, "y":91, "w":90, "h":90},
+		"spriteSourceSize": {"x":0,"y":0,"w":90,"h":90},
+		"sourceSize": {"w":90,"h":90}
+	},
+	"blockblast_piece_h_special.png": {
+		"frame": {"x":341, "y":359, "w":66, "h":66},
+		"spriteSourceSize": {"x":12,"y":12,"w":90,"h":90},
+		"sourceSize": {"w":90,"h":90}
+	},
 	"blockblast_piece_i.png": {
-		"frame": {"x":0, "y":182, "w":90, "h":90},
+		"frame": {"x":182, "y":0, "w":90, "h":90},
 		"spriteSourceSize": {"x":0,"y":0,"w":90,"h":90},
 		"sourceSize": {"w":90,"h":90}
 	},
 	"blockblast_piece_j.png": {
-		"frame": {"x":0, "y":91, "w":90, "h":90},
+		"frame": {"x":91, "y":273, "w":90, "h":90},
 		"spriteSourceSize": {"x":0,"y":0,"w":90,"h":90},
 		"sourceSize": {"w":90,"h":90}
 	},
@@ -76,12 +76,12 @@
 		"sourceSize": {"w":90,"h":90}
 	},
 	"blockblast_piece_k.png": {
-		"frame": {"x":182, "y":182, "w":90, "h":90},
+		"frame": {"x":91, "y":91, "w":90, "h":90},
 		"spriteSourceSize": {"x":0,"y":0,"w":90,"h":90},
 		"sourceSize": {"w":90,"h":90}
 	},
 	"blockblast_piece_l.png": {
-		"frame": {"x":0, "y":0, "w":90, "h":90},
+		"frame": {"x":91, "y":0, "w":90, "h":90},
 		"spriteSourceSize": {"x":0,"y":0,"w":90,"h":90},
 		"sourceSize": {"w":90,"h":90}
 	},
@@ -91,7 +91,7 @@
 		"sourceSize": {"w":90,"h":90}
 	},
 	"blockblast_piece_n.png": {
-		"frame": {"x":91, "y":91, "w":90, "h":90},
+		"frame": {"x":0, "y":182, "w":90, "h":90},
 		"spriteSourceSize": {"x":0,"y":0,"w":90,"h":90},
 		"sourceSize": {"w":90,"h":90}
 	},
@@ -101,7 +101,7 @@
 		"sourceSize": {"w":90,"h":90}
 	},
 	"blockblast_piece_woodpiece.png": {
-		"frame": {"x":273, "y":182, "w":90, "h":90},
+		"frame": {"x":0, "y":0, "w":90, "h":90},
 		"spriteSourceSize": {"x":0,"y":0,"w":90,"h":90},
 		"sourceSize": {"w":90,"h":90}
 	}

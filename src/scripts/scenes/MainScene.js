@@ -47,6 +47,21 @@ export class MainScene extends Phaser.Scene{
     }
 
     //MENUS 
+    ShowTutorial(){
+        if(!this.data.get('tutorial')){
+            this.sliderTween?.pause()
+            this.isPaused = true
+            this.data.set(`tutorial`, true);
+            this.panel.showInstructions()
+        }
+        
+    }
+
+    CloseInstructions(){
+        this.sliderTween?.resume()
+        this.isPaused = false
+    }
+
 
     PauseGame(){
         
@@ -1365,7 +1380,7 @@ export class MainScene extends Phaser.Scene{
 
                 // Ajustar la posición del thumb según el valor actual
                 let thumbX = (target.width ) * value;
-                target.getElement('thumb').setX(thumbX+150);
+                target.getElement('thumb').setX(thumbX+200);
                 //if(value <= .6 && value >= .4)indicator.setFrame('amarillo.png');
                 if (value <= limit) {
                     limit-=0.01
@@ -1391,10 +1406,18 @@ export class MainScene extends Phaser.Scene{
 
         this.isPaused=true
         this.gameoverTiming = true
+        this.tweens.add({
+            targets: this.finalScreen,
+            y: 550, // Posición final en el eje Y
+            ease: 'Power1', // Efecto de easing
+            duration: 1000, // Duración del tween en milisegundos
+            delay: 1500 // Retardo antes de que empiece el tween
+        });
+
         this.gameOverTimeOut = setTimeout(() => {
                 
                 this.StartGameOver()
-        }, 2000);
+        }, 2500);
                 
     }
 
@@ -1413,6 +1436,7 @@ export class MainScene extends Phaser.Scene{
 
         if(newScore >= highScore){
             this.data.set(`highScore`, newScore);
+            
             this.panel.showScore(newScore, newScore);
         }else{
             this.panel.showScore(newScore, highScore);
@@ -1425,10 +1449,12 @@ export class MainScene extends Phaser.Scene{
         //this.load.image("table_shadow", "src/images/blockblast_backgroud_table_shadow.png")
         this.load.image("table", "src/images/parchados_chess.png")
         this.load.image("b_box", "src/images/parchados_table.png")
+        this.load.image("final", "src/images/pantallafinalb.png")
         //IN GAME UI
         this.load.atlas('inGameUI', './src/images/ui/pausa_ajustes/sprites.png', './src/images/ui/pausa_ajustes/sprites.json');
         //TABLE DECOR
         this.load.atlas("table_decor", "src/images/decor/sprites.png", "src/images/decor/sprites.json") 
+       
         //PREVIEW SPACE
         this.load.image("preview_space", "src/images/preview_space/parchados_piecespace.png") 
 
@@ -1765,13 +1791,15 @@ export class MainScene extends Phaser.Scene{
         console.log("HALF"+this.halfBox)
         this.add.image(this.offsetPictures,this.offsetPictures,"b_box").setDepth(1)
         let boardTable = this.add.image(this.offsetPictures-120-this.halfBoxX,this.offsetPictures-this.halfBoxY,"table").setDepth(3)
-
+        
+        //FINAL
+        this.finalScreen = this.add.image(540, -650, 'final').setDepth(7);
 
         //TABLE DECOR
         this.add.image(this.offsetPictures-26,this.offsetPictures-455,"table_decor","parchados decor_a.png").setDepth(2)
         this.add.image(this.offsetPictures-45,this.offsetPictures+448,"table_decor","parchados decor_b.png").setDepth(2)
         
-        this.add.image(this.offsetPictures-476,this.offsetPictures+350,"table_decor","parchados decor_c.png").setDepth(4)
+        this.add.image(this.offsetPictures-389,this.offsetPictures+430,"table_decor","telalogo.png").setDepth(4)
         this.add.image(this.offsetPictures-512,this.offsetPictures-505,"table_decor","parchados decor_d.png").setDepth(4)
         this.add.image(this.offsetPictures+517,this.offsetPictures-445,"table_decor","parchados decor_e.png").setDepth(4)
         this.add.image(this.offsetPictures+500,this.offsetPictures+450,"table_decor","parchados decor_f.png").setDepth(4)
@@ -1806,6 +1834,18 @@ export class MainScene extends Phaser.Scene{
                 //this.board[i][j].visible = false
                 this.board[i][j].name = i.toString()+j.toString()+this.colorsList[0]
                 this.boardContainer.add(this.board[i][j])
+                this.board[i][j].on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'bomb', function () {
+                    this.board[i][j].setTexture(this.powerUpsList[0])
+                        
+                    this.SetName(this.board[i][j],this.powerUpsList[0])
+                  
+                }, this);
+                this.board[i][j].on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'reduct', function () {
+                    this.board[i][j].setTexture(this.powerUpsList[1])
+                        
+                    this.SetName(this.board[i][j],this.powerUpsList[1])
+                  
+                }, this);
             }
         }
         this.boardContainer.x += (this.boardSize/2*this.squareSize)+this.offsetX-(this.squareSize/2)
@@ -1942,7 +1982,7 @@ export class MainScene extends Phaser.Scene{
         this.scoreText.setText(this.scorePoints.toString().padStart(8, '0') )
 
         //CREATE LOADING BAR
-        let barX = this.offsetPictures-40
+        let barX = this.offsetPictures+30
         let barY = this.offsetPictures+450
         //this.add.image(barX,barY,"timerBar", "Base cronometro.png").setDepth(5)
         this.timeSlider = this.uiScene.rexUI.add.slider({
@@ -1966,7 +2006,7 @@ export class MainScene extends Phaser.Scene{
                 bottom:3
             },
             input: 'none',
-        }).layout().setDepth(5)
+        }).layout().setDepth(3)
 
 
         
@@ -2111,8 +2151,11 @@ export class MainScene extends Phaser.Scene{
         }, this);
         //this.ReductAnimation()
 
-        
-           
+        setTimeout(() => {
+                
+            this.ShowTutorial()  
+        }, 500);
+                 
     }
     
       

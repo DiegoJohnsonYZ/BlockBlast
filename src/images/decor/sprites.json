@@ -11,30 +11,35 @@
 		"sourceSize": {"w":990,"h":174}
 	},
 	"parchados decor_c.png": {
-		"frame": {"x":0, "y":348, "w":129, "h":374},
+		"frame": {"x":0, "y":567, "w":129, "h":374},
 		"spriteSourceSize": {"x":0,"y":0,"w":129,"h":374},
 		"sourceSize": {"w":129,"h":374}
 	},
 	"parchados decor_d.png": {
-		"frame": {"x":0, "y":888, "w":54, "h":69},
+		"frame": {"x":0, "y":942, "w":54, "h":69},
 		"spriteSourceSize": {"x":0,"y":0,"w":54,"h":69},
 		"sourceSize": {"w":54,"h":69}
 	},
 	"parchados decor_e.png": {
-		"frame": {"x":93, "y":723, "w":47, "h":190},
+		"frame": {"x":130, "y":732, "w":47, "h":190},
 		"spriteSourceSize": {"x":0,"y":0,"w":47,"h":190},
 		"sourceSize": {"w":47,"h":190}
 	},
 	"parchados decor_f.png": {
-		"frame": {"x":0, "y":723, "w":92, "h":164},
+		"frame": {"x":130, "y":567, "w":92, "h":164},
 		"spriteSourceSize": {"x":0,"y":0,"w":92,"h":164},
 		"sourceSize": {"w":92,"h":164}
+	},
+	"telalogo.png": {
+		"frame": {"x":0, "y":348, "w":301, "h":218},
+		"spriteSourceSize": {"x":0,"y":0,"w":301,"h":218},
+		"sourceSize": {"w":301,"h":218}
 	}
 
 },
 "meta": {
 	"image": "sprites.png",
-	"size": {"w": 1024, "h": 958},
+	"size": {"w": 1024, "h": 1012},
 	"scale": "1"
 }
 }

@@ -123,7 +123,10 @@ export class Panel
             fontFamily: 'Bungee', fontSize: '34px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
         this.intructionsTitle.setStroke('#503530', 10);
         let closeImage = this.scene.add.image(dim - 190, 315, 'menuUI', 'Equis_NonClicked.png').setInteractive().setScale(.5);
-        closeImage.on('pointerdown', () => this.hideInstructions());
+        closeImage.on('pointerdown', () =>{
+            this.hideInstructions()
+            this.scene.currentScene.CloseInstructions(); 
+        } );
 
         this.leftArrow = this.scene.add.image(dim/2-55, dim - 260, 'menuUI', 'Previous_NonClicked.png').setInteractive().setDisplaySize(100,100);
         this.leftArrow.on('pointerdown', () => this.leftArrowClicked());

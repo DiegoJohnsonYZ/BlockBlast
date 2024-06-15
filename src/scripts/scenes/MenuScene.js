@@ -150,16 +150,17 @@ export class MenuScene extends Phaser.Scene
             onComplete: () => {
                 sliderTween?.remove();
                 sliderTween = null;
+                this.scene.launch('MainScene', this.data);
+                this.scene.sendToBack('MainScene');
+                this.mainScene = this.scene.get("MainScene");
+                this.mainScene.events.once("create", () => {
+                this.mainScene.startRunning = true;
+                this.nextSceneReady = true
+        });
             }
         });
 
-        this.scene.launch('MainScene', this.data);
-        this.scene.sendToBack('MainScene');
-        this.mainScene = this.scene.get("MainScene");
-        this.mainScene.events.once("create", () => {
-            this.mainScene.startRunning = true;
-            this.nextSceneReady = true
-        });
+        
     }
 
     addCropResizeMethod = function (gameObject) {

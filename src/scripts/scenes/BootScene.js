@@ -27,7 +27,7 @@ export class BootScene extends Phaser.Scene
         this.data.set('sfxVolume', .2);
         let phaserDiv = document.getElementById('phaser-div');
         this.data.set('parentSize', phaserDiv.style.width);
-
+        this.data.set('tutorial', false);
         this.bg = this.add.image(dim/2, dim/2, 'loadingBG').setDisplaySize(dim, dim).setDepth(5).setInteractive();
         this.playButton = this.add.image(dim/2, dim/2, 'loadingUI', 'Jugar_Clicked.png').setDepth(5).setInteractive();
         
