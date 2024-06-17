@@ -199,9 +199,9 @@ export class Panel
         }).layout();
 
         if ((/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream)){
-            musicTitle.setPosition(dim/2-255, dim/2-55);
+            musicTitle.setPosition(dim/2-215, dim/2-55);
             musicSlider.setPosition(dim/2+100, dim/2-55);
-            sfxTitle.setPosition(dim/2-255, dim/2+75);
+            sfxTitle.setPosition(dim/2-215, dim/2+65);
             sfxSlider.setPosition(dim/2+100, dim/2+75);
             this.optionsContainer = this.scene.add.container(0, 0, 
                 [optionsTitle, closeImage, sfxSlider, sfxTitle, musicTitle, musicSlider]);
