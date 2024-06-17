@@ -125,7 +125,7 @@ export class Panel
         let closeImage = this.scene.add.image(dim - 190, 315, 'menuUI', 'Equis_NonClicked.png').setInteractive().setScale(.5);
         closeImage.on('pointerdown', () =>{
             this.hideInstructions()
-            this.scene.currentScene.CloseInstructions(); 
+            if (this.scene.currentScene.scene.key === 'MainScene')this.scene.currentScene.CloseInstructions(); 
         } );
 
         this.leftArrow = this.scene.add.image(dim/2-55, dim - 260, 'menuUI', 'Previous_NonClicked.png').setInteractive().setDisplaySize(100,100);

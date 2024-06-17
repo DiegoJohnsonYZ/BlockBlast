@@ -28,7 +28,7 @@
         "file-loader": "^6.2.0",
         "path": "^0.12.7",
         "phaser": "^3.80.1",
-        "phaser3-rex-plugins": "^1.80.3",
+        "phaser3-rex-plugins": "^1.80.4",
         "terser-webpack-plugin": "^5.3.10",
         "webpack-merge": "^5.10.0"
     }

@@ -11,11 +11,19 @@ export class BootScene extends Phaser.Scene
         this.load.atlas('loadingUI', './src/images/loading_UI/sprites.png', './src/images/loading_UI/sprites.json');
         this.load.atlas('menuUI', './src/images/ui/botones/sprites.png', './src/images/ui/botones/sprites.json');
         this.load.image('leapLogo','./src/images/leap_logo.png')
+
+        this.load.rexWebFont({
+            google: {
+                families: ['Bungee:800']
+            },
+        });
+
         this.load.scenePlugin({
             key: 'rexuiplugin',
             url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
             sceneKey: 'rexUI'
         });
+
     }
 
     create(){
