@@ -29,6 +29,10 @@ module.exports = {
             test: /\.(gif|png|jpe?g|svg|xml)$/i,
             use: 'file-loader',
          }, // in case you need to use images, this loader will           // bundle them for you
+         {
+            test: /\.(ogg|wav)$/i,
+            use: 'file-loader',
+         }
       ],
    },
    plugins: [
@@ -41,7 +45,8 @@ module.exports = {
       }), // config webpack to handle renderer swapping in our app
       new CopyWebpackPlugin({
          patterns: [
-            { from: './src/images', to: './src/images' }
+            { from: './src/images', to: './src/images' },
+            { from: './src/audios', to: './src/audios' }
          ],
        }),
       new HtmlWebpackPlugin({

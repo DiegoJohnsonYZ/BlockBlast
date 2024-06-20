@@ -7,8 +7,11 @@ export class AudioManager
     }
 
     load(){
-        /*
+        
         //main Themes
+        this.scene.load.audio('mainTheme', ['src/audios/maintheme.ogg','src/audios/maintheme.m4a'])
+
+        /*
         this.scene.load.audio('mainTheme', [ './src/audios/menu_loop.ogg', './src/audios/menu_loop.m4a' ]);
         this.scene.load.audio('gameplayTheme', [ './src/audios/gameplay_loop.ogg', './src/audios/gameplay_loop.m4a' ]);
 
@@ -63,11 +66,8 @@ export class AudioManager
 
         //sfx
         this.sfx = [];
-        this.driverSfx = [];
-        this.previousDriverSound = 0;
-        this.previousCloseCallSound = 0;
         this.addSFX();
-        /*
+        
         //menuTheme
         this.menuMusic = this.scene.sound.add('mainTheme', {
             volume: .5,
@@ -75,7 +75,7 @@ export class AudioManager
         });
 
         //gameplayTheme
-        this.gameplayMusic = this.scene.sound.add('gameplayTheme', {
+        this.gameplayMusic = this.scene.sound.add('mainTheme', {
             volume: .5,
             loop: true
         });
@@ -109,7 +109,7 @@ export class AudioManager
     
             this.handleLoseFocus();
         })
-        */
+        
     }
 
     addSFX(){
@@ -315,7 +315,7 @@ export class AudioManager
     }
 
     getCurrentTheme(){
-        /*
+        
         let currentScene;
         if (this.scene.currentScene != null) currentScene = this.scene.currentScene.scene.key;
         else currentScene = 'MenuScene'
@@ -327,12 +327,11 @@ export class AudioManager
             default:
                 break;
         }
-        */
     }
     
     handleLoseFocus()
     {
-        /*
+        
         if (this.scene.currentScene != null) {
             // assuming a Paused scene that has a pause modal
             if (this.scene.currentScene.isPaused)
@@ -344,7 +343,7 @@ export class AudioManager
             this.scene.currentScene.pauseGame();
             this.scene.currentScene.isPaused = true;
         }
-        */
+        
     }
 
     setAudioVolume(value){
@@ -356,13 +355,12 @@ export class AudioManager
     }
 
     playMusic(){
-        /*
         this.getCurrentTheme().play();
-        */
+        
     }
 
     resumeMusic(){
-        /*
+        
         if (this.scene.currentScene.isPaused) {
             this.volumeDownTween?.remove();
             this.volumeDownTween = null;
@@ -384,11 +382,11 @@ export class AudioManager
                 }
             });
         }
-        */
+        
     }
 
     pauseMusic(){
-        /*
+        
         let audio = this.getCurrentTheme();
         this.volumeDownTween = this.scene.tweens.add({
             targets: audio,
@@ -405,13 +403,13 @@ export class AudioManager
                 audio.pause();
             }
         });
-        */
+        
     }
 
     stopMusic(){
-        /*
+        
         this.getCurrentTheme().stop();
-        */
+        
     }
 
     updateSFXVolume(value){
@@ -420,41 +418,5 @@ export class AudioManager
             else this.sfx[i].volume = value >= 0.05 ? value + .2 : value;
         }
         
-    }
-
-    playCountdown(value){
-        /*
-        switch(value){
-            case 3:
-                this.countdown3Sound.play();
-                break;
-            case 2:
-                this.countdown2Sound.play();
-                break;
-            case 1:
-                this.countdown1Sound.play();
-                break;
-            case 0:
-                this.countdownRunSound.play();
-                break;
-        }
-        */
-    }
-
-    playDriverSound(wasCloseCall){
-        /*
-        let index = 0;
-        if (wasCloseCall) {
-            index = 5;
-            //if (index == this.previousCloseCallSound) index = index - 1 >= 5 ? index - 1 : 5;
-            this.previousCloseCallSound = index;
-        }
-        else { 
-            index = Phaser.Math.Between(0, 4);
-            if (index == this.previousDriverSound) index = index - 1 >= 0 ? index - 1 : 4;
-            this.previousDriverSound = index;
-        }
-        this.driverSfx[index].play();
-        */
     }
 }

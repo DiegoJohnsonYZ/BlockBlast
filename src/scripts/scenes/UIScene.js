@@ -45,7 +45,7 @@ export class UIScene extends Phaser.Scene
     
     create(){
         this.dim = this.game.config.width;
-        //this.audioManager.init();
+        this.audioManager.init();
         //this.animationsManager.createAnimations();
 
         this.panel = new Panel(this);

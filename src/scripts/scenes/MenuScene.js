@@ -27,7 +27,6 @@ export class MenuScene extends Phaser.Scene
         let dim = this.game.config.width;
         this.uiScene = this.scene.get('UIScene');
         this.uiScene.setCurrentScene(this);
-        this.uiScene.audioManager?.playMusic();
 
         this.loadingBG = this.add.image(dim/2, dim/2, 'loadingBG').setDisplaySize(dim, dim).setDepth(5).setInteractive().setVisible(false);
         this.loadingSlider = this.uiScene.rexUI.add.slider({

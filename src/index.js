@@ -6,6 +6,7 @@ import WebFontLoaderPlugin from 'phaser3-rex-plugins/plugins/webfontloader-plugi
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import * as Phaser from 'phaser';
 
+
 // -------------------------------------------
 // Initializing Phaser Game
 // -------------------------------------------
