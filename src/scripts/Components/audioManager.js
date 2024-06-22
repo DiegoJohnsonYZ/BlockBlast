@@ -11,6 +11,18 @@ export class AudioManager
         //main Themes
         this.scene.load.audio('mainTheme', ['src/audios/maintheme.ogg','src/audios/maintheme.m4a'])
 
+
+        this.scene.load.audio('alarma', ['src/audios/ogg/sfx_alarma_loop.ogg','src/audios/m4a/sfx_alarma_loop.m4a'])
+        this.scene.load.audio('destruccion', ['src/audios/ogg/sfx_destruccion.ogg','src/audios/m4a/sfx_destruccion.m4a'])
+        this.scene.load.audio('preview', ['src/audios/ogg/sfx_ficha_preview.ogg','src/audios/m4a/sfx_ficha_preview.m4a'])
+        this.scene.load.audio('soltar', ['src/audios/ogg/sfx_ficha_soltar.ogg','src/audios/m4a/sfx_ficha_soltar.m4a'])
+        this.scene.load.audio('aviso', ['src/audios/ogg/sfx_powerup_aviso.ogg','src/audios/m4a/src/audios/m4a/sfx_powerup_aviso.m4a'])
+        this.scene.load.audio('bomba', ['src/audios/ogg/sfx_powerup_bomba.ogg','src/audios/m4a/sfx_powerup_bomba.m4a'])
+        this.scene.load.audio('reduccion', ['src/audios/ogg/sfx_powerup_reduccion.ogg','src/audios/m4a/sfx_powerup_reduccion.m4a'])
+        this.scene.load.audio('puntos', ['src/audios/ogg/sfx_puntos.ogg','src/audios/m4a/sfx_puntos.m4a'])
+        this.scene.load.audio('tapete', ['src/audios/ogg/sfx_tapete.ogg','src/audios/m4a/sfx_tapete.m4a'])
+        this.scene.load.audio('ui_click', ['src/audios/ogg/sfx_ui_button_click.ogg','src/audios/m4a/sfx_ui_button_click.m4a'])
+        this.scene.load.audio('ui_page', ['src/audios/ogg/sfx_ui_button_page.ogg','src/audios/m4a/sfx_ui_button_page.m4a'])
         /*
         this.scene.load.audio('mainTheme', [ './src/audios/menu_loop.ogg', './src/audios/menu_loop.m4a' ]);
         this.scene.load.audio('gameplayTheme', [ './src/audios/gameplay_loop.ogg', './src/audios/gameplay_loop.m4a' ]);
@@ -113,6 +125,72 @@ export class AudioManager
     }
 
     addSFX(){
+
+        this.alarma = this.scene.sound.add('alarma', {
+            volume: .5,
+            loop: false
+        });
+        this.sfx.push(this.alarma);
+
+        this.destruccion = this.scene.sound.add('destruccion', {
+            volume: .5,
+            loop: false
+        });
+        this.sfx.push(this.destruccion);
+        
+        this.preview = this.scene.sound.add('preview', {
+            volume: .5,
+            loop: false
+        });
+        this.sfx.push(this.preview);
+        
+        this.soltar = this.scene.sound.add('soltar', {
+            volume: .5,
+            loop: false
+        });
+        this.sfx.push(this.soltar);
+        
+        this.aviso = this.scene.sound.add('aviso', {
+            volume: .5,
+            loop: true
+        });
+        this.sfx.push(this.aviso);
+        
+        this.bomba = this.scene.sound.add('bomba', {
+            volume: .5,
+            loop: false
+        });
+        this.sfx.push(this.bomba);
+        
+        this.reduccion = this.scene.sound.add('reduccion', {
+            volume: .5,
+            loop: false
+        });
+        this.sfx.push(this.reduccion);
+        
+        this.puntos = this.scene.sound.add('puntos', {
+            volume: .5,
+            loop: false
+        });
+        this.sfx.push(this.puntos);
+        
+        this.tapete = this.scene.sound.add('tapete', {
+            volume: .5,
+            loop: false
+        });
+        this.sfx.push(this.tapete);
+        
+        this.ui_click = this.scene.sound.add('ui_click', {
+            volume: .5,
+            loop: false
+        });
+        this.sfx.push(this.ui_click);
+        
+        this.ui_page = this.scene.sound.add('ui_page', {
+            volume: .5,
+            loop: false
+        });
+        this.sfx.push(this.ui_page);
         /*
         //UI
         this.buttonClick = this.scene.sound.add('menuButtonSound', {
@@ -339,9 +417,9 @@ export class AudioManager
                 return
             }
             // pause music or stop all sounds
-            this.pauseMusic();
-            this.scene.currentScene.pauseGame();
-            this.scene.currentScene.isPaused = true;
+            //this.pauseMusic();
+            //this.scene.currentScene.PauseGame?this.scene.currentScene.PauseGame();
+            //this.scene.currentScene.isPaused = true;
         }
         
     }

@@ -74,24 +74,28 @@ export class MenuScene extends Phaser.Scene
             {
                 this.nextSceneReady = false;
                 this.showLoading();
+                this.uiScene.audioManager.ui_click.play()
                 //this.uiScene.audioManager.playButtonClick.play();
             });
         
         this.helpButton = this.add.image(dim/2+210, dim/2+350,'menuUI', 'Info_NonClicked.png').setInteractive();
         this.helpButton.setScale(1);
         this.helpButton.on('pointerdown', () => { this.uiScene.panel.showInstructions(() => null); 
+            this.uiScene.audioManager.ui_click.play()
             //this.uiScene.audioManager.buttonClick.play(); 
         });
 
         this.optionsButton = this.add.image(dim/2-210, dim/2+350, 'menuUI', 'Settings_NonClicked.png').setInteractive();
         this.optionsButton.setScale(1);
         this.optionsButton.on('pointerdown', () => { this.uiScene.panel.showOptions(); 
+            this.uiScene.audioManager.ui_click.play()
             //this.uiScene.audioManager.buttonClick.play(); 
         });
         
         this.creditsButton = this.add.image(dim-90, 80, 'menuUI', 'Credits_NonClicked.png').setInteractive();
         this.creditsButton.setScale(.7);
         this.creditsButton.on('pointerdown', () => { this.uiScene.panel.showCredits(); 
+            this.uiScene.audioManager.ui_click.play()
             //this.uiScene.audioManager.buttonClick.play(); 
         });
     }

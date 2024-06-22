@@ -9,7 +9,7 @@ export class Panel
         this.credits = 
         [['Programación', 'Diego Johnson','Braulio Baldeon'],
         ['Arte y animación', 'Edward Torres'],
-        ['Marketing e interfaz', 'Karoline Jiménez'],
+        ['Marketing e interfaz', 'Karoline Jimenez'],
         ['Música y sonido', 'Gunter Brenner'],
         ['Dirección', 'Jorge García'],
         ['Productor ejecutivo', 'Phillip Chu Joy']]
@@ -22,6 +22,10 @@ export class Panel
 
         this.panelContainer = this.scene.add.container(0, 0, [background, this.panel]);
         this.panelContainer.setDepth(10).setVisible(false);
+
+        this.reloadPanel = this.scene.add.image(dim/2, dim/2, 'panel').setScale(.7);
+        this.reloadPanelContainer = this.scene.add.container(0, 0, [background, this.reloadPanel]);
+        this.reloadPanelContainer.setDepth(10).setVisible(false);
 
         this.pauseContainer;
     }
@@ -37,7 +41,7 @@ export class Panel
         
         let optionsButton = this.scene.add.image(dim/2, dim/2-80, 'pantalla_pausa_UI', 'Botón_opciones_NonClicked.png').setInteractive().setDisplaySize(400,75);
         optionsButton.on('pointerdown', () => { this.hidePause(); this.showOptions(); 
-            //this.scene.audioManager.buttonClick.play();
+            this.scene.audioManager.ui_click.play()
         });
 
         let continueButton = this.scene.add.image(dim/2, dim/2+25, 'pantalla_pausa_UI', 'Botón_Continuar_NonClicked.png').setInteractive().setDisplaySize(400,75);
@@ -51,6 +55,7 @@ export class Panel
 
         let exitButton = this.scene.add.image(dim/2, dim/2+130, 'pantalla_pausa_UI', 'Botón_Salir_NonClicked.png').setInteractive().setDisplaySize(400,75);
         exitButton.on('pointerdown', () => { this.hidePause(); 
+            this.scene.audioManager.ui_click.play()
             //this.scene.audioManager.exitButtonClick.play(); 
             this.scene.currentScene.BackMenu(); });
 
@@ -58,6 +63,32 @@ export class Panel
         this.pauseContainer.setVisible(false).setDepth(10.1);
     }
     
+    createReloadPanel(dim){
+        //let pauseTitleContainer = this.scene.add.image(dim/2, 250, 'panelUI', 'cartel.png').setScale(.75);
+
+        let reloadTitle = this.scene.add.text(dim/2, 390, 'Reiniciar', { 
+            fontFamily: 'Bungee', fontSize: '30px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
+        reloadTitle.setStroke('#503530', 10);
+        let closeImage = this.scene.add.image(dim - 290, 380, 'menuUI', 'Equis_NonClicked.png').setInteractive().setScale(.5);
+        closeImage.on('pointerdown', () => { this.scene.audioManager.resumeMusic(); this.scene.currentScene.ReloadGame(); });
+        
+        let text2 = this.scene.add.text(dim/2, dim/2-40, '¿Seguro que quieres reiniciar?', { 
+            fontFamily: 'Bungee', fontSize: '30px',  color: '#dddddd', align: 'center' }).setOrigin(0.5);
+        text2.setStroke('#503530', 8).setLineSpacing(0).setWordWrapWidth(this.reloadPanel.displayWidth-100);
+        
+
+        let reloadButton = this.scene.add.image(dim/2, dim/2+90, 'pantalla_fin_UI', 'Botón_Reiniciar_NonClicked.png').setInteractive().setScale(1);
+        reloadButton.on('pointerdown', () => { 
+            this.hideReload();
+            this.scene.currentScene.RestartGame(); 
+            //this.scene.audioManager.buttonClick.play();
+        });
+
+    
+
+        this.reloadContainer = this.scene.add.container(0, 0, [reloadTitle, closeImage, text2, reloadButton]);
+        this.reloadContainer.setVisible(false).setDepth(10.1);
+    }
 
     createFirstTutorialPage(dim){
         let text1 = this.scene.add.text(dim/2, 440, 'JALA LAS FICHAS HACIA EL TABLERO Y FORMA LÍNEAS PARA DESTRUIRLAS Y GANAR PUNTOS ¡A MÁS LÍNEAS, MÁS PUNTOS!', { 
@@ -167,8 +198,8 @@ export class Panel
 
             input: 'drag'|'click',
             valuechangeCallback: function (value) {
-                //this.scene.audioManager.menuMusic.volume = value;
-                //this.scene.audioManager.gameplayMusic.volume = value;
+                this.scene.audioManager.menuMusic.volume = value;
+                this.scene.audioManager.gameplayMusic.volume = value;
                 this.scene.data.set('musicVolume', value);
             },
 
@@ -192,7 +223,7 @@ export class Panel
 
             input: 'drag'|'click',
             valuechangeCallback: function (value) {
-                //this.scene.audioManager.updateSFXVolume(value);
+                this.scene.audioManager.updateSFXVolume(value);
                 this.scene.data.set('sfxVolume', value);
             },
 
@@ -230,8 +261,8 @@ export class Panel
         let creditsTitleContainer = this.scene.add.image(dim/2, 535, 'panel').setDisplaySize(800,700);
 
         let creditsTitle = this.scene.add.text(dim/2, 245, 'CRÉDITOS', { 
-            font: '700 40px Bungee', color: '#ebebeb', align: 'center' }).setOrigin(0.5);
-        creditsTitle.setStroke('#503530', 8);
+            font: '700 40px Bungee', color: '#F9F9F9', align: 'center' }).setOrigin(0.5);
+        creditsTitle.setStroke('#662C2A', 11);
 
         let closeImage = this.scene.add.image(dim - 150, 245, 'menuUI', 'Equis_NonClicked.png').setInteractive().setScale(.5);
         closeImage.on('pointerdown', () => this.hideCredits());
@@ -243,16 +274,15 @@ export class Panel
         for (let i = 0; i < this.credits.length; i++){
             if(i>2){
                 modifierX = 350
-                modifierY = 280
+                modifierY = 420
             }
-            let newH = previousChildCount <= 1 ? 325+80*i : 325+80*i+20*previousChildCount;
-            newH+=40
-            let label = this.addCreditsLabel(dim/2-200+modifierX, newH+70-modifierY, i);
+            let newH = 140*i
+            let label = this.addCreditsLabel(dim/2-300+modifierX, newH+350-modifierY, i);
             if (previousChildCount < label.list.length - 1) previousChildCount = label.list.length - 1;
             labels.push(label);
         }
 
-        let logo = this.scene.add.image(dim/2, dim-300, 'leapLogo').setScale(.25);
+        let logo = this.scene.add.image(dim/2, dim-300, 'leapLogo').setScale(1);
 
         this.creditsContainer = this.scene.add.container(0, 0, [creditsTitleContainer,creditsTitle, logo,closeImage]);
         for(let i = 0; i < labels.length; i++){ this.creditsContainer.add(labels[i]); }
@@ -260,19 +290,21 @@ export class Panel
     }
 
     addCreditsLabel(x, y, index){
-        let title = this.scene.add.text(x, y, this.credits[index][0], { 
-            fontFamily: 'Bungee', fontSize: '20px',  color: '#ebebeb', align: 'center' }).setOrigin(0.5);
-        title.setStroke('#662C2A', 8);
+        
+        let title = this.scene.add.text(x+25, y+10, this.credits[index][0], { 
+            fontFamily: 'Bungee', fontSize: '18px',  color: '#ebebeb', align: 'left' });
+        let creditBar = this.scene.add.image(x, y, 'pantalla_pausa_UI', 'Barra.png').setOrigin(0,0).setDisplaySize(title.getBounds().width+50,50).setDepth(10);
+        title.setStroke('#662C2A', 5).setDepth(11);
 
         let names = [];
         for(let i = 1; i < this.credits[index].length; i++){
-            let name = this.scene.add.text(x, y+30*i, this.credits[index][i], { 
-                font: '700 18px Bungee', color: '#ebebeb', align: 'center' }).setOrigin(0.5);
-            name.setStroke('#503530', 8);
+            let name = this.scene.add.text(x, (30*i)+y+30, this.credits[index][i], { 
+                font: '700 16px Bungee', color: '#ebebeb', align: 'left' });
+            name.setStroke('#854A3A', 5);
             names.push(name);
         }
 
-        let labelContainer = this.scene.add.container(0, 0, [title]);
+        let labelContainer = this.scene.add.container(0, 0, [creditBar,title]);
         for(let i = 0; i < names.length; i++){ labelContainer.add(names[i]); }
         labelContainer.setDepth(10);
         return labelContainer
@@ -299,7 +331,7 @@ export class Panel
         this.timeText = this.scene.add.text(dim/2+170, dim/2+70, '00:08:25', { font: '800 30px Bungee', color: '#f0dfa7' });
         this.timeText.setStroke('#553b37', 8).setOrigin(1);
         
-        let recordLabel = this.scene.add.text(dim/2-165, dim/2+95, 'RECORD:', { font: '800 30px Bungee', color: '#f4f4f4' });
+        let recordLabel = this.scene.add.text(dim/2-165, dim/2+95, 'RÉCORD:', { font: '800 30px Bungee', color: '#f4f4f4' });
         recordLabel.setStroke('#553b37', 8);
 
         this.recordText = this.scene.add.text(dim/2+170, dim/2+130, '10000000', { font: '800 30px Bungee', color: '#f0dfa7' });
@@ -308,12 +340,14 @@ export class Panel
         let restartButton = this.scene.add.image(dim/2-150, dim/2+260, 'pantalla_fin_UI', 'Botón_Reiniciar_NonClicked.png').setInteractive();
         //restartButton.setScale(.75);
         restartButton.on('pointerdown', () => { this.hideScore(); 
+            this.scene.audioManager.ui_click.play()
             //this.scene.audioManager.playButtonClick.play(); 
             this.scene.currentScene.RestartGame(); });
 
         let menuButton = this.scene.add.image(dim/2+170, dim/2+260, 'pantalla_fin_UI', 'Botón_Salir_NonClicked.png').setInteractive();
         //menuButton.setDisplaySize(270,130);
         menuButton.on('pointerdown', () => { this.hideScore(); 
+            this.scene.audioManager.ui_click.play()
             //this.scene.audioManager.exitButtonClick.play(); 
             this.scene.currentScene.BackMenu();});
 
@@ -380,12 +414,14 @@ export class Panel
     }
 
     leftArrowClicked(){
+        this.scene.audioManager.ui_page.play()
         //this.scene.audioManager.buttonClick.play();
         this.instructionIndex = this.instructionIndex - 1 >= 0 ? this.instructionIndex - 1 : 0;
         this.setInstructionsText();
     }
 
     rightArrowClicked(){
+        this.scene.audioManager.ui_page.play()
         //this.scene.audioManager.buttonClick.play();
         if (this.instructionIndex + 1 < this.instructionTexts.length) this.instructionIndex = this.instructionIndex + 1;
         else this.hideInstructions();
@@ -407,13 +443,14 @@ export class Panel
         this.instructionIndex = 0;
         this.setInstructionsText();
         if (callback != null) this.hideInstructions.callback = callback;
-
+        this.scene.audioManager.ui_page.play()
         //this.scene.audioManager.pageOpen.play();
         this.instructionsContainer.setVisible(true);
         this.panelContainer.setVisible(true);
     }
 
     hideInstructions(){
+        this.scene.audioManager.ui_click.play()
         //this.scene.audioManager.buttonClick.play();
         this.instructionsContainer.setVisible(false);
         this.panelContainer.setVisible(false);
@@ -421,12 +458,14 @@ export class Panel
     }
 
     showOptions(){
+        this.scene.audioManager.ui_click.play()
         //this.scene.audioManager.pageOpen.play();
         this.optionsContainer.setVisible(true);
         this.panelContainer.setVisible(true);
     }
 
     hideOptions(){
+        this.scene.audioManager.ui_click.play()
         //this.scene.audioManager.buttonClick.play();
         this.optionsContainer.setVisible(false);
         this.panelContainer.setVisible(false);
@@ -435,6 +474,7 @@ export class Panel
     }
 
     showCredits(){
+        this.scene.audioManager.ui_click.play()
         //this.scene.audioManager.pageOpen.play();
         //this.panel.setDisplaySize(1110, 1200);
         this.creditsContainer.setVisible(true);
@@ -442,6 +482,7 @@ export class Panel
     }
 
     hideCredits(){
+        this.scene.audioManager.ui_click.play()
         //this.scene.audioManager.buttonClick.play();
         //this.panel.setDisplaySize(1110, 1150);
         this.creditsContainer.setVisible(false);
@@ -454,9 +495,20 @@ export class Panel
     }
 
     hidePause(){
+        this.scene.audioManager.ui_click.play()
        // this.scene.audioManager.buttonClick.play();
         this.pauseContainer.setVisible(false);
         this.panelContainer.setVisible(false);
+    }
+
+    showReload(){
+        this.reloadContainer.setVisible(true);
+        this.reloadPanelContainer.setVisible(true);
+    }
+    hideReload(){
+        this.scene.audioManager.ui_click.play()
+        this.reloadContainer.setVisible(false);
+        this.reloadPanelContainer.setVisible(false);
     }
 
     showScore(score, newHighScore){

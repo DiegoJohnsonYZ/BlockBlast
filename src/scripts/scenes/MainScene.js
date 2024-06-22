@@ -64,7 +64,7 @@ export class MainScene extends Phaser.Scene{
 
 
     PauseGame(){
-        
+        this.audioManager.ui_click.play()
         if(!this.pauseOpen){
             this.sliderTween?.pause()
             this.isPaused = true
@@ -92,6 +92,7 @@ export class MainScene extends Phaser.Scene{
     }
 
     RestartGame(){
+        this.audioManager.ui_click.play()
         if(this.gameoverTiming){
             clearTimeout(this.gameOverTimeOut)
             this.gameOverTimeOut = null
@@ -101,6 +102,22 @@ export class MainScene extends Phaser.Scene{
         this.isPaused = false
         this.panel.hideScore()
         this.scene.restart(this.data)
+    }
+
+    ReloadGame(){
+        this.audioManager.ui_click.play()
+        if(!this.pauseOpen){
+            this.sliderTween?.pause()
+            this.isPaused = true
+            this.pauseOpen = true
+            this.panel.showReload();
+        }
+        else{
+            this.sliderTween?.resume()
+            this.isPaused = false
+            this.pauseOpen = false
+            this.panel.hideReload()
+        }
     }
 
     BackMenu(){
@@ -413,11 +430,12 @@ export class MainScene extends Phaser.Scene{
         if(this.isPaused)return
         this.newScorePoints = 0
         this.StopVibration()
+        this.audioManager.soltar.play()
         for(let i = 0; i < 5; i++){
             for(let j = 0; j < 5; j++){
                 if(piece.shape.charAt((5*i)+j) != 0){
                     if(this.ObtainInt(piece.shape.charAt((5*i)+j))<-10){//powerups
-                        this.board[j+x][i+y].setTexture(this.powerUpsList[piece.shape.charAt((5*i)+j)-1]).setTint(0xffffff).visible = true
+                        this.idleboard[j+x][i+y].setTexture(this.powerUpsList[piece.shape.charAt((5*i)+j)-1]).setTint(0xffffff).visible = true
                         
                         this.powerUpsInGame[(j+x).toString()+(i+y).toString()] = (j+x).toString()+(i+y).toString()
                         this.SetName(this.board[j+x][i+y],this.powerUpsList[piece.shape.charAt((5*i)+j)-1])
@@ -446,6 +464,7 @@ export class MainScene extends Phaser.Scene{
         if(!this.isStarting){
             this.refillCounter +=1
             this.CreateNumbersText(x,y,this.newScorePoints)
+            this.audioManager.puntos.play()
             this.BreakLine(x,y)
         }
         for(let i = 0; i < 8; i++){
@@ -521,7 +540,7 @@ export class MainScene extends Phaser.Scene{
         this.lineCounterXadd = [0,0,0,0,0,0,0,0]
         this.lineCounterYadd = [0,0,0,0,0,0,0,0]
 
-
+        this.audioManager.destruccion.play()
         //RECORRER CADA LINEA Y ROMPER EL PRIMER ELEMENTO
         for(let i = 0; i < this.linesToClear.length; i++){
             let aux = this.linesToClear[i]
@@ -683,10 +702,12 @@ export class MainScene extends Phaser.Scene{
                 this.BombBreakingLines(filas,columnas)
                 this.CreateEffectText(filas,columnas,"bomba.png")
                 this.MakeAnimation(filas,columnas,"bombFx")
+                this.audioManager.bomba.play()
             }
             else{
                 if(!bomb)this.MakeAnimation(filas,columnas,"destroyFx")
                 this.board[filas][columnas].anims.pause()
+                this.idleboard[filas][columnas].anims.pause()
                 this.board[filas][columnas].setTint(0xffffff)
                 this.board[filas][columnas].setTexture("piece",this.colorsList[0])
                 this.idleboard[filas][columnas].anims.pause()
@@ -740,7 +761,9 @@ export class MainScene extends Phaser.Scene{
                     if(this.GetTexture(this.board[j][i]).startsWith("blockblast")) {
                         this.idleboard[j][i].anims.pause()
                         this.idleboard[j][i].setTexture("originalPiece",this.piece.color)}
-                    else this.StartVibration(this.board[j][i])
+                    else {this.StartVibration(this.idleboard[j][i])
+                        this.audioManager.aviso.play()
+                    }
 
                     
 
@@ -755,7 +778,9 @@ export class MainScene extends Phaser.Scene{
                     if(this.GetTexture(this.board[i][j]).startsWith("blockblast")){
                         this.idleboard[i][j].anims.pause()
                         this.idleboard[i][j].setTexture("originalPiece",this.piece.color)}
-                        else this.StartVibration(this.board[i][j])
+                        else {
+                            this.audioManager.aviso.play()
+                            this.StartVibration(this.idleboard[i][j])}
                    
                     
                 }
@@ -908,8 +933,10 @@ export class MainScene extends Phaser.Scene{
    
     BombBreakingLines(fila,columna){
         this.board[fila][columna].anims.pause()
+        this.idleboard[fila][columna].anims.pause()
         this.board[fila][columna].setTint(0xffffff)
         this.board[fila][columna].setTexture("piece",this.colorsList[0])
+        this.idleboard[fila][columna].setVisible(false)
         this.SetName(this.board[fila][columna],this.colorsList[0])
         this.boardMatrix[fila][columna] = 0
         this.MakeAnimation(fila,columna,"bombFx")
@@ -1122,7 +1149,7 @@ export class MainScene extends Phaser.Scene{
         for (let clave in this.powerUpsInGame) {
             if (this.powerUpsInGame.hasOwnProperty(clave)) {
                 console.log('POWER' + this.board[clave[0]][clave[1]].name)
-                this.board[clave[0]][clave[1]].play(this.GetTexture(this.board[clave[0]][clave[1]]),true)
+                this.idleboard[clave[0]][clave[1]].play(this.GetTexture(this.board[clave[0]][clave[1]]),true)
             }
         }
         
@@ -1305,6 +1332,7 @@ export class MainScene extends Phaser.Scene{
         this.animationBoard[x][y].play(effect,true)
     }
     ReductAnimation(){
+        this.audioManager.reduccion.play()
         if(this.optionsBools[0]){
             this.option1anim.visible = true
             this.option1anim.play("reductFx",true)
@@ -1330,7 +1358,7 @@ export class MainScene extends Phaser.Scene{
     
 
     StartVibration(element) {
-        this.boardContainer.bringToTop(element)
+        this.idleBoardContainer.bringToTop(element)
             let vibrateTween = this.tweens.add({
                 targets: element,
                 scaleX: 1.2,
@@ -1344,6 +1372,7 @@ export class MainScene extends Phaser.Scene{
     }
     
     StopVibration() {
+        this.audioManager.aviso.stop()
         this.vibrateTweens.forEach(tween => {
             tween.stop();
             tween.targets[0].setScale(1, 1); // Restablecer la escala del elemento a la normalidad
@@ -1378,7 +1407,7 @@ export class MainScene extends Phaser.Scene{
               getStart: () => 1,
               getEnd: () => 0
             },
-            onUpdate: function(tween, target){
+            onUpdate: (tween, target) => {
                 let indicator = target.getElement('indicator');
                 //target.getElement('thumb').x = target.getElement('thumb').x+3; // Ajustar la posición del thumb
                  // Obtén el valor actual del slider
@@ -1396,7 +1425,15 @@ export class MainScene extends Phaser.Scene{
                     limit-=0.01
                     
                     let currentFrame = indicator.frame.name;
-                    indicator.setFrame(currentFrame === 'verde.png' ? 'rojo.png' : 'verde.png');
+                    if(currentFrame === 'verde.png'){
+                        indicator.setFrame('rojo.png')
+                        this.audioManager.alarma.play()
+
+                    }
+                    else{
+                        indicator.setFrame('verde.png')
+                    }
+                    
                 }
                
                 
@@ -1416,6 +1453,10 @@ export class MainScene extends Phaser.Scene{
 
         this.isPaused=true
         this.gameoverTiming = true
+        setTimeout(() => {
+                
+            this.audioManager.tapete.play()
+    }, 1500);
         this.tweens.add({
             targets: this.finalScreen,
             y: 550, // Posición final en el eje Y
@@ -1423,7 +1464,7 @@ export class MainScene extends Phaser.Scene{
             duration: 1000, // Duración del tween en milisegundos
             delay: 1500 // Retardo antes de que empiece el tween
         });
-
+        
         this.gameOverTimeOut = setTimeout(() => {
                 
                 this.StartGameOver()
@@ -1613,7 +1654,7 @@ export class MainScene extends Phaser.Scene{
         //this.panel.createInstructionsPanel(this.dim);
         this.panel.createOptionsPanel(this.dim);
         this.panel.createScorePanel(this.dim);
-
+        this.panel.createReloadPanel(this.dim);
         this.pointerX = 0
         this.pointerY = 0
 
@@ -1834,16 +1875,18 @@ export class MainScene extends Phaser.Scene{
         this.board = []
         this.idleboard = []
         this.boardContainer = this.add.container(0,0)
+        this.idleBoardContainer = this.add.container(0,0)
         this.boardContainer.add(boardTable)
         for(let i = 0; i < this.boardSize; i++){
             this.board[i] = []
             this.idleboard[i] = []
             for(let j = 0; j < this.boardSize; j++){
                 this.board[i][j] = this.add.sprite(((i-this.boardSize/2)*this.squareSize)+(this.squareSize/2), ((j-this.boardSize/2)*this.squareSize)+(this.squareSize/2),"piece", this.colorsList[0])
-                this.idleboard[i][j] = this.add.sprite((i*this.squareSize)+this.offsetX, (j*this.squareSize)+this.offsetY,"piece", this.colorsList[0]).setDepth(4).setVisible(false)
+                this.idleboard[i][j] = this.add.sprite((i*this.squareSize)+this.offsetX, (j*this.squareSize)+this.offsetY,"piece", this.colorsList[0]).setVisible(false)
                 //this.board[i][j].visible = false
                 this.board[i][j].name = i.toString()+j.toString()+this.colorsList[0]
                 this.boardContainer.add(this.board[i][j])
+                this.idleBoardContainer.add(this.idleboard[i][j])
                 this.board[i][j].on(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'bomb', function () {
                     this.board[i][j].setTexture(this.powerUpsList[0])
                         
@@ -1861,6 +1904,7 @@ export class MainScene extends Phaser.Scene{
         this.boardContainer.x += (this.boardSize/2*this.squareSize)+this.offsetX-(this.squareSize/2)
         this.boardContainer.y += (this.boardSize/2*this.squareSize)+this.offsetY-(this.squareSize/2)
         this.boardContainer.setDepth(3)
+        this.idleBoardContainer.setDepth(4)
         this.boardMatrix = []
         for(let i = 0; i < this.boardSize; i++){
             this.boardMatrix[i] = []
@@ -2071,7 +2115,7 @@ export class MainScene extends Phaser.Scene{
         this.settingsButton.setScale(.8);
         this.settingsButton.on('pointerdown', () => 
             {
-                this.RestartGame()
+                this.ReloadGame()
                 //this.uiScene.audioManager.playButtonClick.play();
             });
         
@@ -2102,6 +2146,7 @@ export class MainScene extends Phaser.Scene{
         
         this.input.on('dragstart', function (pointer, gameObject) {
             if(!this.isPaused){
+                this.audioManager.preview.play()
                 console.log(gameObject.parentContainer.name)
                 gameObject.parentContainer.visible = false
                 this.piece = this.optionsPieces[parseInt(gameObject.parentContainer.name)]
