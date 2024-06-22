@@ -17,14 +17,14 @@ export class Panel
 
     create(dim){
         let background = this.scene.add.image(dim/2, dim/2, 'fade').setDisplaySize(dim, dim).setInteractive();
-
+        let background2 = this.scene.add.image(dim/2, dim/2, 'fade').setDisplaySize(dim, dim).setInteractive();
         this.panel = this.scene.add.image(dim/2, dim/2, 'panel').setScale(1);
 
         this.panelContainer = this.scene.add.container(0, 0, [background, this.panel]);
         this.panelContainer.setDepth(10).setVisible(false);
 
         this.reloadPanel = this.scene.add.image(dim/2, dim/2, 'panel').setScale(.7);
-        this.reloadPanelContainer = this.scene.add.container(0, 0, [background, this.reloadPanel]);
+        this.reloadPanelContainer = this.scene.add.container(0, 0, [background2, this.reloadPanel]);
         this.reloadPanelContainer.setDepth(10).setVisible(false);
 
         this.pauseContainer;
