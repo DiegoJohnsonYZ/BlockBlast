@@ -16,7 +16,7 @@ export class AudioManager
         this.scene.load.audio('destruccion', ['src/audios/ogg/sfx_destruccion.ogg','src/audios/m4a/sfx_destruccion.m4a'])
         this.scene.load.audio('preview', ['src/audios/ogg/sfx_ficha_preview.ogg','src/audios/m4a/sfx_ficha_preview.m4a'])
         this.scene.load.audio('soltar', ['src/audios/ogg/sfx_ficha_soltar.ogg','src/audios/m4a/sfx_ficha_soltar.m4a'])
-        this.scene.load.audio('aviso', ['src/audios/ogg/sfx_powerup_aviso.ogg','src/audios/m4a/src/audios/m4a/sfx_powerup_aviso.m4a'])
+        this.scene.load.audio('aviso', ['src/audios/ogg/sfx_powerup_aviso.ogg','src/audios/m4a/sfx_powerup_aviso.m4a'])
         this.scene.load.audio('bomba', ['src/audios/ogg/sfx_powerup_bomba.ogg','src/audios/m4a/sfx_powerup_bomba.m4a'])
         this.scene.load.audio('reduccion', ['src/audios/ogg/sfx_powerup_reduccion.ogg','src/audios/m4a/sfx_powerup_reduccion.m4a'])
         this.scene.load.audio('puntos', ['src/audios/ogg/sfx_puntos.ogg','src/audios/m4a/sfx_puntos.m4a'])

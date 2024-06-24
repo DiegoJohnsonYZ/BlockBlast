@@ -98,7 +98,7 @@ export class MainScene extends Phaser.Scene{
             this.gameOverTimeOut = null
         }
         this.gamefinish = true
-        this.audioManager.stopMusic()
+        //this.audioManager.stopMusic()
         this.isPaused = false
         this.panel.hideScore()
         this.scene.restart(this.data)
