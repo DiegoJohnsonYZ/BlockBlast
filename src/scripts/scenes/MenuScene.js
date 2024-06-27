@@ -107,6 +107,7 @@ export class MenuScene extends Phaser.Scene
         });
         this.optionsButton.on('pointerover', function (event) {
             this.setTexture('menuUI', 'Settings_Clicked.png');
+            
         });
         this.optionsButton.on('pointerout', function (event) {
             this.setTexture('menuUI', 'Settings_NonClicked.png');

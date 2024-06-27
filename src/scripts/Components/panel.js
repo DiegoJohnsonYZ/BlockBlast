@@ -465,6 +465,7 @@ export class Panel
         //this.scene.audioManager.pageOpen.play();
         this.optionsContainer.setVisible(true);
         this.panelContainer.setVisible(true);
+        if (this.scene.currentScene.scene.key === 'MainScene') this.scene.currentScene.scene.optionsButton.setTexture('menuUI', 'Settings_NonClicked.png');
     }
 
     hideOptions(){
