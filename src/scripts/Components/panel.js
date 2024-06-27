@@ -432,9 +432,12 @@ export class Panel
         for (let i = 0; i < this.instructionTexts.length; i++){
             this.instructionTexts[i].setVisible(false);
         }
-
-        this.leftArrow.setVisible(this.instructionIndex != 0);
-        this.rightArrow.setVisible(this.instructionIndex != this.instructionTexts.length-1);
+        if(this.instructionIndex != 0){
+            this.leftArrow.setVisible(true);
+        }
+       
+        if(this.instructionIndex != this.instructionTexts.length-1)this.rightArrow.setTexture('menuUI', 'Next_NonClicked.png');
+        else this.rightArrow.setTexture('menuUI', 'Equis_NonClicked.png')
         this.instructionTexts[this.instructionIndex].setVisible(true);
         this.intructionsTitle.setText('Tutorial ' + (this.instructionIndex + 1) + '/'+this.instructionTexts.length);
     }

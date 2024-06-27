@@ -16,6 +16,7 @@ export class MenuScene extends Phaser.Scene
         this.load.image('cloud_b', './src/images/portrait/portada_clouds_b.png');
         this.load.image('cloud_c', './src/images/portrait/portada_clouds_c.png');
         this.load.image('menuLogo', './src/images/lg.png');
+        this.load.image('phillipLogo', './src/images/logo_menu.png');
         
     }
 
@@ -59,6 +60,7 @@ export class MenuScene extends Phaser.Scene
         this.sprBackCloud = this.add.tileSprite(0, dim/2-420,0,0, 'menuBG', 'portada_background_clouds.png').setOrigin(0, 0)
        
         this.sprBack = this.add.image(dim/2, dim/2+100, 'menuBG', 'portada_chess.png')
+        this.phillipLogo = this.add.image(dim/2-25, dim/2+180, 'phillipLogo')
         this.cloudSpeedModifier = 0.5
         this.cloud1 = this.add.tileSprite(0, dim/2-220,0,0, 'cloud_a').setOrigin(0, 0)
         this.cloud2 = this.add.tileSprite(0, dim/2-120,0,0, 'cloud_c').setOrigin(0, 0).setScale(1)
@@ -77,12 +79,24 @@ export class MenuScene extends Phaser.Scene
                 this.uiScene.audioManager.ui_click.play()
                 //this.uiScene.audioManager.playButtonClick.play();
             });
+        this.startButton.on('pointerover', function (event) {
+            this.setTexture('menuUI', 'Play_Clicked.png');
+        });
+        this.startButton.on('pointerout', function (event) {
+            this.setTexture('menuUI', 'Play_NonClicked.png');
+        });
         
         this.helpButton = this.add.image(dim/2+210, dim/2+350,'menuUI', 'Info_NonClicked.png').setInteractive();
         this.helpButton.setScale(1);
         this.helpButton.on('pointerdown', () => { this.uiScene.panel.showInstructions(() => null); 
             this.uiScene.audioManager.ui_click.play()
             //this.uiScene.audioManager.buttonClick.play(); 
+        });
+        this.helpButton.on('pointerover', function (event) {
+            this.setTexture('menuUI', 'Info_Clicked.png');
+        });
+        this.helpButton.on('pointerout', function (event) {
+            this.setTexture('menuUI', 'Info_NonClicked.png');
         });
 
         this.optionsButton = this.add.image(dim/2-210, dim/2+350, 'menuUI', 'Settings_NonClicked.png').setInteractive();
@@ -91,12 +105,23 @@ export class MenuScene extends Phaser.Scene
             this.uiScene.audioManager.ui_click.play()
             //this.uiScene.audioManager.buttonClick.play(); 
         });
-        
+        this.optionsButton.on('pointerover', function (event) {
+            this.setTexture('menuUI', 'Settings_Clicked.png');
+        });
+        this.optionsButton.on('pointerout', function (event) {
+            this.setTexture('menuUI', 'Settings_NonClicked.png');
+        });
         this.creditsButton = this.add.image(dim-90, 80, 'menuUI', 'Credits_NonClicked.png').setInteractive();
         this.creditsButton.setScale(.7);
         this.creditsButton.on('pointerdown', () => { this.uiScene.panel.showCredits(); 
             this.uiScene.audioManager.ui_click.play()
             //this.uiScene.audioManager.buttonClick.play(); 
+        });
+        this.creditsButton.on('pointerover', function (event) {
+            this.setTexture('menuUI', 'Credits_Clicked.png');
+        });
+        this.creditsButton.on('pointerout', function (event) {
+            this.setTexture('menuUI', 'Credits_NonClicked.png');
         });
     }
 
@@ -125,7 +150,7 @@ export class MenuScene extends Phaser.Scene
                 },
                 onComplete: () => {
                     this.mainScene.startRunning = false;
-                    //this.uiScene.audioManager.menuMusic.stop();
+                    this.uiScene.audioManager.menuMusic.stop();
                     sliderTween?.remove();
                     sliderTween = null;
                     this.scene.stop();
@@ -157,6 +182,7 @@ export class MenuScene extends Phaser.Scene
                 this.scene.sendToBack('MainScene');
                 this.mainScene = this.scene.get("MainScene");
                 this.mainScene.events.once("create", () => {
+                
                 this.mainScene.startRunning = true;
                 this.nextSceneReady = true
         });

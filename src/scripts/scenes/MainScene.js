@@ -65,7 +65,9 @@ export class MainScene extends Phaser.Scene{
 
     PauseGame(){
         this.audioManager.ui_click.play()
+        
         if(!this.pauseOpen){
+            this.audioManager.pauseMusic()
             this.sliderTween?.pause()
             this.isPaused = true
             this.pauseOpen = true
@@ -1649,7 +1651,7 @@ export class MainScene extends Phaser.Scene{
         //INSTANCES
         this.panel = this.uiScene.panel;
         this.audioManager = this.uiScene.audioManager;
-
+        this.uiScene.audioManager.gameplayMusic.play();
         this.panel.createPausePanel(this.dim);
         //this.panel.createInstructionsPanel(this.dim);
         this.panel.createOptionsPanel(this.dim);
@@ -1850,7 +1852,8 @@ export class MainScene extends Phaser.Scene{
         this.add.image(this.offsetPictures-26,this.offsetPictures-455,"table_decor","parchados decor_a.png").setDepth(2)
         this.add.image(this.offsetPictures-45,this.offsetPictures+448,"table_decor","parchados decor_b.png").setDepth(2)
         
-        this.add.image(this.offsetPictures-389,this.offsetPictures+430,"table_decor","telalogo.png").setDepth(4)
+        this.add.image(this.offsetPictures-410,this.offsetPictures+430,"table_decor","telalogo.png").setDepth(4)
+        this.add.image(this.offsetPictures-460,this.offsetPictures+480,"table_decor","logo_gameplay.png").setDepth(4).setScale(1.4)
         this.add.image(this.offsetPictures-512,this.offsetPictures-505,"table_decor","parchados decor_d.png").setDepth(4)
         this.add.image(this.offsetPictures+517,this.offsetPictures-445,"table_decor","parchados decor_e.png").setDepth(4)
         this.add.image(this.offsetPictures+500,this.offsetPictures+450,"table_decor","parchados decor_f.png").setDepth(4)
@@ -2110,6 +2113,12 @@ export class MainScene extends Phaser.Scene{
                 this.PauseGame();
                 //this.uiScene.audioManager.playButtonClick.play();
             });
+        this.pauseButton.on('pointerover', function (event) {
+            this.setTexture('inGameUI', 'Pausa_Clicked.png');
+        });
+        this.pauseButton.on('pointerout', function (event) {
+            this.setTexture('inGameUI', 'Pausa_NonClicked.png');
+        });
 
         this.settingsButton = this.add.image(910, 73, 'inGameUI', 'Reinicio_NonClicked.png').setInteractive().setDepth(6);
         this.settingsButton.setScale(.8);
@@ -2118,7 +2127,12 @@ export class MainScene extends Phaser.Scene{
                 this.ReloadGame()
                 //this.uiScene.audioManager.playButtonClick.play();
             });
-        
+        this.settingsButton.on('pointerover', function (event) {
+            this.setTexture('inGameUI', 'Reinicio_Clicked.png');
+        });
+        this.settingsButton.on('pointerout', function (event) {
+            this.setTexture('inGameUI', 'Reinicio_NonClicked.png');
+        });
         
         this.pointerAdd = 0
         

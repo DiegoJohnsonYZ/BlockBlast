@@ -9,8 +9,8 @@ export class AudioManager
     load(){
         
         //main Themes
-        this.scene.load.audio('mainTheme', ['src/audios/maintheme.ogg','src/audios/maintheme.m4a'])
-
+        this.scene.load.audio('mainTheme', ['src/audios/title.ogg','src/audios/title.m4a'])
+        this.scene.load.audio('gameplayMusic', ['src/audios/maintheme.ogg','src/audios/maintheme.m4a'])
 
         this.scene.load.audio('alarma', ['src/audios/ogg/sfx_alarma_loop.ogg','src/audios/m4a/sfx_alarma_loop.m4a'])
         this.scene.load.audio('destruccion', ['src/audios/ogg/sfx_destruccion.ogg','src/audios/m4a/sfx_destruccion.m4a'])
@@ -87,7 +87,7 @@ export class AudioManager
         });
 
         //gameplayTheme
-        this.gameplayMusic = this.scene.sound.add('mainTheme', {
+        this.gameplayMusic = this.scene.sound.add('gameplayMusic', {
             volume: .5,
             loop: true
         });

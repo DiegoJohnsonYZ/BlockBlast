@@ -25,6 +25,7 @@ function run(opts) {
     };
 
     const gameOptions = {
+        
         type: Phaser.AUTO,
         parent: 'phaser-div',
         width: 1080,
