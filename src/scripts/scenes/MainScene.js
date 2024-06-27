@@ -1852,8 +1852,8 @@ export class MainScene extends Phaser.Scene{
         this.add.image(this.offsetPictures-26,this.offsetPictures-455,"table_decor","parchados decor_a.png").setDepth(2)
         this.add.image(this.offsetPictures-45,this.offsetPictures+448,"table_decor","parchados decor_b.png").setDepth(2)
         
-        this.add.image(this.offsetPictures-430,this.offsetPictures+430,"table_decor","telalogo.png").setDepth(4)
-        this.add.image(this.offsetPictures-480,this.offsetPictures+480,"table_decor","logo_gameplay.png").setDepth(4).setScale(1.4)
+        this.add.image(this.offsetPictures-440,this.offsetPictures+430,"table_decor","telalogo.png").setDepth(4)
+        this.add.image(this.offsetPictures-490,this.offsetPictures+480,"table_decor","logo_gameplay.png").setDepth(4).setScale(1.4)
         this.add.image(this.offsetPictures-512,this.offsetPictures-505,"table_decor","parchados decor_d.png").setDepth(4)
         this.add.image(this.offsetPictures+517,this.offsetPictures-445,"table_decor","parchados decor_e.png").setDepth(4)
         this.add.image(this.offsetPictures+500,this.offsetPictures+450,"table_decor","parchados decor_f.png").setDepth(4)
