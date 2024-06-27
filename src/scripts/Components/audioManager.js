@@ -9,10 +9,10 @@ export class AudioManager
     load(){
         
         //main Themes
-        this.scene.load.audio('mainTheme', ['src/audios/title.ogg','src/audios/title.m4a'])
-        this.scene.load.audio('gameplayMusic', ['src/audios/maintheme.ogg','src/audios/maintheme.m4a'])
+        this.scene.load.audio('mainTheme', ['./src/audios/title.ogg','./src/audios/title.m4a'])
+        this.scene.load.audio('gameplayMusic', ['./src/audios/maintheme.ogg','./src/audios/maintheme.m4a'])
 
-        this.scene.load.audio('alarma', ['src/audios/ogg/sfx_alarma_loop.ogg','src/audios/m4a/sfx_alarma_loop.m4a'])
+        this.scene.load.audio('alarma', ['./src/audios/ogg/sfx_alarma_loop.ogg','./src/audios/m4a/sfx_alarma_loop.m4a'])
         this.scene.load.audio('destruccion', ['src/audios/ogg/sfx_destruccion.ogg','src/audios/m4a/sfx_destruccion.m4a'])
         this.scene.load.audio('preview', ['src/audios/ogg/sfx_ficha_preview.ogg','src/audios/m4a/sfx_ficha_preview.m4a'])
         this.scene.load.audio('soltar', ['src/audios/ogg/sfx_ficha_soltar.ogg','src/audios/m4a/sfx_ficha_soltar.m4a'])

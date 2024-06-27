@@ -1421,7 +1421,7 @@ export class MainScene extends Phaser.Scene{
 
                 // Ajustar la posición del thumb según el valor actual
                 let thumbX = (target.width ) * value;
-                target.getElement('thumb').setX(thumbX+200);
+                target.getElement('thumb').setX(thumbX+180);
                 //if(value <= .6 && value >= .4)indicator.setFrame('amarillo.png');
                 if (value <= limit) {
                     limit-=0.01
@@ -1852,8 +1852,8 @@ export class MainScene extends Phaser.Scene{
         this.add.image(this.offsetPictures-26,this.offsetPictures-455,"table_decor","parchados decor_a.png").setDepth(2)
         this.add.image(this.offsetPictures-45,this.offsetPictures+448,"table_decor","parchados decor_b.png").setDepth(2)
         
-        this.add.image(this.offsetPictures-410,this.offsetPictures+430,"table_decor","telalogo.png").setDepth(4)
-        this.add.image(this.offsetPictures-460,this.offsetPictures+480,"table_decor","logo_gameplay.png").setDepth(4).setScale(1.4)
+        this.add.image(this.offsetPictures-430,this.offsetPictures+430,"table_decor","telalogo.png").setDepth(4)
+        this.add.image(this.offsetPictures-480,this.offsetPictures+480,"table_decor","logo_gameplay.png").setDepth(4).setScale(1.4)
         this.add.image(this.offsetPictures-512,this.offsetPictures-505,"table_decor","parchados decor_d.png").setDepth(4)
         this.add.image(this.offsetPictures+517,this.offsetPictures-445,"table_decor","parchados decor_e.png").setDepth(4)
         this.add.image(this.offsetPictures+500,this.offsetPictures+450,"table_decor","parchados decor_f.png").setDepth(4)
@@ -2039,7 +2039,7 @@ export class MainScene extends Phaser.Scene{
         this.scoreText.setText(this.scorePoints.toString().padStart(8, '0') )
 
         //CREATE LOADING BAR
-        let barX = this.offsetPictures+30
+        let barX = this.offsetPictures+10
         let barY = this.offsetPictures+450
         //this.add.image(barX,barY,"timerBar", "Base cronometro.png").setDepth(5)
         this.timeSlider = this.uiScene.rexUI.add.slider({
