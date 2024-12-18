@@ -67,8 +67,8 @@ function run(opts) {
 
 // Attach the game to the window object
 if (typeof window !== 'undefined') {
-    if (!window.BlockBlast) {
-      window.BlockBlast = {
+    if (!window.Parchados) {
+      window.Parchados = {
         run,
       };
     }

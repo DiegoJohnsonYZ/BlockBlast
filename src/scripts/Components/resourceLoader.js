@@ -1,4 +1,4 @@
-const prodRoute =  'https://static.pchujoy.com/public/games-assets/wacamole';
+const prodRoute =  'https://static.pchujoy.com/public/games-assets/parchados';
 
 
 export class ResourceLoader{
