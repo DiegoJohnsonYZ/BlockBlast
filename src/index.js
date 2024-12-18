@@ -17,11 +17,32 @@ import * as Phaser from 'phaser';
  * @param {Function} opts.onGameEnd - The callback function to be executed when the game ends.
  */
 function run(opts) {
+    // Set GA
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-MK9TTZTNT1');
+
     const metadata = {
         highScore: opts?.highScore || 0,
-        sponsor: opts?.sponsor || true,
-        onGameStart: opts?.onGameStart || (() => {}),
-        onGameEnd: opts?.onGameEnd || (() => {}),
+        sponsor: opts?.sponsor || false,
+        seasonId: opts?.seasonId || 0,
+        gameId: opts?.gameId || 0,
+        onGameStart: (evt) => {
+            // Run GA
+            gtag("event", "game_started");
+
+            // Run the optional callback
+            opts?.onGameStart(evt) || (() => { })()
+        },
+        onGameEnd: (evt) => {
+            // Run GA
+            gtag("event", "game_finished");
+
+            // Run the optional callback
+            opts?.onGameEnd(evt) || (() => { })();
+        },
+        onDataSend: opts?.onDataSend || (() => {}),
     };
 
     const gameOptions = {
