@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-
+import {ResourceLoader} from '../components/resourceLoader.js';
 // -------------------------------------------
 // Menu Scene
 // -------------------------------------------
@@ -11,12 +11,12 @@ export class MenuScene extends Phaser.Scene
     }
     
     preload(){
-        this.load.atlas('menuBG', './src/images/portrait/sprites.png', './src/images/portrait/sprites.json');
-        this.load.image('cloud_a', './src/images/portrait/portada_clouds_a.png');
-        this.load.image('cloud_b', './src/images/portrait/portada_clouds_b.png');
-        this.load.image('cloud_c', './src/images/portrait/portada_clouds_c.png');
-        this.load.image('menuLogo', './src/images/lg.png');
-        this.load.image('phillipLogo', './src/images/logo_menu.png');
+        this.load.atlas('menuBG', ResourceLoader.ReturnPath()+'/images/portrait/sprites.png', './src/images/portrait/sprites.json');
+        this.load.image('cloud_a', ResourceLoader.ReturnPath()+'/images/portrait/portada_clouds_a.png');
+        this.load.image('cloud_b', ResourceLoader.ReturnPath()+'/images/portrait/portada_clouds_b.png');
+        this.load.image('cloud_c', ResourceLoader.ReturnPath()+'/images/portrait/portada_clouds_c.png');
+        this.load.image('menuLogo', ResourceLoader.ReturnPath()+'/images/lg.png');
+        this.load.image('phillipLogo', ResourceLoader.ReturnPath()+'/images/logo_menu.png');
         
     }
 

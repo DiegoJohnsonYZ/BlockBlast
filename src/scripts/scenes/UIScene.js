@@ -1,5 +1,6 @@
 import {Panel} from '../Components/panel.js';
 import {AudioManager} from '../Components/audioManager.js';
+import {ResourceLoader} from '../components/resourceLoader.js';
 //import {AnimationsManager} from '../managers/animationsManager.js';
 import * as Phaser from 'phaser';
 
@@ -10,17 +11,13 @@ export class UIScene extends Phaser.Scene
     }
 
     preload(){
-        this.load.image('panel', './src/images/ui/panel.png');
-        this.load.image('panel_dark', './src/images/ui/panel_dark.png');
-        this.load.atlas('pantalla_fin_UI', './src/images/ui/fin_partida/sprites.png', './src/images/ui/fin_partida/sprites.json');
-        this.load.atlas('pantalla_opciones_UI', './src/images/ui/pantalla_opciones/sprites.png', './src/images/ui/pantalla_opciones/sprites.json');
-        this.load.atlas('pantalla_pausa_UI', './src/images/ui/pantalla_pausa/sprites.png', './src/images/ui/pantalla_pausa/sprites.json');
-        //this.load.atlas('scorePanelUI', './src/images/ui/score_panel_ui.png', './src/images/ui/score_panel_ui.json');
-        //this.load.atlas('tutorialUI', './src/images/ui/tutorial_ui.png', './src/images/ui/tutorial_ui.json');
-        //this.load.atlas('toggle', './src/images/ui/toggle.png', './src/images/ui/toggle.json');
-        //this.load.image('leapLogo', './src/images/ui/leap_logo.png',);
-        this.load.image('logoPChuJoy', './src/images/logo_pchujoy.jpg');
-        this.load.image('fade', './src/images/black_alpha_40.png');
+        this.load.image('panel', ResourceLoader.ReturnPath()+'/images/ui/panel.png');
+        this.load.image('panel_dark', ResourceLoader.ReturnPath()+'/images/ui/panel_dark.png');
+        this.load.atlas('pantalla_fin_UI', ResourceLoader.ReturnPath()+'/images/ui/fin_partida/sprites.png', ResourceLoader.ReturnPath()+'/images/ui/fin_partida/sprites.json');
+        this.load.atlas('pantalla_opciones_UI', ResourceLoader.ReturnPath()+'/images/ui/pantalla_opciones/sprites.png', ResourceLoader.ReturnPath()+'/images/ui/pantalla_opciones/sprites.json');
+        this.load.atlas('pantalla_pausa_UI', ResourceLoader.ReturnPath()+'/images/ui/pantalla_pausa/sprites.png', ResourceLoader.ReturnPath()+'/images/ui/pantalla_pausa/sprites.json');
+        this.load.image('logoPChuJoy', ResourceLoader.ReturnPath()+'/images/logo_pchujoy.jpg');
+        this.load.image('fade', ResourceLoader.ReturnPath()+'/images/black_alpha_40.png');
 
         //sounds
         this.audioManager = new AudioManager(this);

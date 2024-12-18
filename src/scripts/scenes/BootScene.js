@@ -1,3 +1,5 @@
+import {ResourceLoader} from '../components/resourceLoader.js';
+
 export class BootScene extends Phaser.Scene
 {
     constructor(){
@@ -6,11 +8,11 @@ export class BootScene extends Phaser.Scene
     }
 
     preload(){
-        this.load.image('loadingBG', './src/images/bb_portrait.png');
-        this.load.atlas('tutorial', './src/images/tutorial/sprites.png', './src/images/tutorial/sprites.json');
-        this.load.atlas('loadingUI', './src/images/loading_UI/sprites.png', './src/images/loading_UI/sprites.json');
-        this.load.atlas('menuUI', './src/images/ui/botones/sprites.png', './src/images/ui/botones/sprites.json');
-        this.load.image('leapLogo','./src/images/leap_logo.png')
+        this.load.image('loadingBG', ResourceLoader.ReturnPath()+'/images/bb_portrait.png');
+        this.load.atlas('tutorial', ResourceLoader.ReturnPath()+'/images/tutorial/sprites.png', ResourceLoader.ReturnPath()+'/images/tutorial/sprites.json');
+        this.load.atlas('loadingUI', ResourceLoader.ReturnPath()+'/images/loading_UI/sprites.png', ResourceLoader.ReturnPath()+'/images/loading_UI/sprites.json');
+        this.load.atlas('menuUI', ResourceLoader.ReturnPath()+'/images/ui/botones/sprites.png', ResourceLoader.ReturnPath()+'/images/ui/botones/sprites.json');
+        this.load.image('leapLogo',ResourceLoader.ReturnPath()+'/images/leap_logo.png')
 
         this.load.rexWebFont({
             google: {

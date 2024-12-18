@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser'
-
+import {ResourceLoader} from '../components/resourceLoader.js';
 
 
 class Piece {
@@ -1500,43 +1500,43 @@ export class MainScene extends Phaser.Scene{
 
     preload(){
         //this.load.image("table_shadow", "src/images/blockblast_backgroud_table_shadow.png")
-        this.load.image("table", "src/images/parchados_chess.png")
-        this.load.image("b_box", "src/images/parchados_table.png")
-        this.load.image("final", "src/images/pantallafinalb.png")
+        this.load.image("table", ResourceLoader.ReturnPath()+"/images/parchados_chess.png")
+        this.load.image("b_box", ResourceLoader.ReturnPath()+"/images/parchados_table.png")
+        this.load.image("final", ResourceLoader.ReturnPath()+"/images/pantallafinalb.png")
         //IN GAME UI
-        this.load.atlas('inGameUI', './src/images/ui/pausa_ajustes/sprites.png', './src/images/ui/pausa_ajustes/sprites.json');
+        this.load.atlas('inGameUI', ResourceLoader.ReturnPath()+'/images/ui/pausa_ajustes/sprites.png', ResourceLoader.ReturnPath()+'/images/ui/pausa_ajustes/sprites.json');
         //TABLE DECOR
-        this.load.atlas("table_decor", "src/images/decor/sprites.png", "src/images/decor/sprites.json") 
+        this.load.atlas("table_decor", ResourceLoader.ReturnPath()+"/images/decor/sprites.png",ResourceLoader.ReturnPath()+"/images/decor/sprites.json") 
        
         //PREVIEW SPACE
-        this.load.image("preview_space", "src/images/preview_space/parchados_piecespace.png") 
+        this.load.image("preview_space", ResourceLoader.ReturnPath()+"/images/preview_space/parchados_piecespace.png") 
 
         //PIECES
-        this.load.atlas("piece", "src/images/blockblast_piece/sprites.png", "src/images/blockblast_piece/sprites.json") 
+        this.load.atlas("piece", ResourceLoader.ReturnPath()+"/images/blockblast_piece/sprites.png", ResourceLoader.ReturnPath()+"/images/blockblast_piece/sprites.json") 
         //ORIGINAL PIECES
-        this.load.atlas("originalPiece", "src/images/originalPiece/sprites.png", "src/images/originalPiece/sprites.json") 
+        this.load.atlas("originalPiece", ResourceLoader.ReturnPath()+"/images/originalPiece/sprites.png", ResourceLoader.ReturnPath()+"/images/originalPiece/sprites.json") 
         //POWER UPS
-        this.load.atlas("powerUps", "src/images/BlockBlastPowerUps/sprites.png", "src/images/BlockBlastPowerUps/sprites.json")
+        this.load.atlas("powerUps", ResourceLoader.ReturnPath()+"/images/BlockBlastPowerUps/sprites.png", ResourceLoader.ReturnPath()+"/images/BlockBlastPowerUps/sprites.json")
 
         //TIMER BAR
-        this.load.atlas('timerBar', './src/images/ui/cronometro/sprites.png', './src/images/ui/cronometro/sprites.json');
+        this.load.atlas('timerBar', ResourceLoader.ReturnPath()+'/images/ui/cronometro/sprites.png', ResourceLoader.ReturnPath()+'/images/ui/cronometro/sprites.json');
 
         //TEXTOS
-        this.load.atlas('textos', './src/images/ui/text/sprites.png', './src/images/ui/text/sprites.json');
+        this.load.atlas('textos', ResourceLoader.ReturnPath()+'/images/ui/text/sprites.png', ResourceLoader.ReturnPath()+'/images/ui/text/sprites.json');
 
 
 
-        this.load.spritesheet('bomb', 'src/images/BlockBlastPowerUps/blockblast_powerup_bomb/blockblast_powerup_bomb.png', {
+        this.load.spritesheet('bomb', ResourceLoader.ReturnPath()+'/images/BlockBlastPowerUps/blockblast_powerup_bomb/blockblast_powerup_bomb.png', {
             frameWidth: 89,
             frameHeight: 89
             
             });
-        this.load.spritesheet('reduct', 'src/images/BlockBlastPowerUps/blockblast_powerup_reduct/blockblast_powerup_reduct.png', {
+        this.load.spritesheet('reduct', ResourceLoader.ReturnPath()+'/images/BlockBlastPowerUps/blockblast_powerup_reduct/blockblast_powerup_reduct.png', {
         frameWidth: 89,
         frameHeight: 89
         
         });
-        this.load.spritesheet('rotate', 'src/images/BlockBlastPowerUps/blockblast_powerup_rotate/blockblast_powerup_rotate.png', {
+        this.load.spritesheet('rotate', ResourceLoader.ReturnPath()+'/images/BlockBlastPowerUps/blockblast_powerup_rotate/blockblast_powerup_rotate.png', {
             frameWidth: 89,
             frameHeight: 89
             
@@ -1544,17 +1544,17 @@ export class MainScene extends Phaser.Scene{
 
 
 
-        this.load.spritesheet('bombFx', 'src/images/fx/parchados_fx_bomb/spritesheet.png', {
+        this.load.spritesheet('bombFx', ResourceLoader.ReturnPath()+'/images/fx/parchados_fx_bomb/spritesheet.png', {
             frameWidth: 500,
             frameHeight: 500
             
             });
-        this.load.spritesheet('destroyFx', 'src/images/fx/parchados_fx_destruccion/spritesheet.png', {
+        this.load.spritesheet('destroyFx', ResourceLoader.ReturnPath()+'/images/fx/parchados_fx_destruccion/spritesheet.png', {
             frameWidth: 500,
             frameHeight: 500
             
             });
-        this.load.spritesheet('reductFx', 'src/images/fx/parchados_fx_reduccion/spritesheet.png', {
+        this.load.spritesheet('reductFx', ResourceLoader.ReturnPath()+'/images/fx/parchados_fx_reduccion/spritesheet.png', {
             frameWidth: 200,
             frameHeight: 200
             
@@ -1562,72 +1562,72 @@ export class MainScene extends Phaser.Scene{
 
         //ANIMATIONS IDLE
 
-        this.load.spritesheet('idle_a', 'src/images/piece_animations/idle_a.png', {
+        this.load.spritesheet('idle_a', ResourceLoader.ReturnPath()+'/images/piece_animations/idle_a.png', {
             frameWidth: 90,
             frameHeight: 90
             
             });
-        this.load.spritesheet('idle_b', 'src/images/piece_animations/idle_b.png', {
+        this.load.spritesheet('idle_b', ResourceLoader.ReturnPath()+'/images/piece_animations/idle_b.png', {
             frameWidth: 90,
             frameHeight: 90
             
             });
-        this.load.spritesheet('idle_c', 'src/images/piece_animations/idle_c.png', {
+        this.load.spritesheet('idle_c', ResourceLoader.ReturnPath()+'/images/piece_animations/idle_c.png', {
             frameWidth: 90,
             frameHeight: 90
             
             });
-        this.load.spritesheet('idle_d', 'src/images/piece_animations/idle_d.png', {
+        this.load.spritesheet('idle_d', ResourceLoader.ReturnPath()+'/images/piece_animations/idle_d.png', {
             frameWidth: 90,
             frameHeight: 90
             
             });
-        this.load.spritesheet('idle_e', 'src/images/piece_animations/idle_e.png', {
+        this.load.spritesheet('idle_e', ResourceLoader.ReturnPath()+'/images/piece_animations/idle_e.png', {
             frameWidth: 90,
             frameHeight: 90
             
             });
-        this.load.spritesheet('idle_f', 'src/images/piece_animations/idle_f.png', {
+        this.load.spritesheet('idle_f', ResourceLoader.ReturnPath()+'/images/piece_animations/idle_f.png', {
             frameWidth: 90,
             frameHeight: 90
             
             });
-        this.load.spritesheet('idle_g', 'src/images/piece_animations/idle_g.png', {
+        this.load.spritesheet('idle_g', ResourceLoader.ReturnPath()+'/images/piece_animations/idle_g.png', {
             frameWidth: 90,
             frameHeight: 90
             
             });
-        this.load.spritesheet('idle_h', 'src/images/piece_animations/idle_h.png', {
+        this.load.spritesheet('idle_h', ResourceLoader.ReturnPath()+'/images/piece_animations/idle_h.png', {
             frameWidth: 90,
             frameHeight: 90
             
             });
-        this.load.spritesheet('idle_i', 'src/images/piece_animations/idle_i.png', {
+        this.load.spritesheet('idle_i', ResourceLoader.ReturnPath()+'/images/piece_animations/idle_i.png', {
             frameWidth: 90,
             frameHeight: 90
             
             });
-        this.load.spritesheet('idle_j', 'src/images/piece_animations/idle_j.png', {
+        this.load.spritesheet('idle_j', ResourceLoader.ReturnPath()+'/images/piece_animations/idle_j.png', {
             frameWidth: 90,
             frameHeight: 90
             
             });
-        this.load.spritesheet('idle_k', 'src/images/piece_animations/idle_k.png', {
+        this.load.spritesheet('idle_k', ResourceLoader.ReturnPath()+'/images/piece_animations/idle_k.png', {
             frameWidth: 90,
             frameHeight: 90
             
             });
-        this.load.spritesheet('idle_l', 'src/images/piece_animations/idle_l.png', {
+        this.load.spritesheet('idle_l', ResourceLoader.ReturnPath()+'/images/piece_animations/idle_l.png', {
             frameWidth: 90,
             frameHeight: 90
             
             });
-        this.load.spritesheet('idle_m', 'src/images/piece_animations/idle_m.png', {
+        this.load.spritesheet('idle_m', ResourceLoader.ReturnPath()+'/images/piece_animations/idle_m.png', {
             frameWidth: 90,
             frameHeight: 90
             
             });
-        this.load.spritesheet('idle_n', 'src/images/piece_animations/idle_n.png', {
+        this.load.spritesheet('idle_n', ResourceLoader.ReturnPath()+'/images/piece_animations/idle_n.png', {
             frameWidth: 90,
             frameHeight: 90
             
