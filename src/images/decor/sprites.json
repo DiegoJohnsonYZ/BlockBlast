@@ -1,0 +1,55 @@
+{
+"frames": {
+	"logo_gameplay.png": {
+		"frame": {"x":0, "y":771, "w":50, "h":37},
+		"spriteSourceSize": {"x":0,"y":0,"w":50,"h":37},
+		"sourceSize": {"w":50,"h":37}
+	},
+	"logo_menu.png": {
+		"frame": {"x":0, "y":348, "w":355, "h":133},
+		"spriteSourceSize": {"x":6,"y":29,"w":385,"h":186},
+		"sourceSize": {"w":385,"h":186}
+	},
+	"parchados decor_a.png": {
+		"frame": {"x":0, "y":0, "w":1023, "h":172},
+		"spriteSourceSize": {"x":0,"y":0,"w":1023,"h":172},
+		"sourceSize": {"w":1023,"h":172}
+	},
+	"parchados decor_b.png": {
+		"frame": {"x":0, "y":173, "w":990, "h":174},
+		"spriteSourceSize": {"x":0,"y":0,"w":990,"h":174},
+		"sourceSize": {"w":990,"h":174}
+	},
+	"parchados decor_c.png": {
+		"frame": {"x":302, "y":482, "w":129, "h":374},
+		"spriteSourceSize": {"x":0,"y":0,"w":129,"h":374},
+		"sourceSize": {"w":129,"h":374}
+	},
+	"parchados decor_d.png": {
+		"frame": {"x":0, "y":701, "w":54, "h":69},
+		"spriteSourceSize": {"x":0,"y":0,"w":54,"h":69},
+		"sourceSize": {"w":54,"h":69}
+	},
+	"parchados decor_e.png": {
+		"frame": {"x":93, "y":701, "w":47, "h":190},
+		"spriteSourceSize": {"x":0,"y":0,"w":47,"h":190},
+		"sourceSize": {"w":47,"h":190}
+	},
+	"parchados decor_f.png": {
+		"frame": {"x":0, "y":857, "w":92, "h":164},
+		"spriteSourceSize": {"x":0,"y":0,"w":92,"h":164},
+		"sourceSize": {"w":92,"h":164}
+	},
+	"telalogo.png": {
+		"frame": {"x":0, "y":482, "w":301, "h":218},
+		"spriteSourceSize": {"x":0,"y":0,"w":301,"h":218},
+		"sourceSize": {"w":301,"h":218}
+	}
+
+},
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 1024, "h": 1022},
+	"scale": "1"
+}
+}

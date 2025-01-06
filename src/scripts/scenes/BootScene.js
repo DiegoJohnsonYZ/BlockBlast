@@ -1,4 +1,4 @@
-import {ResourceLoader} from '../components/resourceLoader.js';
+import {ResourceLoader} from './components/resourceLoader.js';
 
 export class BootScene extends Phaser.Scene
 {

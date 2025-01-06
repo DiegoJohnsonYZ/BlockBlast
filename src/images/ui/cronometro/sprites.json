@@ -1,0 +1,35 @@
+{
+"frames": {
+	"Delineado cronometro.png": {
+		"frame": {"x":0, "y":0, "w":608, "h":53},
+		"spriteSourceSize": {"x":0,"y":0,"w":608,"h":54},
+		"sourceSize": {"w":608,"h":54}
+	},
+	"Reloj.png": {
+		"frame": {"x":0, "y":179, "w":73, "h":72},
+		"spriteSourceSize": {"x":1,"y":0,"w":74,"h":73},
+		"sourceSize": {"w":74,"h":73}
+	},
+	"amarillo.png": {
+		"frame": {"x":0, "y":137, "w":590, "h":41},
+		"spriteSourceSize": {"x":0,"y":0,"w":590,"h":41},
+		"sourceSize": {"w":590,"h":41}
+	},
+	"rojo.png": {
+		"frame": {"x":0, "y":95, "w":590, "h":41},
+		"spriteSourceSize": {"x":0,"y":0,"w":590,"h":41},
+		"sourceSize": {"w":590,"h":41}
+	},
+	"verde.png": {
+		"frame": {"x":0, "y":54, "w":593, "h":40},
+		"spriteSourceSize": {"x":0,"y":0,"w":593,"h":40},
+		"sourceSize": {"w":593,"h":40}
+	}
+
+},
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 609, "h": 252},
+	"scale": "1"
+}
+}

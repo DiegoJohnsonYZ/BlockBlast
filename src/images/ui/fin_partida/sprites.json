@@ -1,0 +1,35 @@
+{
+"frames": {
+	"Botón_Reiniciar_Clicked.png": {
+		"frame": {"x":0, "y":114, "w":271, "h":81},
+		"spriteSourceSize": {"x":0,"y":0,"w":271,"h":81},
+		"sourceSize": {"w":271,"h":81}
+	},
+	"Botón_Reiniciar_NonClicked.png": {
+		"frame": {"x":0, "y":196, "w":270, "h":80},
+		"spriteSourceSize": {"x":0,"y":0,"w":270,"h":81},
+		"sourceSize": {"w":270,"h":81}
+	},
+	"Botón_Salir_Clicked.png": {
+		"frame": {"x":201, "y":277, "w":200, "h":81},
+		"spriteSourceSize": {"x":0,"y":0,"w":200,"h":81},
+		"sourceSize": {"w":200,"h":81}
+	},
+	"Botón_Salir_NonClicked.png": {
+		"frame": {"x":0, "y":277, "w":200, "h":81},
+		"spriteSourceSize": {"x":0,"y":0,"w":200,"h":81},
+		"sourceSize": {"w":200,"h":81}
+	},
+	"Contador_puntaje.png": {
+		"frame": {"x":0, "y":0, "w":355, "h":113},
+		"spriteSourceSize": {"x":0,"y":3,"w":355,"h":116},
+		"sourceSize": {"w":355,"h":116}
+	}
+
+},
+"meta": {
+	"image": "sprites.png",
+	"size": {"w": 402, "h": 359},
+	"scale": "1"
+}
+}
