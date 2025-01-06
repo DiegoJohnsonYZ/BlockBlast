@@ -30,7 +30,9 @@ export class BootScene extends Phaser.Scene
 
     create(){
         let dim = this.game.config.width;
-
+        this.data.set('isProd', true);
+        this.data.set('seasonId', this.game.config.metadata.seasonId);
+        this.data.set('gameId', this.game.config.metadata.gameId);
         this.data.set('highScore', this.game.config.metadata.highScore);
         this.data.set('sponsor', this.game.config.metadata.sponsor);
         this.data.set('musicVolume', .2);

@@ -25,24 +25,10 @@ function run(opts) {
 
     const metadata = {
         highScore: opts?.highScore || 0,
-        sponsor: opts?.sponsor || false,
-        seasonId: opts?.seasonId || 0,
-        gameId: opts?.gameId || 0,
-        onGameStart: (evt) => {
-            // Run GA
-            gtag("event", "game_started");
-
-            // Run the optional callback
-            opts?.onGameStart(evt) || (() => { })()
-        },
-        onGameEnd: (evt) => {
-            // Run GA
-            gtag("event", "game_finished");
-
-            // Run the optional callback
-            opts?.onGameEnd(evt) || (() => { })();
-        },
-        onDataSend: opts?.onDataSend || (() => {}),
+        sponsor: opts?.sponsor || true,
+        onGameStart: opts?.onGameStart || (()=>{}),
+        onGameEnd: opts?.onGameEnd ||(()=>{}),
+        onDataSend:opts?.onDataSend || (()=>{}),
     };
 
     const gameOptions = {

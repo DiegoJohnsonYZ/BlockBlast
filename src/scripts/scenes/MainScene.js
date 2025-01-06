@@ -1474,6 +1474,13 @@ export class MainScene extends Phaser.Scene{
                 
     }
 
+    encrypt(data) {
+        const encrypt = new JSEncrypt();
+        encrypt.setPublicKey(process.env.GAME_PUBLIC_KEY);
+
+        return encrypt.encrypt(data);
+    }
+
     StartGameOver(){
         this.StopVibration()
         this.isPaused = true
@@ -1495,7 +1502,13 @@ export class MainScene extends Phaser.Scene{
             this.panel.showScore(newScore, highScore);
         }
 
-        this.game.config.metadata.onGameEnd({state:`game_end`, name:`blockblast`, score:newScore, time:gameplayTime});
+        const payload = {
+            score: newScore,
+            game_id: this.data.get(`gameId`),
+            season_id: this.data.get(`seasonId`)
+        }
+        let encryptedObject = this.encrypt(JSON.stringify(payload));
+        this.game.config.metadata.onGameEnd(encryptedObject);
     }
 
     preload(){
