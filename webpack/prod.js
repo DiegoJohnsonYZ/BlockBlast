@@ -25,19 +25,19 @@ module.exports = merge(base, { // Merging this config with base.js        // con
       ],
    },  
    plugins: [
-      new CopyPlugin({
-         patterns: [
-            {from: './src/images', to: './src/images'},
-            {from: './src/audios', to: './src/audios'},
-         ]
-      }),
-      // new JavaScriptObfuscator({
-      //    compact: true, // Minimiza el código, reduciendo el tamaño del archivo
-      //    stringArray: true, // Convierte cadenas en un array para dificultar su lectura
-      //    stringArrayEncoding: ['base64'], // Codifica las cadenas en base64
-      //    stringArrayThreshold: 0.75, // Proporción de cadenas que se deben ofuscar
-      //    disableConsoleOutput: true, // Desactiva las salidas de consola (opcional)
-      //    selfDefending: true, // Hace que el código ofuscado sea más resistente a la manipulación
+      // new CopyPlugin({
+      //    patterns: [
+      //       {from: './src/images', to: './src/images'},
+      //       {from: './src/audios', to: './src/audios'},
+      //    ]
       // }),
+      new JavaScriptObfuscator({
+         compact: true, // Minimiza el código, reduciendo el tamaño del archivo
+         stringArray: true, // Convierte cadenas en un array para dificultar su lectura
+         stringArrayEncoding: ['base64'], // Codifica las cadenas en base64
+         stringArrayThreshold: 0.75, // Proporción de cadenas que se deben ofuscar
+         disableConsoleOutput: true, // Desactiva las salidas de consola (opcional)
+         selfDefending: true, // Hace que el código ofuscado sea más resistente a la manipulación
+      }),
    ],
 });

@@ -37,12 +37,12 @@ module.exports = {
       ],
    },
    plugins: [
-      new CopyWebpackPlugin({
-         patterns: [
-            {from: './src/images', to: './src/images'},
-            {from: './src/audios', to: './src/audios'},
-         ]
-      }),
+      // new CopyWebpackPlugin({
+      //    patterns: [
+      //       {from: './src/images', to: './src/images'},
+      //       {from: './src/audios', to: './src/audios'},
+      //    ]
+      // }),
       new CleanWebpackPlugin({
          root: path.resolve(__dirname, '../'),
       }), // specified the path where this plugin will delete the         // files on each rebuild
