@@ -1,5 +1,5 @@
-import {Panel} from './Components/panel.js';
-import {AudioManager} from './Components/audioManager.js';
+import {Panel} from './components/panel.js';
+import {AudioManager} from './components/audioManager.js';
 import {ResourceLoader} from './components/resourceLoader.js';
 //import {AnimationsManager} from '../managers/animationsManager.js';
 import * as Phaser from 'phaser';

@@ -1514,9 +1514,9 @@ export class MainScene extends Phaser.Scene{
         //PIECES
         this.load.atlas("piece", ResourceLoader.ReturnPath()+"/images/blockblast_piece/sprites.png", ResourceLoader.ReturnPath()+"/images/blockblast_piece/sprites.json") 
         //ORIGINAL PIECES
-        this.load.atlas("originalPiece", ResourceLoader.ReturnPath()+"/images/originalPiece/sprites.png", ResourceLoader.ReturnPath()+"/images/originalPiece/sprites.json") 
+        this.load.atlas("originalPiece", ResourceLoader.ReturnPath()+"/images/original_piece/sprites.png", ResourceLoader.ReturnPath()+"/images/original_piece/sprites.json") 
         //POWER UPS
-        this.load.atlas("powerUps", ResourceLoader.ReturnPath()+"/images/BlockBlastPowerUps/sprites.png", ResourceLoader.ReturnPath()+"/images/BlockBlastPowerUps/sprites.json")
+        this.load.atlas("powerUps", ResourceLoader.ReturnPath()+"/images/blockblast_powerups/sprites.png", ResourceLoader.ReturnPath()+"/images/blockblast_powerups/sprites.json")
 
         //TIMER BAR
         this.load.atlas('timerBar', ResourceLoader.ReturnPath()+'/images/ui/cronometro/sprites.png', ResourceLoader.ReturnPath()+'/images/ui/cronometro/sprites.json');
@@ -1526,17 +1526,17 @@ export class MainScene extends Phaser.Scene{
 
 
 
-        this.load.spritesheet('bomb', ResourceLoader.ReturnPath()+'/images/BlockBlastPowerUps/blockblast_powerup_bomb/blockblast_powerup_bomb.png', {
+        this.load.spritesheet('bomb', ResourceLoader.ReturnPath()+'/images/blockblast_powerups/blockblast_powerup_bomb/blockblast_powerup_bomb.png', {
             frameWidth: 89,
             frameHeight: 89
             
             });
-        this.load.spritesheet('reduct', ResourceLoader.ReturnPath()+'/images/BlockBlastPowerUps/blockblast_powerup_reduct/blockblast_powerup_reduct.png', {
+        this.load.spritesheet('reduct', ResourceLoader.ReturnPath()+'/images/blockblast_powerups/blockblast_powerup_reduct/blockblast_powerup_reduct.png', {
         frameWidth: 89,
         frameHeight: 89
         
         });
-        this.load.spritesheet('rotate', ResourceLoader.ReturnPath()+'/images/BlockBlastPowerUps/blockblast_powerup_rotate/blockblast_powerup_rotate.png', {
+        this.load.spritesheet('rotate', ResourceLoader.ReturnPath()+'/images/blockblast_powerups/blockblast_powerup_rotate/blockblast_powerup_rotate.png', {
             frameWidth: 89,
             frameHeight: 89
             

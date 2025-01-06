@@ -10,7 +10,7 @@ export class BootScene extends Phaser.Scene
     preload(){
         this.load.image('loadingBG', ResourceLoader.ReturnPath()+'/images/bb_portrait.png');
         this.load.atlas('tutorial', ResourceLoader.ReturnPath()+'/images/tutorial/sprites.png', ResourceLoader.ReturnPath()+'/images/tutorial/sprites.json');
-        this.load.atlas('loadingUI', ResourceLoader.ReturnPath()+'/images/loading_UI/sprites.png', ResourceLoader.ReturnPath()+'/images/loading_UI/sprites.json');
+        this.load.atlas('loadingUI', ResourceLoader.ReturnPath()+'/images/loading_ui/sprites.png', ResourceLoader.ReturnPath()+'/images/loading_ui/sprites.json');
         this.load.atlas('menuUI', ResourceLoader.ReturnPath()+'/images/ui/botones/sprites.png', ResourceLoader.ReturnPath()+'/images/ui/botones/sprites.json');
         this.load.image('leapLogo',ResourceLoader.ReturnPath()+'/images/leap_logo.png')
 
