@@ -1,5 +1,5 @@
-import {ResourceLoader} from './components/resourceLoader.js';
-
+import {ResourceLoader} from '../components/resourceLoader.js';
+//BlockBlast/src/scripts/components/resourceLoader.js
 export class BootScene extends Phaser.Scene
 {
     constructor(){
@@ -75,7 +75,7 @@ export class BootScene extends Phaser.Scene
               getEnd: () => .9
             },
             onUpdate: function(tween, target){
-                target.getElement('thumb').x = target.getElement('thumb').x+12; // Ajustar la posición del thumb
+                target.getElement('thumb').x = target.getElement('thumb').x+14; // Ajustar la posición del thumb
             },
             onComplete: () => {
                 sliderTween?.remove();
@@ -105,6 +105,9 @@ export class BootScene extends Phaser.Scene
                 value: {
                   getStart: () => .9,
                   getEnd: () => 1
+                },
+                onUpdate: function(tween, target){
+                    target.getElement('thumb').x = target.getElement('thumb').x+14; // Ajustar la posición del thumb
                 },
                 onComplete: () => {
                     sliderTween?.remove();

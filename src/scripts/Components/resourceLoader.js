@@ -3,7 +3,7 @@ const prodRoute =  'https://static.pchujoy.com/public/games-assets/parchados';
 
 export class ResourceLoader{
  
-    static isProd = true;
+    static isProd = false;
 
     constructor(scene){
         this.scene = scene;

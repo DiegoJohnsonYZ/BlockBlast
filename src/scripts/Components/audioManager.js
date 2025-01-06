@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import {ResourceLoader} from './components/resourceLoader.js';
+import {ResourceLoader} from '../components/resourceLoader.js';
 
 export class AudioManager
 {
@@ -10,20 +10,20 @@ export class AudioManager
     load(){
         
         //main Themes
-        this.scene.load.audio('mainTheme', [ResourceLoader.ReturnPath()+'audios/title.ogg',ResourceLoader.ReturnPath()+'audios/title.m4a'])
-        this.scene.load.audio('gameplayMusic', ['./src/audios/maintheme.ogg','./src/audios/maintheme.m4a'])
+        this.scene.load.audio('mainTheme', [ResourceLoader.ReturnPath()+'/audios/title.ogg',ResourceLoader.ReturnPath()+'/audios/title.m4a'])
+        this.scene.load.audio('gameplayMusic', [ResourceLoader.ReturnPath()+'/audios/maintheme.ogg',ResourceLoader.ReturnPath()+'/audios/maintheme.m4a'])
 
-        this.scene.load.audio('alarma', [ResourceLoader.ReturnPath()+'audios/ogg/sfx_alarma_loop.ogg',ResourceLoader.ReturnPath()+'audios/m4a/sfx_alarma_loop.m4a'])
-        this.scene.load.audio('destruccion', [ResourceLoader.ReturnPath()+'audios/ogg/sfx_destruccion.ogg',ResourceLoader.ReturnPath()+'audios/m4a/sfx_destruccion.m4a'])
-        this.scene.load.audio('preview', [ResourceLoader.ReturnPath()+'audios/ogg/sfx_ficha_preview.ogg',ResourceLoader.ReturnPath()+'audios/m4a/sfx_ficha_preview.m4a'])
-        this.scene.load.audio('soltar', [ResourceLoader.ReturnPath()+'audios/ogg/sfx_ficha_soltar.ogg',ResourceLoader.ReturnPath()+'audios/m4a/sfx_ficha_soltar.m4a'])
-        this.scene.load.audio('aviso', [ResourceLoader.ReturnPath()+'audios/ogg/sfx_powerup_aviso.ogg',ResourceLoader.ReturnPath()+'audios/m4a/sfx_powerup_aviso.m4a'])
-        this.scene.load.audio('bomba', [ResourceLoader.ReturnPath()+'audios/ogg/sfx_powerup_bomba.ogg',ResourceLoader.ReturnPath()+'audios/m4a/sfx_powerup_bomba.m4a'])
-        this.scene.load.audio('reduccion', [ResourceLoader.ReturnPath()+'audios/ogg/sfx_powerup_reduccion.ogg',ResourceLoader.ReturnPath()+'audios/m4a/sfx_powerup_reduccion.m4a'])
-        this.scene.load.audio('puntos', [ResourceLoader.ReturnPath()+'audios/ogg/sfx_puntos.ogg',ResourceLoader.ReturnPath()+'audios/m4a/sfx_puntos.m4a'])
-        this.scene.load.audio('tapete', [ResourceLoader.ReturnPath()+'audios/ogg/sfx_tapete.ogg',ResourceLoader.ReturnPath()+'audios/m4a/sfx_tapete.m4a'])
-        this.scene.load.audio('ui_click', [ResourceLoader.ReturnPath()+'audios/ogg/sfx_ui_button_click.ogg',ResourceLoader.ReturnPath()+'audios/m4a/sfx_ui_button_click.m4a'])
-        this.scene.load.audio('ui_page', [ResourceLoader.ReturnPath()+'audios/ogg/sfx_ui_button_page.ogg',ResourceLoader.ReturnPath()+'audios/m4a/sfx_ui_button_page.m4a'])
+        this.scene.load.audio('alarma', [ResourceLoader.ReturnPath()+'/audios/ogg/sfx_alarma_loop.ogg',ResourceLoader.ReturnPath()+'/audios/m4a/sfx_alarma_loop.m4a'])
+        this.scene.load.audio('destruccion', [ResourceLoader.ReturnPath()+'/audios/ogg/sfx_destruccion.ogg',ResourceLoader.ReturnPath()+'/audios/m4a/sfx_destruccion.m4a'])
+        this.scene.load.audio('preview', [ResourceLoader.ReturnPath()+'/audios/ogg/sfx_ficha_preview.ogg',ResourceLoader.ReturnPath()+'/audios/m4a/sfx_ficha_preview.m4a'])
+        this.scene.load.audio('soltar', [ResourceLoader.ReturnPath()+'/audios/ogg/sfx_ficha_soltar.ogg',ResourceLoader.ReturnPath()+'/audios/m4a/sfx_ficha_soltar.m4a'])
+        this.scene.load.audio('aviso', [ResourceLoader.ReturnPath()+'/audios/ogg/sfx_powerup_aviso.ogg',ResourceLoader.ReturnPath()+'/audios/m4a/sfx_powerup_aviso.m4a'])
+        this.scene.load.audio('bomba', [ResourceLoader.ReturnPath()+'/audios/ogg/sfx_powerup_bomba.ogg',ResourceLoader.ReturnPath()+'/audios/m4a/sfx_powerup_bomba.m4a'])
+        this.scene.load.audio('reduccion', [ResourceLoader.ReturnPath()+'/audios/ogg/sfx_powerup_reduccion.ogg',ResourceLoader.ReturnPath()+'/audios/m4a/sfx_powerup_reduccion.m4a'])
+        this.scene.load.audio('puntos', [ResourceLoader.ReturnPath()+'/audios/ogg/sfx_puntos.ogg',ResourceLoader.ReturnPath()+'/audios/m4a/sfx_puntos.m4a'])
+        this.scene.load.audio('tapete', [ResourceLoader.ReturnPath()+'/audios/ogg/sfx_tapete.ogg',ResourceLoader.ReturnPath()+'/audios/m4a/sfx_tapete.m4a'])
+        this.scene.load.audio('ui_click', [ResourceLoader.ReturnPath()+'/audios/ogg/sfx_ui_button_click.ogg',ResourceLoader.ReturnPath()+'/audios/m4a/sfx_ui_button_click.m4a'])
+        this.scene.load.audio('ui_page', [ResourceLoader.ReturnPath()+'/audios/ogg/sfx_ui_button_page.ogg',ResourceLoader.ReturnPath()+'/audios/m4a/sfx_ui_button_page.m4a'])
         /*
         this.scene.load.audio('mainTheme', [ './src/audios/menu_loop.ogg', './src/audios/menu_loop.m4a' ]);
         this.scene.load.audio('gameplayTheme', [ './src/audios/gameplay_loop.ogg', './src/audios/gameplay_loop.m4a' ]);

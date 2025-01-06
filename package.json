@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "clean-webpack-plugin": "^4.0.0",
+        "dotenv-webpack": "^8.1.0",
         "file-loader": "^6.2.0",
         "path": "^0.12.7",
         "phaser": "^3.80.1",

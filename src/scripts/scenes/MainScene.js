@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser'
-import {ResourceLoader} from './components/resourceLoader.js';
+import {ResourceLoader} from '../components/resourceLoader.js';
 
 
 class Piece {

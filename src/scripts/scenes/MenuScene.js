@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import {ResourceLoader} from './components/resourceLoader.js';
+import {ResourceLoader} from '../components/resourceLoader.js';
 // -------------------------------------------
 // Menu Scene
 // -------------------------------------------
@@ -147,7 +147,7 @@ export class MenuScene extends Phaser.Scene
                   getEnd: () => 1
                 },
                 onUpdate: function(tween, target){
-                    target.getElement('thumb').x = target.getElement('thumb').x+12; // Ajustar la posición del thumb
+                    target.getElement('thumb').x = target.getElement('thumb').x+14; // Ajustar la posición del thumb
                 },
                 onComplete: () => {
                     this.mainScene.startRunning = false;
@@ -174,7 +174,7 @@ export class MenuScene extends Phaser.Scene
               getEnd: () => .9
             },
             onUpdate: function(tween, target){
-                target.getElement('thumb').x = target.getElement('thumb').x+12; // Ajustar la posición del thumb
+                target.getElement('thumb').x = target.getElement('thumb').x+14; // Ajustar la posición del thumb
             },
             onComplete: () => {
                 sliderTween?.remove();
