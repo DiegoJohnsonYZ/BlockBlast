@@ -1090,18 +1090,16 @@ export class MainScene extends Phaser.Scene{
     ObtainPositions(board){
         let positionArray = []
         for(let i = 0; i < board.length; i++){
-            let lineCounter = 0
             for(let j = board.length-1; j>=0;j--){
                 if(j!= 0){
-                    if(board[j-1][i] != 0 && board[j][i]==0){
+                    if((board[j-1][i] != 0||j-1<0) && board[j][i]==0){
                         positionArray.push((i*board.length)+j)
                         //console.log((i*board.length)+j)
                     }
                 }
                 
-                if(board[j][i]!=0 ) lineCounter+=1
                 if(j==0){
-                    if(lineCounter>=3&&board[j][i]==0){
+                    if(board[j][i]==0){
                         positionArray.push(i*board.length)
                     }
                 }
