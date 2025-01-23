@@ -988,7 +988,8 @@ export class MainScene extends Phaser.Scene{
         this.posOptionY = 400
         console.log(this.posOptionX )
         
-        if(this.queuePieces.isEmpty)this.queuePieces = this.GetBestPieces()
+        if(this.queuePieces.isEmpty)
+            this.queuePieces = this.GetBestPieces()
         console.log(this.queuePieces.length)
 
         this.ShowTime()
@@ -1003,7 +1004,7 @@ export class MainScene extends Phaser.Scene{
         this.ShuffleArray(this.probArray)
         
         
-        console.log(this.probArray)
+        console.log(this.queuePieces)
         let pieceOption = this.RegeneratePiece(this.queuePieces.dequeue(), this.probArray[0])
         this.SetPiecePosition(pieceOption.shape)
         this.option1 = this.CreatePiece(pieceOption, 965-this.posOptionX,337-this.posOptionY,100,0.45,"originalPiece")
@@ -1090,18 +1091,16 @@ export class MainScene extends Phaser.Scene{
     ObtainPositions(board){
         let positionArray = []
         for(let i = 0; i < board.length; i++){
-            let lineCounter = 0
             for(let j = board.length-1; j>=0;j--){
                 if(j!= 0){
-                    if(board[j-1][i] != 0 && board[j][i]==0){
+                    if((board[j-1][i] != 0||j-1<0) && board[j][i]==0){
                         positionArray.push((i*board.length)+j)
                         //console.log((i*board.length)+j)
                     }
                 }
                 
-                if(board[j][i]!=0 ) lineCounter+=1
                 if(j==0){
-                    if(lineCounter>=3&&board[j][i]==0){
+                    if(board[j][i]==0){
                         positionArray.push(i*board.length)
                     }
                 }
@@ -1245,6 +1244,7 @@ export class MainScene extends Phaser.Scene{
                 let forBreak = false
                 //Obtener las posiciones y randomizarlas
                 this.positions = this.ObtainPositions(newBoard)
+                console.log ("las posiciones iniciales son " + this.positions)
                 this.ShuffleArray(this.positions)
                 let iterator = 0
                 let y = ~~(this.positions[i]/this.boardSize)
