@@ -1,5 +1,7 @@
 import * as Phaser from 'phaser'
 import {ResourceLoader} from '../components/resourceLoader.js';
+import { config } from '../../config.js';
+import { encryptWithPublicKey } from '../utils/encryption.js';
 
 
 class Piece {
@@ -250,11 +252,6 @@ export class MainScene extends Phaser.Scene{
           }
        
     }
-
-
-
-
-
 
     //PIECE GENERATORS
     CreatePiece(piece, x, y, size, sizeM, pieceWord){
@@ -1505,8 +1502,11 @@ export class MainScene extends Phaser.Scene{
             game_id: this.data.get(`gameId`),
             season_id: this.data.get(`seasonId`)
         }
-        let encryptedObject = this.encrypt(JSON.stringify(payload));
-        this.game.config.metadata.onGameEnd(encryptedObject);
+
+        const publicKey = config.GAME_PUBLIC_KEY;
+        encryptWithPublicKey(JSON.stringify(payload), publicKey).then(encryptedObject => {
+            this.game.config.metadata.onGameEnd(encryptedObject);
+        });
     }
 
     preload(){
