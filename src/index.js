@@ -94,11 +94,11 @@ function destroyGame() {
 
 // Attach the game to the window object
 if (typeof window !== 'undefined') {
-    if (!window.Parchados && typeof window.Parchados !== 'object') {
+    if (!window.Parchados) {
       window.Parchados = {
         run,
         destroyGame,
-        game: null
+        game: null,
       };
     }
 }
