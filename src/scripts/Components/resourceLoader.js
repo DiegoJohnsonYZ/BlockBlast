@@ -1,4 +1,4 @@
-const prodRoute =  'https://static.pchujoy.com/public/games-assets/parchados';
+const prodRoute =  'https://pchujoy-storage.s3.us-east-1.amazonaws.com/public/games-assets/parchados';
 
 
 export class ResourceLoader{
